@@ -1,4 +1,36 @@
+
 h1 {
   font-size:40px;
   color:blue;
+}
+
+*{
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
+
+header{
+  display:flex;
+  flex-direction:row;
+  align-content:center;
+  justify-content:space-between;
+  padding: 16px;
+  background:#222;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav a {
+  text-decoration:none;
+}
+
+nav a.is-active{
+  font-weight:bold;
+  pointer-events:none;
+  color:hotpink
+
 }
