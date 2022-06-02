@@ -1,4 +1,11 @@
+* {
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
+  
+}
 
+/* 
 h1 {
   font-size:40px;
   color:blue;
@@ -33,4 +40,4 @@ nav a.is-active{
   pointer-events:none;
   color:hotpink
 
-}
+} */

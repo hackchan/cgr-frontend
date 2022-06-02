@@ -3,6 +3,13 @@ import '../styles/app.css'
 import { Route, Routes, Link, useParams, Outlet } from 'react-router-dom'
 import { NavLink } from '../components/NavLink'
 import { Home, NotFound } from '../containers'
+import { Layout } from '../components/Layout'
+import { Checkout } from '../containers/Checkout'
+import { Information } from '../containers/Information'
+import { Login } from '../containers/Login'
+import { Payment } from '../containers/Payment'
+import { Succes } from '../containers/Succes'
+import { AppProvider } from '../contex/AppContex'
 // import { Home } from '../containers/Home'
 // import { NotFound } from '../containers/NotFound'
 // const Home = () => <h1>Home</h1>
@@ -43,17 +50,17 @@ const TacoDetails = () => {
 }
 export const App = () => {
   return (
-    <div className='app'>
-      <header>
-        <nav>
-          <ul>
-            <li><NavLink to='/search-page'>Search page</NavLink></li>
-            <li><NavLink to='/'>home</NavLink></li>
-          </ul>
-        </nav>
-      </header>
+
+    <AppProvider>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Layout />}>
+          <Route path='' element={<Home />} />
+          <Route path='checkout' element={<Checkout />} />
+          <Route path='information' element={<Information />} />
+          <Route path='login' element={<Login />} />
+          <Route path='payment' element={<Payment />} />
+          <Route path='succes' element={<Succes />} />
+        </Route>
         <Route path='/search-page' element={<SearchPage />} />
         <Route path='/tacos/:name' element={<Tacos />}>
           <Route index element={<TacoIndex />} />
@@ -61,8 +68,7 @@ export const App = () => {
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>
-
-    </div>
+    </AppProvider>
 
   )
 }

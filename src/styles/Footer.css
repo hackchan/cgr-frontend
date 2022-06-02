@@ -1,0 +1,5 @@
+.Footer {
+  background:pink;
+  display: flex;
+  justify-content: space-between;
+}
