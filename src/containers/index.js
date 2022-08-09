@@ -1,2 +1,2 @@
 export { Home } from './Home'
-export { NotFound } from './NotFound'
+export { NotFound } from '../components/NotFound'

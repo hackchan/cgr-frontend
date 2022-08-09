@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import '../styles/Checkout.css'
 import { NavLink } from '../components/NavLink'
-import { AppContext } from '../contex/AppContex'
+import { AppContext } from '../contex/AppProvidercContext'
 import { FaTrash } from 'react-icons/fa'
 export const Checkout = () => {
   const { state, removeToCart } = useContext(AppContext)

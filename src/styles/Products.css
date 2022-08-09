@@ -1,4 +1,7 @@
 .Products-items {
+  background:white;
+  padding: 20px 10px;
+  padding-bottom:90px;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1.5rem;
   grid-row-gap: 1.5em;
@@ -29,11 +32,19 @@
 }
 .Products-item img {
   width: 100%;
-  height: 200px;
+  height: 260px;
   border-radius: 5px 5px 0 0;
-  object-fit: contain;
+  object-fit: cover;
+  object-position:top;
 }
-.Products-item button {
+
+  @media  (max-width: 768px) {
+         .Products-items {
+           grid-template-columns: repeat(1, 1fr);
+         }      
+               
+        }
+/* .Products-item button {
   background: linear-gradient(to bottom, #63b8ee 5%, #468ccf 100%);
   width: 100%;
   padding: 10px;
@@ -46,4 +57,4 @@
 }
 .Products-item button:hover {
   background-color: rgba(39,44,49,0.06);
-}
+} */

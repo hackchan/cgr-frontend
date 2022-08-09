@@ -5,9 +5,30 @@
   background: linear-gradient(90deg,#1c3643,#273b47 25%,#1e5372);
   color:white;
   align-items:center;
-  padding: 0 10px;
-  border-bottom: 1px solid rgba(2,2,2,.2);
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.2);
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(2,2,2,.1);
+  box-shadow: 1px 1px 2px 1px rgba(white, 0.2);
+  height:60px;
+  border-radius:10px;
+}
+.Header h1 {
+  font-size:20px;
+  margin-left:5px;
+
+}
+
+.Header-logo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+}
+
+.Header-avatar{
+    width:24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .Header-alert {
@@ -17,5 +38,8 @@
 }
 .Header a {
   text-decoration: none;
-  color: #33b1ff;
+  color: #fff;
+  display: flex;
+  height:inherit;
+  align-items:center;
 }

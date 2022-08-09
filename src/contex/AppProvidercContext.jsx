@@ -1,9 +1,9 @@
 import React, { createContext } from 'react'
 import { useInitialState } from '../hooks/useInitialState'
 
-export const AppContext = createContext({})
+export const AppContext = createContext()
 
-export const AppProvider = ({ children }) => {
+export const AppProvidercContext = ({ children }) => {
   const initialState = useInitialState()
   console.log('initial state:', initialState)
 
