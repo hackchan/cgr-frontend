@@ -88,8 +88,7 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'get',
         url: 'http://localhost:3010/api/v2/satelital',
-        data: {
-        },
+        data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -129,7 +128,7 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'delete',
         url: `http://localhost:3010/api/v2/satelital/${payload.id}`,
-        data: { },
+        data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -163,6 +162,97 @@ export const useInitialState = () => {
     }
   }
 
+  // Crud Departamento
+
+  const getDepartments = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      const url = new URL('/api/v2/department', 'http://localhost:3010')
+      url.searchParams.set('take', `${payload.pageSize}`)
+      url.searchParams.set(
+        'skip',
+        `${payload.pageIndex * payload.pageSize}`
+      )
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddDepartment = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/department',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteDepartment = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/department/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateDepartment = async (payload) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/department/${payload.id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const checkSession = () => {
     if (auth) {
       setState({
@@ -180,7 +270,7 @@ export const useInitialState = () => {
       user: null
     })
   }
-  const addToCart = payload => {
+  const addToCart = (payload) => {
     setState({
       ...state,
       cart: [...state.cart, payload]
@@ -190,7 +280,7 @@ export const useInitialState = () => {
   const removeToCart = (payload) => {
     setState({
       ...state,
-      cart: state.cart.filter(items => items.id !== payload.id)
+      cart: state.cart.filter((items) => items.id !== payload.id)
     })
   }
   return {
@@ -205,6 +295,10 @@ export const useInitialState = () => {
     getSatelitales,
     AddSatelitales,
     DeleteSatelital,
-    UpdateSatelitales
+    UpdateSatelitales,
+    getDepartments,
+    AddDepartment,
+    DeleteDepartment,
+    UpdateDepartment
   }
 }

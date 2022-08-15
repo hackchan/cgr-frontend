@@ -3,7 +3,7 @@ import { Button, IconLoading } from './styles'
 
 export const ButtonLoading = ({ value, onClick, loading, ...props }) => {
   const handleClick = async () => {
-    await onClick()
+    if (onClick) { await onClick() }
   }
   return (
     <Button {...props} onClick={handleClick}>

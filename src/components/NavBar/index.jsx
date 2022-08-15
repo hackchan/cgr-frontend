@@ -28,9 +28,7 @@ export const NavBar = () => {
             >
               <NavDropdown.Item as={StyledNavLink} to='/satelital'>Satelital</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href='#action/3.2'>
-                Departamentos
-              </NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/department'>Departamentos</NavDropdown.Item>
               <NavDropdown.Item href='#action/3.3'>Municipios</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href='#action/3.4'>
