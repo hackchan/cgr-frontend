@@ -15,8 +15,10 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
-export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment, UpdateDepartment, getSatelitales }) => {
-  const { state } = useContext(AppContext)
+export const CrudMunicipios = () => {
+  const {
+    state, getMunicipios, AddMunicipio, DeleteMunicipio, UpdateMunicipio, getDepartments, getTipoMunicipios
+  } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
@@ -30,62 +32,7 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
       }
     }
   }, esES)
-  // const [usStates] = useState([
-  //   'Alabama',
-  //   'Alaska',
-  //   'American Samoa',
-  //   'Arizona',
-  //   'Arkansas',
-  //   'California',
-  //   'Colorado',
-  //   'Connecticut',
-  //   'Delaware',
-  //   'Florida',
-  //   'Georgia',
-  //   'Guam',
-  //   'Hawaii',
-  //   'Idaho',
-  //   'Illinois',
-  //   'Indiana',
-  //   'Iowa',
-  //   'Kansas',
-  //   'Kentucky',
-  //   'Louisiana',
-  //   'Maine',
-  //   'Maryland',
-  //   'Massachusetts',
-  //   'Michigan',
-  //   'Minnesota',
-  //   'Mississippi',
-  //   'Missouri',
-  //   'Montana',
-  //   'Nebraska',
-  //   'Nevada',
-  //   'New Hampshire',
-  //   'New Jersey',
-  //   'New Mexico',
-  //   'New York',
-  //   'North Carolina',
-  //   'North Dakota',
-  //   'Ohio',
-  //   'Oklahoma',
-  //   'Oregon',
-  //   'Palau',
-  //   'Pennsylvania',
-  //   'Rhode Island',
-  //   'South Carolina',
-  //   'South Dakota',
-  //   'Tennessee',
-  //   'Texas',
-  //   'Utah',
-  //   'Vermont',
-  //   'Virgin Island',
-  //   'Virginia',
-  //   'Washington',
-  //   'West Virginia',
-  //   'Wisconsin',
-  //   'Wyoming'
-  // ])
+
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetching, setIsRefetching] = useState(false)
@@ -116,12 +63,10 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
           setIsRefetching(true)
         }
 
-        const response = await getDepartments(pagination, globalFilter, columnFilters, sorting)
-        console.log('sorting:', sorting)
+        const response = await getMunicipios(pagination, globalFilter, columnFilters, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
-        console.log('globalFiter:', globalFilter)
       } catch (error) {
         setIsError(true)
         setError(error.message)
@@ -159,14 +104,11 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
   // }
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
     // employeeData[+row.index] = row._valuesCache
     // setEmployeeData([...employeeData])
   }
 
   const handleExportData = (rows) => {
-    console.log('rows:', rows)
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
     // csvExporter.generateCsv(data)
   }
@@ -186,18 +128,18 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
     <ContainerBox>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteDepartment={DeleteDepartment} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteDepartment={DeleteMunicipio} modedark={state.darkMode} />
         </Modal>}
 
       {modalUpdate &&
         <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} getSatelitales={getSatelitales} UpdateDepartment={UpdateDepartment} modedark={state.darkMode} />
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} getDepartments={getDepartments} getTipoMunicipios={getTipoMunicipios} UpdateMunicipio={UpdateMunicipio} modedark={state.darkMode} />
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
 
       {modal &&
         <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} getSatelitales={getSatelitales} AddDepartment={AddDepartment} modedark={state.darkMode} />
+          <Register setModal={setModal} setReload={setReload} preData={preData} getDepartments={getDepartments} AddMunicipio={AddMunicipio} getTipoMunicipios={getTipoMunicipios} modedark={state.darkMode} />
         </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable

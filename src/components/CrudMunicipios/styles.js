@@ -44,7 +44,7 @@ export const ButtonAdd = styled.button`
   }
 `
 export const BoxForm = styled.div`
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
   width: 100%;
   height: 100%;
@@ -53,6 +53,14 @@ export const BoxForm = styled.div`
   & h2 {
     color: white;
     margin-bottom: 20px;
+  }
+  form .col {
+    text-align: left;
+  }
+  & form label {
+    color: #81980f;
+    font-weight: bold;
+    text-align: left;
   }
 `
 

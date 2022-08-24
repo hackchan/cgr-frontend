@@ -1,28 +1,18 @@
-import React, { useContext, useState } from 'react'
-import ReactSelect from 'react-select/async'
-import { AppContext } from '../../contex/AppProvidercContext'
+import React, { useState } from 'react'
+import { StyledSelect } from '../../styles/select'
+import { LabelBox, Input, BoxForm } from '../../styles/box'
 import { useForm, Controller } from 'react-hook-form'
-import { LabelBox, InputText, BoxForm } from './styles'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import { clearMessage } from '../../utils/time'
 // import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData }) => {
-  const { getSatelitales, AddDepartment } = useContext(AppContext)
+export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepartment, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
-  const [inputValue, setValue] = useState('')
-  const [selectedValue, setSelectedValue] = useState(null)
-  const { register, handleSubmit, control, formState: { errors } } = useForm()
 
-  const handleInputChange = value => {
-    setValue(value)
-  }
-  const handleChange = value => {
-    setSelectedValue(value)
-  }
+  const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm()
 
   const loadOptions = async (inputValue) => {
     const options = []
@@ -41,9 +31,8 @@ export const Register = ({ setModal, setReload, preData }) => {
   }
   const onSubmit = async (dataForm) => {
     try {
+      dataForm = { ...dataForm, satelital: dataForm?.satelital?.value ?? null }
       setDisableBtn(true)
-      console.log('satelitalSel:', selectedValue)
-      console.log('dataForm:', dataForm)
       await AddDepartment(dataForm)
       setModal(false)
       setReload(true)
@@ -59,17 +48,17 @@ export const Register = ({ setModal, setReload, preData }) => {
     }
   }
   return (
-    <BoxForm>
+    <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
-      <h2>{preData.windowsTitleRegister}</h2>
+      <h2>{preData.register}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <LabelBox htmlFor='name'>
-          Ingrese el nombre del departamento
-          <InputText
+        <LabelBox htmlFor='name' modedark={modedark}>
+          Ingrese el nombre del {preData.table}
+          <Input
             type='text' placeholder='Nombre del departamento' id='name' name='name' {...register('name', {
               required: {
                 value: true,
-                message: 'El nombre del departamento es requerido '
+                message: `El nombre del ${preData.table} es requerido `
               }
               // pattern: {
               //   value: /^[A-Z0-9]$/i,
@@ -81,23 +70,23 @@ export const Register = ({ setModal, setReload, preData }) => {
             ? (
               <>
                 {errors.name.type === 'required' && (
-                  <p className='errors'>
+                  <div className='errors' onClick={() => clearErrors('name')}>
                     {errors.name.message}
-                  </p>
+                  </div>
                 )}
                 {errors.name.type === 'pattern' && (
-                  <p className='errors alert'>
+                  <div className='errors' onClick={() => clearErrors('name')}>
                     {errors.name.message}
-                  </p>
+                  </div>
                 )}
               </>
               )
             : null}
         </LabelBox>
 
-        <LabelBox htmlFor='latitude'>
-          Ingrese la latitud del departamento
-          <InputText
+        <LabelBox htmlFor='latitude' modedark={modedark}>
+          Ingrese la latitud del {preData.table}
+          <Input
             type='text' placeholder='Eje. 4.60971' id='latitude' name='latitude' {...register('latitude', {
               required: {
                 value: true,
@@ -113,22 +102,22 @@ export const Register = ({ setModal, setReload, preData }) => {
             ? (
               <>
                 {errors.latitude.type === 'required' && (
-                  <p className='errors'>
+                  <div className='errors' onClick={() => clearErrors('latitude')}>
                     {errors.latitude.message}
-                  </p>
+                  </div>
                 )}
                 {errors.latitude.type === 'pattern' && (
-                  <p className='errors alert'>
+                  <div className='errors' onClick={() => clearErrors('latitude')}>
                     {errors.latitude.message}
-                  </p>
+                  </div>
                 )}
               </>
               )
             : null}
         </LabelBox>
-        <LabelBox htmlFor='longitude'>
-          Ingrese la longitud del departamento
-          <InputText
+        <LabelBox htmlFor='longitude' modedark={modedark}>
+          Ingrese la longitud del {preData.table}
+          <Input
             type='text' placeholder='Eje. -74.08175' id='longitude' name='longitude' {...register('longitude', {
               required: {
                 value: true,
@@ -144,23 +133,52 @@ export const Register = ({ setModal, setReload, preData }) => {
             ? (
               <>
                 {errors.longitude.type === 'required' && (
-                  <p className='errors'>
+                  <div className='errors' onClick={() => clearErrors('longitude')}>
                     {errors.longitude.message}
-                  </p>
+                  </div>
                 )}
                 {errors.longitude.type === 'pattern' && (
-                  <p className='errors alert'>
+                  <div className='errors' onClick={() => clearErrors('longitude')}>
                     {errors.longitude.message}
-                  </p>
+                  </div>
                 )}
               </>
               )
             : null}
         </LabelBox>
 
-        <LabelBox htmlFor='satelital'>
-          Seleccione una satelital
+        <LabelBox htmlFor='satelital' modedark={modedark}>
+          Seleccione una {preData.relationTable}
           <Controller
+              // id='department'
+            name='satelital'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              <StyledSelect
+                {...field}
+                innerRef={ref}
+                {...register('satelital', { required: 'Satelital es obligatorio' })}
+                isClearable
+                classNamePrefix='Select'
+                // autoload={false}
+                placeholder='Selecciona...'
+                defaultOptions
+                // getOptionLabel={e => e.value + ' ' + e.label}
+                // getOptionValue={e => e.value}
+                loadOptions={loadOptions}
+                  // value={currentDepartment}
+                onChange={(e) => { onChange(e) }}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.satelital && (
+            <div className='errors' onClick={() => clearErrors('satelital')}>
+              {errors.satelital.message}
+            </div>
+          )}
+          {/* <Controller
             name='satelital'
             id='satelital'
             control={control}
@@ -187,7 +205,7 @@ export const Register = ({ setModal, setReload, preData }) => {
                 // ]}
               />
             )}
-          />
+          /> */}
 
         </LabelBox>
 
@@ -198,7 +216,7 @@ export const Register = ({ setModal, setReload, preData }) => {
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <Button value='Crear Departamento' disabled={disableBtn} loading={disableBtn} />
+        <Button modedark={modedark} value='Crear Departamento' disabled={disableBtn} loading={disableBtn} />
 
       </form>
 

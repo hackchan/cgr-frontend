@@ -7,7 +7,7 @@ import { clearMessage } from '../../utils/time'
 // import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData }) => {
+export const Register = ({ setModal, setReload, preData, modedark }) => {
   const { AddSatelitales } = useContext(AppContext)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
@@ -32,7 +32,7 @@ export const Register = ({ setModal, setReload, preData }) => {
     }
   }
   return (
-    <BoxForm>
+    <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
       <h2>{preData.windowsTitle}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>

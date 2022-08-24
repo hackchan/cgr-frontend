@@ -121,19 +121,26 @@ export const GlobalStyle = createGlobalStyle`
 
         .errors {
         display:flex;
-        justify-content:center;
+        justify-content:flex-start;
         align-items: center;
-        color:red;
-        padding:5px;
+        color:hotpink;
+        padding:2px 0;
         border-radius:5px;
+        font-size: 14px;
+        cursor: pointer;
+        position: relative;
+}
+    .errors::before {
+        transition: .3s;
         font-size: 18px;
-    }
-    .errors::before{
-        content: '💥';
+        content: '🚀';
         display: flex;
         justify-content: center;
         align-items: center;
-
+    }
+    .errors:hover::before{
+        
+        transform : rotate(-45deg) scale(1.2);
     }
     .errors.alert{
         background: orange;

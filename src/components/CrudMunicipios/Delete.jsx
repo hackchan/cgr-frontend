@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Logo } from '../Logo'
-import { BoxForm, LabelBox } from '../../styles/box'
+import { BoxForm, Title, Message } from './styles'
 import { ButtonLoading } from '../ButtonLoading'
-export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment, modedark }) => {
+export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
 
@@ -23,12 +23,12 @@ export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment,
     }
   }
   return (
-    <BoxForm modedark={modedark}>
+    <BoxForm>
       <div className='avatar'>
         <Logo big />
       </div>
-      <h2>{preData.delete}</h2>
-      <LabelBox modedark={modedark}>Esta seguro que desea Eliminar el {preData.table} {data.name}?</LabelBox>
+      <Title>{preData.delete}</Title>
+      <Message>Esta seguro que desea Eliminar el {preData.table} {data.name}?</Message>
 
       <ButtonLoading onClick={() => closeModal(false)} value='cancelar' />
       <ButtonLoading onClick={() => handleDelete()} className='danger' disabled={disableBtn} loading={disableBtn} value='Eliminar' />

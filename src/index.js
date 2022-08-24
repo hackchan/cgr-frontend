@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Children } from 'react'
+import { AppProvidercContext } from './contex/AppProvidercContext'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { GlobalStyle } from './styles/GlobalStyles'
@@ -8,6 +9,8 @@ const root = createRoot(rootElemet)
 root.render(
   <BrowserRouter>
     <GlobalStyle />
-    <App />
+    <AppProvidercContext>
+      <App />
+    </AppProvidercContext>
   </BrowserRouter>
 )

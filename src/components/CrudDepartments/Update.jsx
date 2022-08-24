@@ -1,15 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import ReactSelect from 'react-select/async'
-import { AppContext } from '../../contex/AppProvidercContext'
 import { useForm, Controller } from 'react-hook-form'
-import { LabelBox, InputText, BoxForm } from './styles'
+import { LabelBox, Input, BoxForm } from '../../styles/box'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import { clearMessage } from '../../utils/time'
 // import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
-export const Update = ({ setModal, setReload, preData, data }) => {
-  const { getSatelitales, UpdateDepartment } = useContext(AppContext)
+export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
@@ -60,13 +58,13 @@ export const Update = ({ setModal, setReload, preData, data }) => {
     }
   }
   return (
-    <BoxForm>
+    <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
-      <h2>{preData.windowsTitleUpdate}</h2>
+      <h2>{preData.update}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <LabelBox htmlFor='name'>
-          Ingrese el nombre del departamento
-          <InputText
+        <LabelBox htmlFor='name' modedark={modedark}>
+          Ingrese el nombre del {preData.table}
+          <Input
             type='text' placeholder='Nombre del departamento' id='name' name='name' {...register('name', {
               required: {
                 value: true,
@@ -96,9 +94,9 @@ export const Update = ({ setModal, setReload, preData, data }) => {
             : null}
         </LabelBox>
 
-        <LabelBox htmlFor='latitude'>
-          Ingrese la latitud del departamento
-          <InputText
+        <LabelBox htmlFor='latitude' modedark={modedark}>
+          Ingrese la latitud del {preData.table}
+          <Input
             type='text' placeholder='Eje. 4.60971' id='latitude' name='latitude' {...register('latitude', {
               required: {
                 value: true,
@@ -127,9 +125,9 @@ export const Update = ({ setModal, setReload, preData, data }) => {
               )
             : null}
         </LabelBox>
-        <LabelBox htmlFor='longitude'>
-          Ingrese la longitud del departamento
-          <InputText
+        <LabelBox htmlFor='longitude' modedark={modedark}>
+          Ingrese la longitud del {preData.table}
+          <Input
             type='text' placeholder='Eje. -74.08175' id='longitude' name='longitude' {...register('longitude', {
               required: {
                 value: true,
@@ -159,8 +157,8 @@ export const Update = ({ setModal, setReload, preData, data }) => {
             : null}
         </LabelBox>
 
-        <LabelBox htmlFor='satelital'>
-          Seleccione una satelital
+        <LabelBox htmlFor='satelital' modedark={modedark}>
+          Seleccione una {preData.relationTable}
           <Controller
             defaultValue={data?.satelital?.id}
             name='satelital'
@@ -200,7 +198,7 @@ export const Update = ({ setModal, setReload, preData, data }) => {
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <Button value={preData.windowsTitleUpdate} disabled={disableBtn} loading={disableBtn} />
+        <Button modedark={modedark} value={preData.update} disabled={disableBtn} loading={disableBtn} />
 
       </form>
 

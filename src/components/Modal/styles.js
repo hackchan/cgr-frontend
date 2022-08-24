@@ -4,18 +4,18 @@ import { FaWindowClose } from 'react-icons/fa'
 export const ModalContainer = styled.div`
   width: 100%;
   height: 100%;
-  background: rgba(2, 2, 2, 0.8);
+  background: rgba(20, 20, 20, 0.9);
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 99999;
 `
 
 export const ModalDetail = styled.div`
-  max-width: 500px;
+  max-width: 2000px;
   border-radius: 12px;
   box-shadow: 0px 2px 2px;
   display: flex;

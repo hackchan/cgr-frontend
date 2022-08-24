@@ -1,8 +1,7 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { device } from '../../utils/devices'
 import { NavLink } from '../NavLink'
 export const StyledNavLink = styled(NavLink)`
-  margin: 0 5px;
   height: inherit;
   &:hover {
     color: yellow;
@@ -27,4 +26,29 @@ export const StyledNavLink = styled(NavLink)`
     }
     height: 60px;
   } */
+`
+export const LogoName = styled.p`
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  &:hover {
+    & ~ span {
+      transition: 0.4s;
+      transform: rotate(720deg) scale(1.1);
+    }
+  }
+  ${(props) =>
+    props.darkMode &&
+    css`
+       {
+        color:white
+      }
+    `}
+`
+export const LogoApp = styled.span`
+  color: #94c53c;
+  font-weight: bold;
+  font-size: 20px;
+  transition: .3s;
+
 `
