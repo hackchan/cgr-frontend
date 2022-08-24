@@ -2,13 +2,14 @@ import styled, { css } from 'styled-components'
 import { theme } from './theme'
 import FormLabel from 'react-bootstrap/FormLabel'
 export const ContainerBox = styled.div`
+ 
   background: rgba(2, 2, 2, 0.7);
   font-size: 14px;
   margin: 22px 0;
   border-radius: 5px;
   box-shadow: 0px 3px 8px 2px rgba(255, 255, 255, 0.3);
   text-align: center;
-  max-height: 750px;
+  max-height: 80vh;
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -16,6 +17,7 @@ export const ContainerBox = styled.div`
   
 `
 export const BoxForm = styled.div`
+
   background: ${theme.light.colors.fondoWin}; /* fallback for old browsers */
   width: 100%;
   height: 100%;

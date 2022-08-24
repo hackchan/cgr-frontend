@@ -73,10 +73,11 @@ export const GlobalStyle = createGlobalStyle`
         
 
         .Main {
-          grid-template-columns: minmax(auto, 1024px);
+          grid-template-columns: minmax(auto, 1800px);
           display: grid;
           justify-content: center;
           align-items: center;
+          
         }
 
          .box{
