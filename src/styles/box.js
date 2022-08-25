@@ -4,12 +4,12 @@ import FormLabel from 'react-bootstrap/FormLabel'
 export const ContainerBox = styled.div`
  
   background: rgba(2, 2, 2, 0.7);
+  background: red;
   font-size: 14px;
   margin: 22px 0;
   border-radius: 5px;
   box-shadow: 0px 3px 8px 2px rgba(255, 255, 255, 0.3);
   text-align: center;
-  max-height: 80vh;
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;

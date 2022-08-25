@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Logo } from '../Logo'
-import { BoxForm, Title, Message } from './styles'
+import { BoxForm, Title, Message } from '../../styles/box'
 import { ButtonLoading } from '../ButtonLoading'
-export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment }) => {
+export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
 
@@ -23,7 +23,7 @@ export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment 
     }
   }
   return (
-    <BoxForm>
+    <BoxForm modedark={modedark}>
       <div className='avatar'>
         <Logo big />
       </div>

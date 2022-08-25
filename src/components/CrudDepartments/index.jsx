@@ -9,7 +9,7 @@ import { esES } from '@mui/material/locale'
 // import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
-import { ContainerBox } from './styles'
+import { ContainerBox } from '../../styles/box'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
 import { Modal } from '../Modal'
 import { Register } from './Register'
@@ -215,7 +215,7 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
               color: '#89b637'
             }
           }}
-          muiTableContainerProps={{ sx: { maxHeight: '600px' } }}
+          muiTableContainerProps={{ sx: { maxHeight: '77vh' } }}
           muiTableHeadProps={{
             sx: {
               position: 'sticky',
@@ -293,9 +293,9 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
         // autoResetPagination
         // enableEditing
         // enableRowNumbers
-          enableRowVirtualization
+        // enableRowVirtualization
+        // virtualizerProps={{ overscan: 50 }}
           enableBottomToolbar={false}
-          // virtualizerProps={{ overscan: 50 }}
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}
