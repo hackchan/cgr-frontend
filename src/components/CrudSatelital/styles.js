@@ -2,8 +2,7 @@ import styled from 'styled-components'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 export const ContainerBox = styled.div`
  background: rgba(2,2,2,.7);
- padding: 10px 0;
- margin: 20px;
+ font-size: 14px;
  border-radius: 5px;
  box-shadow: 0px 3px 8px 2px rgba(255,255,255,.3);
  text-align: center;

@@ -68,9 +68,11 @@ export const GlobalStyle = createGlobalStyle`
          background-attachment: fixed;
          background-size:cover;
          background-repeat:no-repeat;
-         display: flex;
+         /* display: flex;
          min-height: 100vh;
          flex-direction: column;
+         max-width: 1600px;
+         margin: 0 auto; */
         }
         
 

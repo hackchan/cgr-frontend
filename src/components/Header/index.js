@@ -1,11 +1,7 @@
 import React from 'react'
 
-import '../../styles/Header.css'
-import { NavLink } from '../NavLink'
-import { Logo } from '../Logo'
-import { Menu } from '../Menu'
 import { NavBar } from '../NavBar'
-import { HeaderTitle } from './styles'
+
 export const Header = () => {
   return (
     <NavBar />

@@ -8,7 +8,8 @@ export const ContainerBox = styled.div`
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(25, 25, 25, 0.2);
   text-align: center;
-  flex: 1;
+  max-height: 85vh;
+  overflow: auto;
 
   /* overflow: scroll;
   &::-webkit-scrollbar {

@@ -46,6 +46,16 @@ export const NavBar = () => {
             <Nav.Link as={StyledNavLink} to='/'>Features</Nav.Link>
             <NavDropdown
               id='nav-dropdown-dark-example'
+              title='Gestion Matriz Obras'
+              menuVariant={state.darkMode ? 'dark' : 'light'}
+            >
+              <NavDropdown.Item as={StyledNavLink} to='/obra-sector'>Sector Obra</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/obra-origen-recurso'>Origen Recursos</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/sector'>Estado Obra</NavDropdown.Item>
+
+            </NavDropdown>
+            <NavDropdown
+              id='nav-dropdown-dark-example'
               title='Gestion Satelital'
               menuVariant={state.darkMode ? 'dark' : 'light'}
             >
@@ -72,6 +82,7 @@ export const NavBar = () => {
               <NavDropdown.Item as={StyledNavLink} to='/emails'>Telefonos</NavDropdown.Item>
 
             </NavDropdown>
+
           </Nav>
           <Nav>
             {!user
