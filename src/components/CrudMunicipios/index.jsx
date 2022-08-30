@@ -4,13 +4,14 @@ import { AppContext } from '../../contex/AppProvidercContext'
 import { ColumnsTable } from './Columns'
 import { Config } from './Config'
 import MaterialReactTable from 'material-react-table'
-import { Box, Button, Tooltip, createTheme, ThemeProvider } from '@mui/material'
+import { Box, Tooltip, createTheme, ThemeProvider } from '@mui/material'
 import { esES } from '@mui/material/locale'
 // import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { ContainerBox } from '../../styles/box'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
+import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
@@ -151,19 +152,11 @@ export const CrudMunicipios = () => {
           enableGlobalFilter
           positionGlobalFilter='right'
           muiTableHeadCellProps={{
-            sx: {
-              // backgroundColor: 'rgba(2, 0, 5, .6)',
-              // borderRight: '1px solid rgba(224,224,224,1)',
-              color: '#89b637'
-            }
+            className: 'tableHeaderCell'
           }}
-          muiTableContainerProps={{ sx: { maxHeight: '77vh' } }}
+          muiTableContainerProps={{ className: 'tableContainer' }}
           muiTableHeadProps={{
-            sx: {
-              position: 'sticky',
-              top: 0,
-              zIndex: 1
-            }
+            className: 'tableHeader'
           }}
         // enableRowSelection
           enableClickToCopy
@@ -258,23 +251,22 @@ export const CrudMunicipios = () => {
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
-                <Button
-                  style={{ background: '#94c53c' }}
-            // export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                <ButtonStyled
+                  className='export'
                   onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >
                   Exportar
-                </Button>
-                <Button
-                  style={{ background: '#94c' }}
+                </ButtonStyled>
+                <ButtonStyled
+                  className='new'
                   onClick={() => { setModal(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
                   Nuevo
-                </Button>
+                </ButtonStyled>
                 {/* <Button
                 color='error'
                 disabled={table.getSelectedRowModel().flatRows.length === 0}

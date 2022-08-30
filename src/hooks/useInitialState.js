@@ -261,7 +261,7 @@ export const useInitialState = () => {
 
   // Crud Municipios
   const getMunicipios = async (
-    payload = null,
+    payload,
     globalFilter,
     columnFilters,
     sorting
@@ -434,6 +434,385 @@ export const useInitialState = () => {
       throw error
     }
   }
+
+  // Crud Categorias
+  const getCategorias = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'get',
+        url: 'http://localhost:3010/api/v2/categoria',
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddCategorias = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/categoria',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteCategoria = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/categoria/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateCategoria = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/categoria/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+  // Crud sector
+  const getSector = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/sector', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddSector = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/sector',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteSector = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/sector/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateSector = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/sector/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Subsector
+  const getSubSector = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/subsector', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddSubSector = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/subsector',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteSubSector = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/subsector/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateSubSector = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/subsector/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Gestion Usuario
+  const GetUserCGR = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'get',
+        url: 'http://localhost:3010/api/v2/users/cgr',
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+  // Crud Entidad
+  const GetEntidad = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/entidad', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddEntidad = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/entidad',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteEntidad = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/entidad/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateEntidad = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/entidad/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const chgDarkMode = (mode = false) => {
     setDarkMode(mode)
     setState({
@@ -508,6 +887,23 @@ export const useInitialState = () => {
     getTipoMunicipios,
     AddTipoMunicipios,
     DeleteTipoMunicipios,
-    UpdateTipoMunicipios
+    UpdateTipoMunicipios,
+    getCategorias,
+    AddCategorias,
+    UpdateCategoria,
+    DeleteCategoria,
+    getSector,
+    AddSector,
+    DeleteSector,
+    UpdateSector,
+    getSubSector,
+    AddSubSector,
+    DeleteSubSector,
+    UpdateSubSector,
+    GetUserCGR,
+    GetEntidad,
+    AddEntidad,
+    DeleteEntidad,
+    UpdateEntidad
   }
 }

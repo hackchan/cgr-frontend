@@ -150,12 +150,8 @@ export const Update = ({ setModal, setReload, preData, data, getDepartments, get
                   {...register('department', { required: 'Departamento es obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
-                  // autoload={false}
-                  // cacheOptions
                   placeholder='Selecciona...'
                   defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
                   loadOptions={loadOptions}
                   value={departmentSel}
                   onChange={(e) => { onChange(e); setcurrentDepartment(e); setDepartmentSel(e) }}

@@ -2,8 +2,9 @@
 import React, { useMemo, useEffect, useContext, useState } from 'react'
 import { AppContext } from '../../contex/AppProvidercContext'
 import MaterialReactTable from 'material-react-table'
-import { Box, Button, ThemeProvider, Tooltip, createTheme } from '@mui/material'
+import { Box, ThemeProvider, Tooltip, createTheme } from '@mui/material'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
+import { ButtonStyled } from '../../styles/button'
 import { esES } from '@mui/material/locale'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
@@ -114,17 +115,11 @@ export const CrudTipoMunicipios = () => {
           enableGlobalFilter
           positionGlobalFilter='right'
           muiTableHeadCellProps={{
-            sx: {
-              color: '#89b637'
-            }
+            className: 'tableHeaderCell'
           }}
-          muiTableContainerProps={{ sx: { maxHeight: '600px' } }}
+          muiTableContainerProps={{ className: 'tableContainer' }}
           muiTableHeadProps={{
-            sx: {
-              position: 'sticky',
-              top: 0,
-              zIndex: 1
-            }
+            className: 'tableHeader'
           }}
           enableClickToCopy
           enableColumnOrdering
@@ -176,22 +171,22 @@ export const CrudTipoMunicipios = () => {
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
-                <Button
-                  style={{ background: '#94c53c' }}
+                <ButtonStyled
+                  className='export'
                   onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >
                   Exportar
-                </Button>
-                <Button
-                  style={{ background: '#9147ff' }}
+                </ButtonStyled>
+                <ButtonStyled
+                  className='new'
                   onClick={() => { setModal(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
                   Nuevo
-                </Button>
+                </ButtonStyled>
               </Box>
             )
           }}

@@ -1,7 +1,7 @@
 const table = 'Tipo Municipio'
 export const Config = {
   pageIndex: 0,
-  pageSize: 12,
+  pageSize: 50,
   table,
   relationTable: 'Municipio2',
   register: `Registrar ${table}`,
@@ -10,7 +10,7 @@ export const Config = {
   buttonRegister: 'Crear Tipo',
   buttonUpdate: 'Actualizar Tipo',
   labelRowsPerPage: 'filas por página',
-  rowsPerPageOptions: [12, 20, 50, 100],
+  rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,
     showColumnFilters: false,

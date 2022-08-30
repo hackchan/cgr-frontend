@@ -24,8 +24,12 @@ import { CrudSatelital } from '../components/CrudSatelital'
 import { CrudDepartmets } from '../components/CrudDepartments'
 import { CrudMunicipios } from '../components/CrudMunicipios'
 import { CrudTipoMunicipios } from '../components/CrudTipoMunicipios'
+import { CrudCategorias } from '../components/CrudCategorias'
+import { CrudSector } from '../components/CrudSector'
+import { CrudSubSector } from '../components/CrudSubSector'
+import { CrudEntidad } from '../components/CrudEntidad'
 export const App = () => {
-  const { getDepartments, AddDepartment, DeleteDepartment, UpdateDepartment, getSatelitales } = useContext(AppContext)
+  const { state } = useContext(AppContext)
   return (
 
     <Routes>
@@ -33,9 +37,13 @@ export const App = () => {
         <Route path='' element={<Home />} />
         <Route path='checkout' element={<Checkout />} />
         <Route path='satelital' element={<CrudSatelital />} />
-        <Route path='department' element={<CrudDepartmets getDepartments={getDepartments} AddDepartment={AddDepartment} DeleteDepartment={DeleteDepartment} UpdateDepartment={UpdateDepartment} getSatelitales={getSatelitales} />} />
+        <Route path='department' element={<CrudDepartmets />} />
         <Route path='municipio' element={<CrudMunicipios />} />
         <Route path='tipo-municipio' element={<CrudTipoMunicipios />} />
+        <Route path='categoria' element={<CrudCategorias />} />
+        <Route path='sector' element={<CrudSector />} />
+        <Route path='entidad' element={<CrudEntidad />} />
+        <Route path='subsector' element={<CrudSubSector />} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

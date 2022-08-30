@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { Logo } from '../Logo'
 import { Link } from 'react-router-dom'
-import { StyledNavLink, LogoName, LogoApp } from './styles'
+import { StyledNavLink, LogoName, LogoApp, HamburgerIcon } from './styles'
 import { AppContext } from '../../contex/AppProvidercContext'
 
 export const NavBar = () => {
@@ -36,7 +36,10 @@ export const NavBar = () => {
             onChange={() => handleChange()}
           />
         </div>
-        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Toggle aria-controls='responsive-navbar-nav'>
+          <span><HamburgerIcon /></span>
+
+        </Navbar.Toggle>
         <Navbar.Collapse id='responsive-navbar-nav' className='justify-content-end'>
           <Nav className='mr-auto'>
 

@@ -57,7 +57,7 @@ export const GlobalStyle = createGlobalStyle`
          left: 50%;
          transform: translate(-50%, -50%);
          object-fit: cover;
-}
+        }
         body {
          /* font-family: 'Coming Soon', cursive; */
          font-family: 'Inter', sans-serif;
@@ -68,15 +68,18 @@ export const GlobalStyle = createGlobalStyle`
          background-attachment: fixed;
          background-size:cover;
          background-repeat:no-repeat;
-         height: 100%;
+         display: flex;
+         min-height: 100vh;
+         flex-direction: column;
         }
         
 
         .Main {
-          grid-template-columns: minmax(auto, 1800px);
+          grid-template-columns: minmax(auto, 1fr);
           display: grid;
           justify-content: center;
           align-items: center;
+
           
         }
 
@@ -100,6 +103,7 @@ export const GlobalStyle = createGlobalStyle`
                 .box{
                   width: 100%;
                 }
+                
                
         }
 
@@ -170,6 +174,25 @@ export const GlobalStyle = createGlobalStyle`
         color: #ffffff;
 }
 
+.tableContainer{
+        max-height: 75vh;
+}
+  @media  (max-width: 1700px) {
+
+        .tableContainer{
+        max-height: 70vh;
+}
+  }
+
+
+.tableHeader{
+        position: sticky;
+        top: 0;
+        z-index: 1;
+}
+.tableHeaderCell{
+       color: #89b637 !important;
+}
 
 .btn{
     font-size: 18px;

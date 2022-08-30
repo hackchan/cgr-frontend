@@ -1,9 +1,9 @@
-.Footer {
+/* .Footer {
   display:flex;
   justify-content:space-between;
   align-items:center;
   background: rgb(126,17,133);
-  background: linear-gradient(90deg,#1c3643,#273b47 25%,#1e5372);
+  background: linear-gradient(90deg,#212529,#212529 25%,#212529);
   color:white;
   position: fixed;
   left: 0;
@@ -15,4 +15,4 @@
   
 
 
-}
+} */

@@ -1,20 +1,19 @@
 import styled, { css } from 'styled-components'
+import { tableHeight } from '../styles/animation'
 import { theme } from './theme'
 import FormLabel from 'react-bootstrap/FormLabel'
 export const ContainerBox = styled.div`
- 
   background: rgba(2, 2, 2, 0.7);
-  background: red;
   font-size: 14px;
-  margin: 22px 0;
   border-radius: 5px;
-  box-shadow: 0px 3px 8px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 3px 5px rgba(25, 25, 25, 0.2);
   text-align: center;
-  overflow: scroll;
+  flex: 1;
+
+  /* overflow: scroll;
   &::-webkit-scrollbar {
     display: none;
-  }
-  
+  } */
 `
 export const BoxForm = styled.div`
 
@@ -40,7 +39,10 @@ export const BoxForm = styled.div`
           font-weight: bold;
         }
       }
-    `}
+    `};
+    &.size{
+      min-width:600px
+    }
 `
 export const LabelBox = styled.label`
   display: block;
@@ -90,4 +92,7 @@ export const Input = styled.input`
   height: 40px;
   /* color: #fff; */
   font-size: 16px;
+`
+export const TableStyled = css`
+  ${tableHeight()}
 `

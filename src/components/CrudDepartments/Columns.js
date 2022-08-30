@@ -36,7 +36,7 @@ export const ColumnsTable = [
     enableEditing: false,
     // filterVariant: 'range',
     id: 'satelital',
-    header: 'satelital',
+    header: 'Satelital',
     // size: 300,
     Cell: ({ cell }) => (
       <Box
@@ -56,6 +56,25 @@ export const ColumnsTable = [
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
           })} */}
+      </Box>
+    )
+  },
+  {
+    accessorFn: (row) =>
+      `${
+        row.responsable
+          ? `${row.responsable.name} ${row.responsable.lastName}`
+          : 'NO ASIGNADO'
+      } `, // accessorFn used
+    id: 'responsable',
+    header: 'Responsable',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'FABIO ROJAS ' ? '#AA22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
       </Box>
     )
   }

@@ -1,6 +1,12 @@
 import styled, { css } from 'styled-components'
 import { device } from '../../utils/devices'
 import { NavLink } from '../NavLink'
+import { GiHamburgerMenu } from 'react-icons/gi'
+
+export const HamburgerIcon = styled(GiHamburgerMenu)`
+  color: #94c53c;
+  font-size: 16px;
+`
 export const StyledNavLink = styled(NavLink)`
   height: inherit;
   &:hover {

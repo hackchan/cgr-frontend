@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
-    header: 'id',
+    header: 'Id',
     size: 120
   },
   {
@@ -13,12 +13,23 @@ export const ColumnsTable = [
   {
     accessorFn: (row) => `${row.active ? 'SI' : 'NO'}`,
     accessorKey: 'active',
-    header: 'active'
+    header: 'Active',
+    filterSelectOptions: [
+      { text: 'SI', value: 'SI' },
+      { text: 'NO', value: 'NO' }
+    ],
+    filterVariant: 'select'
   },
   {
-    accessorFn: (row) => `${row.isCapital ? 'CAPITAL' : 'NO'}`,
-    accessorKey: 'isCapital',
-    header: 'Capital'
+    accessorFn: (row) => `${row.isCapital ? 'SI' : 'NO'}`,
+    header: 'Capital',
+    filterFn: (row, id, filterValue) =>
+      row.getValue(id).startsWith(filterValue),
+    filterSelectOptions: [
+      { text: 'SI', value: 'SI' },
+      { text: 'NO', value: 'NO' }
+    ],
+    filterVariant: 'select'
   },
   {
     accessorKey: 'divipola',
@@ -37,7 +48,7 @@ export const ColumnsTable = [
     enableEditing: false,
     // filterVariant: 'range',
     id: 'tipo',
-    header: 'tipo',
+    header: 'Tipo',
     // size: 300,
     Cell: ({ cell }) => (
       <Box

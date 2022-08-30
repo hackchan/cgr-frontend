@@ -4,19 +4,20 @@ import { AppContext } from '../../contex/AppProvidercContext'
 import { ColumnsTable } from './Columns'
 import { Config } from './Config'
 import MaterialReactTable from 'material-react-table'
-import { Box, Button, Tooltip, createTheme, ThemeProvider } from '@mui/material'
+import { Box, Tooltip, createTheme, ThemeProvider } from '@mui/material'
 import { esES } from '@mui/material/locale'
 // import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { ContainerBox } from '../../styles/box'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
+import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
-export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment, UpdateDepartment, getSatelitales }) => {
-  const { state } = useContext(AppContext)
+export const CrudDepartmets = () => {
+  const { state, getDepartments, AddDepartment, DeleteDepartment, UpdateDepartment, getSatelitales, GetUserCGR } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
@@ -197,7 +198,7 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
 
       {modal &&
         <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} getSatelitales={getSatelitales} AddDepartment={AddDepartment} modedark={state.darkMode} />
+          <Register setModal={setModal} setReload={setReload} preData={preData} getSatelitales={getSatelitales} AddDepartment={AddDepartment} GetUserCGR={GetUserCGR} modedark={state.darkMode} />
         </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable
@@ -209,19 +210,11 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
           enableGlobalFilter
           positionGlobalFilter='right'
           muiTableHeadCellProps={{
-            sx: {
-              // backgroundColor: 'rgba(2, 0, 5, .6)',
-              // borderRight: '1px solid rgba(224,224,224,1)',
-              color: '#89b637'
-            }
+            className: 'tableHeaderCell'
           }}
-          muiTableContainerProps={{ sx: { maxHeight: '77vh' } }}
+          muiTableContainerProps={{ className: 'tableContainer' }}
           muiTableHeadProps={{
-            sx: {
-              position: 'sticky',
-              top: 0,
-              zIndex: 1
-            }
+            className: 'tableHeader'
           }}
         // enableRowSelection
           enableClickToCopy
@@ -239,7 +232,7 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
         // enablePagination
           muiTablePaginationProps={{
             labelRowsPerPage: 'filas por página',
-            rowsPerPageOptions: [12, 20, 50, 100],
+            rowsPerPageOptions: [10, 20, 50, 100],
             showFirstButton: true,
             showLastButton: true,
             SelectProps: { native: true }
@@ -316,23 +309,25 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
-                <Button
-                  style={{ background: '#94c53c' }}
+                <ButtonStyled
+                  className='export'
+                  // style={{ background: '#94c53c' }}
             // export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                   onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >
                   Exportar
-                </Button>
-                <Button
-                  style={{ background: '#94c' }}
+                </ButtonStyled>
+                <ButtonStyled
+                  className='new'
+                  // style={{ background: '#94c' }}
                   onClick={() => { setModal(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
                   Nuevo
-                </Button>
+                </ButtonStyled>
                 {/* <Button
                 color='error'
                 disabled={table.getSelectedRowModel().flatRows.length === 0}
@@ -354,7 +349,7 @@ export const CrudDepartmets = ({ getDepartments, AddDepartment, DeleteDepartment
             )
           }}
           renderRowActions={({ row }) => (
-            <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}>
+            <div>
               <Tooltip title={preData.delete} placement='top'>
                 <DeleteIconStyle
                   variant='contained'

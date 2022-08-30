@@ -14,3 +14,7 @@ const fadeInKeyframes = keyframes`
 export const fadeIn = ({ time = '1s', type = 'ease' } = {}) => css`
   animation: ${time} ${fadeInKeyframes} ${type};
 `
+
+export const tableHeight = ({ alto = '65vh' } = {}) => css`
+  max-height: ${alto} ;
+`

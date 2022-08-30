@@ -15,7 +15,7 @@ export const ModalContainer = styled.div`
 `
 
 export const ModalDetail = styled.div`
-  max-width: 2000px;
+  
   border-radius: 12px;
   box-shadow: 0px 2px 2px;
   display: flex;

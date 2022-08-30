@@ -7,7 +7,7 @@ import { clearMessage } from '../../utils/time'
 // import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepartment, modedark }) => {
+export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepartment, GetUserCGR, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
@@ -25,6 +25,23 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
       options.push({
         label: satelital.name,
         value: satelital.id
+      })
+    })
+    return options
+  }
+
+  const loadOptionsCgr = async (inputValue) => {
+    const options = []
+    const response = await GetUserCGR()
+    console.log('los users:', response)
+    const filter = response.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((user) => {
+      options.push({
+        label: `${user.name} ${user.lastName}`,
+        value: user.id
       })
     })
     return options
@@ -178,40 +195,43 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
               {errors.satelital.message}
             </div>
           )}
-          {/* <Controller
-            name='satelital'
-            id='satelital'
-            control={control}
-            render={({ field: { value, onChange, onBlur, name, ref } }) => (
-              <ReactSelect
-                autoload={false}
-                placeholder='Selecciona...'
-                cacheOptions
-                defaultOptions
-                value={selectedValue}
-                getOptionLabel={e => e.value + ' ' + e.label}
-                getOptionValue={e => e.value}
-                loadOptions={loadOptions}
-                onInputChange={handleInputChange}
-                onChange={val => { onChange(val.value); handleChange() }}
-
-                // onChange={val => onChange(val.value)}
-
-                // {...field}
-                // options={[
-                //   { value: 'chocolate', label: 'Chocolate' },
-                //   { value: 'strawberry', label: 'Strawberry' },
-                //   { value: 'vanilla', label: 'Vanilla' }
-                // ]}
-              />
-            )}
-          /> */}
 
         </LabelBox>
 
-        {/* {loading && <Spinner />}
-        {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>} */}
-        {/* {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>} */}
+        <LabelBox htmlFor='responsable' modedark={modedark}>
+          Seleccione una {preData.relationTable2}
+          <Controller
+              // id='department'
+            name='responsable'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              <StyledSelect
+                {...field}
+                innerRef={ref}
+                {...register('responsable', { required: 'Responsable es obligatorio' })}
+                isClearable
+                classNamePrefix='Select'
+                // autoload={false}
+                placeholder='Selecciona...'
+                defaultOptions
+                // getOptionLabel={e => e.value + ' ' + e.label}
+                // getOptionValue={e => e.value}
+                loadOptions={loadOptionsCgr}
+                  // value={currentDepartment}
+                onChange={(e) => { onChange(e) }}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.responsable && (
+            <div className='errors' onClick={() => clearErrors('responsable')}>
+              {errors.responsable.message}
+            </div>
+          )}
+
+        </LabelBox>
+
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
