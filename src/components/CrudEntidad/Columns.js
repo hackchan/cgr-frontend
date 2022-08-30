@@ -114,8 +114,8 @@ export const ColumnsTable = [
   {
     accessorFn: (row) =>
       `${
-        row.municipio.department.responsable
-          ? row.municipio.department.responsable.name + ' ' + row.municipio.department.responsable.lastName
+        row.municipio?.department?.responsable
+          ? row.municipio?.department?.responsable.name + ' ' + row.municipio?.department?.responsable.lastName
           : 'NO ASIGNADO'
       }`,
     enableEditing: false,
