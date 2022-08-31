@@ -28,6 +28,7 @@ import { CrudCategorias } from '../components/CrudCategorias'
 import { CrudSector } from '../components/CrudSector'
 import { CrudSubSector } from '../components/CrudSubSector'
 import { CrudEntidad } from '../components/CrudEntidad'
+import { CrudEstadoObra } from '../components/CrudEstadoObra'
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -44,6 +45,7 @@ export const App = () => {
         <Route path='sector' element={<CrudSector />} />
         <Route path='entidad' element={<CrudEntidad />} />
         <Route path='subsector' element={<CrudSubSector />} />
+        <Route path='estado-obra' element={<CrudEstadoObra />} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

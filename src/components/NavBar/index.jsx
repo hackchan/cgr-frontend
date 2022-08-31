@@ -51,7 +51,7 @@ export const NavBar = () => {
             >
               <NavDropdown.Item as={StyledNavLink} to='/obra-sector'>Sector Obra</NavDropdown.Item>
               <NavDropdown.Item as={StyledNavLink} to='/obra-origen-recurso'>Origen Recursos</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/sector'>Estado Obra</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/estado-obra'>Estado Obra</NavDropdown.Item>
 
             </NavDropdown>
             <NavDropdown

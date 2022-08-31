@@ -792,13 +792,103 @@ export const useInitialState = () => {
       throw error
     }
   }
-
   const UpdateEntidad = async (payload, id) => {
     try {
       console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
         url: `http://localhost:3010/api/v2/entidad/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Estado Obra
+  const GetEstadoObra = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/estado-obra', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddEstadoObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/estado-obra',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteEstadoObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/estado-obra/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateEstadoObra = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/estado-obra/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
@@ -904,6 +994,10 @@ export const useInitialState = () => {
     GetEntidad,
     AddEntidad,
     DeleteEntidad,
-    UpdateEntidad
+    UpdateEntidad,
+    GetEstadoObra,
+    AddEstadoObra,
+    DeleteEstadoObra,
+    UpdateEstadoObra
   }
 }
