@@ -49,7 +49,7 @@ export const Update = ({ setModal, setReload, preData, data, UpdateSectorObra, m
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='name'>
             <FormLabelStyle modedark={modedark.toString()}>Nombre del {preData.table}</FormLabelStyle>
-            <Form.Control style={{ height: 38 }} type='text' placeholder='Eje: EN EJECUCION' {...register('name', { required: `nombre del ${preData.table} obligatorio` })} />
+            <Form.Control style={{ height: 38 }} type='text' placeholder='Eje: VIVIENDA' {...register('name', { required: `nombre del ${preData.table} obligatorio` })} />
 
             {errors.name && (
               <Form.Text className='errors' onClick={() => clearErrors('name')}>
