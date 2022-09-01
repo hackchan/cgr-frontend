@@ -49,8 +49,8 @@ export const NavBar = () => {
               title='Gestion Matriz Obras'
               menuVariant={state.darkMode ? 'dark' : 'light'}
             >
-              <NavDropdown.Item as={StyledNavLink} to='/obra-sector'>Sector Obra</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/obra-origen-recurso'>Origen Recursos</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/sector-obra'>Sector Obra</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
               <NavDropdown.Item as={StyledNavLink} to='/estado-obra'>Estado Obra</NavDropdown.Item>
 
             </NavDropdown>

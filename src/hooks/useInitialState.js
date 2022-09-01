@@ -813,7 +813,12 @@ export const useInitialState = () => {
   }
 
   // Crud Estado Obra
-  const GetEstadoObra = async (payload, globalFilter, columnFilters, sorting) => {
+  const GetEstadoObra = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
     try {
       console.log('payload:', payload)
       const url = new URL('/api/v2/estado-obra', 'http://localhost:3010')
@@ -889,6 +894,198 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'patch',
         url: `http://localhost:3010/api/v2/estado-obra/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Sector Obra
+  const GetSectorObra = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/sector-obra', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddSectorObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/sector-obra',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteSectorObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/sector-obra/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateSectorObra = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/sector-obra/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Origen Recurso
+  const GetOrigenRecursoObra = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/origen-recurso', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddOrigenRecursoObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/origen-recurso',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteOrigenRecursoObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/origen-recurso/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateOrigenRecursoObra = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/origen-recurso/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
@@ -998,6 +1195,14 @@ export const useInitialState = () => {
     GetEstadoObra,
     AddEstadoObra,
     DeleteEstadoObra,
-    UpdateEstadoObra
+    UpdateEstadoObra,
+    GetSectorObra,
+    AddSectorObra,
+    DeleteSectorObra,
+    UpdateSectorObra,
+    GetOrigenRecursoObra,
+    AddOrigenRecursoObra,
+    DeleteOrigenRecursoObra,
+    UpdateOrigenRecursoObra
   }
 }
