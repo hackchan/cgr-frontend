@@ -31,6 +31,7 @@ import { CrudEntidad } from '../components/CrudEntidad'
 import { CrudEstadoObra } from '../components/CrudEstadoObra'
 import { CrudSectorObra } from '../components/CrudSectorObra'
 import { CrudOrigenRecurso } from '../components/CrudOrigenRecurso'
+import {  MatrizObra } from '../components/CrudMatrizObra'
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -50,6 +51,7 @@ export const App = () => {
         <Route path='estado-obra' element={<CrudEstadoObra />} />
         <Route path='sector-obra' element={<CrudSectorObra />} />
         <Route path='origen-recurso' element={<CrudOrigenRecurso />} />
+        <Route path='matriz-obra' element={<MatrizObra />} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

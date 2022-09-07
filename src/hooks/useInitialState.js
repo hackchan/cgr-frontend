@@ -1100,6 +1100,102 @@ export const useInitialState = () => {
     }
   }
 
+  // Crud Matriz Obra
+  const GetMatrizObras = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/obra', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddMatrizObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/obra',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteMatrizObra = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/obra/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateMatrizObra = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/obra/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const chgDarkMode = (mode = false) => {
     setDarkMode(mode)
     setState({
@@ -1203,6 +1299,10 @@ export const useInitialState = () => {
     GetOrigenRecursoObra,
     AddOrigenRecursoObra,
     DeleteOrigenRecursoObra,
-    UpdateOrigenRecursoObra
+    UpdateOrigenRecursoObra,
+    GetMatrizObras,
+    DeleteMatrizObra,
+    AddMatrizObra,
+    UpdateMatrizObra
   }
 }
