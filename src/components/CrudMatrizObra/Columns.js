@@ -10,12 +10,33 @@ export const ColumnsTable = [
     header: 'Bpin'
   },
   {
-    accessorKey: 'nombreProyecto',
-    header: 'Proyecto'
+    accessorFn: (row) => `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
+    id: 'nombreProyecto',
+    header: 'Proyecto',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : 'white'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'objetoProyecto',
-    header: 'Objeto'
+    accessorFn: (row) => `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
+    id: 'objetoProyecto',
+    header: 'Objeto',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : 'white'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
 
   {
@@ -75,11 +96,11 @@ export const ColumnsTable = [
       <Box
         sx={(theme) => ({
           backgroundColor:
-            cell.getValue() < 50000
-              ? theme.palette.error.dark
-              : cell.getValue() >= 800000000000
-                ? theme.palette.warning.dark
-                : theme.palette.success.dark,
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
           borderRadius: '0.25rem',
           color: '#fff',
           p: '0.25rem'
@@ -103,11 +124,11 @@ export const ColumnsTable = [
       <Box
         sx={(theme) => ({
           backgroundColor:
-            cell.getValue() < 50000
-              ? theme.palette.error.dark
-              : cell.getValue() >= 800000000000
-                ? theme.palette.warning.dark
-                : theme.palette.success.dark,
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
           borderRadius: '0.25rem',
           color: '#fff',
           p: '0.25rem'
@@ -122,15 +143,27 @@ export const ColumnsTable = [
       </Box>
     )
   },
+
   {
     accessorKey: 'avanceFisicoProgramado',
-    header: 'Fisico Programado'
+    header: 'Fisico Programado',
+    size: 200,
+    Cell: ({ cell }) => {
+      const desface = cell.getValue() - cell.row.original.avanceFisicoEjecutado
+      return <Box sx={(theme) => ({ background: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', color: '#fff', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+    }
   },
 
   {
     accessorKey: 'avanceFisicoEjecutado',
-    header: 'Fisico Ejecutado'
+    header: 'Fisico Ejecutado',
+    size: 200,
+    Cell: ({ cell }) => {
+      const desface = cell.row.original.avanceFisicoProgramado - cell.getValue()
+      return <Box sx={(theme) => ({ background: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', color: '#fff', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+    }
   },
+
   {
     accessorKey: 'avanceFinancieroEjecutado',
     header: 'Financiero Ejecutado'
@@ -235,22 +268,24 @@ export const ColumnsTable = [
   },
 
   {
-    accessorKey: 'sector',
+    accessorKey: 'sector.name',
     header: 'Sector'
   },
 
   {
-    accessorKey: 'estado',
+    accessorKey: 'estado.name',
     header: 'Estado'
   },
 
   {
-    accessorKey: 'entidad',
+    accessorKey: 'entidad.name',
     header: 'Entidad'
   },
   {
-    accessorKey: 'municipioObra',
+    accessorKey: 'municipioObra.name',
     header: 'Municipio Obra'
   }
 
 ]
+//// console.log('el row:', cell.row.original.anioCorte)
+      // console.log('el row:', cell.getValue())
