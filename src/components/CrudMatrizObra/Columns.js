@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
+import { format, parseISO } from 'date-fns'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
@@ -10,13 +11,17 @@ export const ColumnsTable = [
     header: 'Bpin'
   },
   {
+    accessorKey: 'idContrato',
+    header: 'ID Contrato'
+  },
+  {
     accessorFn: (row) => `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
     id: 'nombreProyecto',
     header: 'Proyecto',
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
-          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : 'white'
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
         })}
       >
         {cell.getValue()?.toUpperCase()}
@@ -31,7 +36,7 @@ export const ColumnsTable = [
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
-          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : 'white'
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
         })}
       >
         {cell.getValue()?.toUpperCase()}
@@ -47,7 +52,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
-    sortingFn: 'datetime',
+    sortingFn: 'date',
     Cell: ({ cell }) => cell.getValue()?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
@@ -95,14 +100,13 @@ export const ColumnsTable = [
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
-          backgroundColor:
+          color:
             cell.getValue() < 1000000000
               ? '#1DB954'
               : cell.getValue() >= 10000000000
                 ? '#FF033E'
                 : '#CD5700',
           borderRadius: '0.25rem',
-          color: '#fff',
           p: '0.25rem'
         })}
       >
@@ -123,14 +127,13 @@ export const ColumnsTable = [
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
-          backgroundColor:
+          color:
             cell.getValue() < 1000000000
               ? '#1DB954'
               : cell.getValue() >= 10000000000
                 ? '#FF033E'
                 : '#CD5700',
           borderRadius: '0.25rem',
-          color: '#fff',
           p: '0.25rem'
         })}
       >
@@ -150,7 +153,7 @@ export const ColumnsTable = [
     size: 200,
     Cell: ({ cell }) => {
       const desface = cell.getValue() - cell.row.original.avanceFisicoEjecutado
-      return <Box sx={(theme) => ({ background: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', color: '#fff', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+      return <Box sx={(theme) => ({ color: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
     }
   },
 
@@ -160,96 +163,369 @@ export const ColumnsTable = [
     size: 200,
     Cell: ({ cell }) => {
       const desface = cell.row.original.avanceFisicoProgramado - cell.getValue()
-      return <Box sx={(theme) => ({ background: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', color: '#fff', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+      return <Box sx={(theme) => ({ color: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
     }
   },
 
   {
     accessorKey: 'avanceFinancieroEjecutado',
-    header: 'Financiero Ejecutado'
+    header: 'Financiero Ejecutado',
+    size: 250
   },
   {
-    accessorKey: 'nroContrato',
-    header: 'NroContrato'
+    accessorFn: (row) => `${row.nroContrato ? row.nroContrato : 'NO ASIGNADO'}`,
+    id: 'nroContrato',
+    size: 200,
+    header: 'NroContrato',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'cantidadSuspenciones',
-    header: 'Cant. Suspenciones'
+    accessorFn: (row) => `${row.cantidadSuspenciones ? row.cantidadSuspenciones : 0}`,
+    id: 'cantidadSuspenciones',
+    size: 250,
+    header: 'Cant. Suspenciones',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() > '0' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'cantidadProrrogas',
-    header: 'Prorrogas'
+    accessorFn: (row) => `${row.cantidadProrrogas ? row.cantidadProrrogas : 0}`,
+    id: 'cantidadProrrogas',
+    size: 200,
+    header: 'Prorrogas',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() > '0' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'tiempoSuspenciones',
-    header: 'Tiempo Suspenciones'
+    accessorFn: (row) => `${row.cantidadProrrogas ? row.cantidadProrrogas : 0}`,
+    id: 'tiempoSuspenciones',
+    size: 250,
+    header: 'Tiempo Suspenciones',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() > '0' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue() + ' D'}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'tiempoProrrogas',
-    header: 'Tiempo Prorrogas'
+    accessorFn: (row) => `${row.tiempoProrrogas ? row.tiempoProrrogas : 0}`,
+    id: 'tiempoProrrogas',
+    size: 250,
+    header: 'Tiempo Prorrogas',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() > '0' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue() + ' D'}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'cantidadAdiciones',
-    header: 'Cant. Adiciones'
+    accessorFn: (row) => `${row.cantidadAdiciones ? row.cantidadAdiciones : 0}`,
+    id: 'cantidadAdiciones',
+    size: 200,
+    header: 'Cant. Adiciones',
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() > '0' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()}
+      </Box>
+    )
   },
+
   {
     accessorKey: 'valorTotalAdiciones',
-    header: 'Valor Tot. Adiciones'
+    header: 'Valor Tot. Adiciones',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color:
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
+          borderRadius: '0.25rem',
+          p: '0.25rem'
+        })}
+      >
+        {cell.getValue()?.toLocaleString?.('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </Box>
+    )
   },
 
   {
     accessorKey: 'valorComprometido',
-    header: 'Valor Comprometido'
+    header: 'Valor Comprometido',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color:
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
+          borderRadius: '0.25rem',
+          p: '0.25rem'
+        })}
+      >
+        {cell.getValue()?.toLocaleString?.('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </Box>
+    )
   },
+
   {
     accessorKey: 'valorObligado',
-    header: 'Valor Obligado'
+    header: 'Valor Obligado',
+    size: 200,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color:
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
+          borderRadius: '0.25rem',
+          p: '0.25rem'
+        })}
+      >
+        {cell.getValue()?.toLocaleString?.('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </Box>
+    )
   },
+
   {
     accessorKey: 'valorPagado',
-    header: 'Valor Pagado'
+    header: 'Valor Pagado',
+    size: 200,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color:
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
+          borderRadius: '0.25rem',
+          p: '0.25rem'
+        })}
+      >
+        {cell.getValue()?.toLocaleString?.('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </Box>
+    )
   },
+
   {
     accessorKey: 'valorAnticipo',
-    header: 'Valor Anticipo'
+    header: 'Valor Anticipo',
+    size: 200,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color:
+            cell.getValue() < 1000000000
+              ? '#1DB954'
+              : cell.getValue() >= 10000000000
+                ? '#FF033E'
+                : '#CD5700',
+          borderRadius: '0.25rem',
+          p: '0.25rem'
+        })}
+      >
+        {cell.getValue()?.toLocaleString?.('es-CO', {
+          style: 'currency',
+          currency: 'COP',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'razonSocialContratista',
-    header: 'Razon Social Contratista'
+    accessorFn: (row) => `${row.razonSocialContratista ? row.razonSocialContratista : 'NO ASIGNADO'}`,
+    id: 'razonSocialContratista',
+    header: 'Razon Social Contratista',
+    size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
   {
     accessorKey: 'idContratista',
-    header: 'idContratista'
+    header: 'Id Contratista',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box>
+        {cell.getValue()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'razonSocialNuevoContratista',
-    header: 'razonSocialNuevoContratista'
+    accessorFn: (row) => `${row.razonSocialNuevoContratista ? row.razonSocialNuevoContratista : 'NO ASIGNADO'}`,
+    id: 'razonSocialNuevoContratista',
+    header: 'Razon Social Nuevo Contratista',
+    size: 350,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
 
   {
     accessorKey: 'idNuevoContratista',
-    header: 'idNuevoContratista'
+    header: 'Id Nuevo Contratista',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box>
+        {cell.getValue()}
+      </Box>
+    )
   },
   {
-    accessorKey: 'observaciones',
-    header: 'observaciones'
+    accessorFn: (row) => `${row.observaciones ? row.observaciones : 'NO ASIGNADO'}`,
+    id: 'observaciones',
+    header: 'Observaciones',
+    size: 350,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
   {
-    accessorKey: 'linkSecop',
-    header: 'linkSecop'
+    accessorFn: (row) => `${row.linkSecop ? row.linkSecop : 'NO ASIGNADO'}`,
+    id: 'linkSecop',
+    header: 'Link Secop',
+    size: 450,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()}
+      </Box>
+    )
   },
   {
-    accessorKey: 'nroContratoInterventoria',
-    header: 'Contrato Interventoria'
+    accessorFn: (row) => `${row.nroContratoInterventoria ? row.nroContratoInterventoria : 'NO ASIGNADO'}`,
+    id: 'nroContratoInterventoria',
+    header: 'Contrato Interventoria',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'nombreInterventoria',
-    header: 'ID Interventoria'
+    accessorFn: (row) => `${row.nombreInterventoria ? row.nombreInterventoria : 'NO ASIGNADO'}`,
+    id: 'nombreInterventoria',
+    header: 'Nombre Interventoria',
+    size: 350,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+      </Box>
+    )
   },
 
   {
     accessorKey: 'idInterventoria',
-    header: 'Nombre Interventoria'
+    header: 'ID Interventoria',
+    size: 250,
+    Cell: ({ cell }) => (
+      <Box>
+        {cell.getValue()}
+      </Box>
+    )
   },
 
   {
@@ -268,24 +544,123 @@ export const ColumnsTable = [
   },
 
   {
-    accessorKey: 'sector.name',
-    header: 'Sector'
+    accessorFn: (row) =>
+      `${row.sector ? row.sector.name : 'NO ASIGNADO'}`,
+    enableEditing: false,
+    // filterVariant: 'range',
+    id: 'sector',
+    header: 'Sector',
+    // size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          // backgroundColor: cell.getValue() === 'NO ASIGNADO' ? 'red' : 'white',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          color: cell.getValue() === 'NO ASIGNADO' ? '' : '#94c53c',
+          // maxWidth: '9ch',
+          p: '0.15rem'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+        {/* {cell.getValue()?.toLocaleString?.('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          })} */}
+      </Box>
+    )
   },
 
   {
-    accessorKey: 'estado.name',
-    header: 'Estado'
+    accessorFn: (row) =>
+      `${row.estado ? row.estado.name : 'NO ASIGNADO'}`,
+    enableEditing: false,
+    // filterVariant: 'range',
+    id: 'estado',
+    header: 'Estado',
+    // size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          // backgroundColor: cell.getValue() === 'NO ASIGNADO' ? 'red' : 'white',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          color: cell.getValue() === 'NO ASIGNADO' ? '' : '#94c53c',
+          // maxWidth: '9ch',
+          p: '0.15rem'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+        {/* {cell.getValue()?.toLocaleString?.('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          })} */}
+      </Box>
+    )
   },
 
   {
-    accessorKey: 'entidad.name',
-    header: 'Entidad'
+    accessorFn: (row) =>
+      `${row.entidad ? row.entidad.name : 'NO ASIGNADO'}`,
+    enableEditing: false,
+    // filterVariant: 'range',
+    id: 'entidad',
+    header: 'Entidad',
+    size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          // backgroundColor: cell.getValue() === 'NO ASIGNADO' ? 'red' : 'white',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          color: cell.getValue() === 'NO ASIGNADO' ? '' : '#94c53c',
+          // maxWidth: '9ch',
+          p: '0.15rem'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+        {/* {cell.getValue()?.toLocaleString?.('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          })} */}
+      </Box>
+    )
   },
+
   {
-    accessorKey: 'municipioObra.name',
-    header: 'Municipio Obra'
+    accessorFn: (row) =>
+      `${row.municipioObra ? row.municipioObra.name : 'NO ASIGNADO'}`,
+    enableEditing: false,
+    // filterVariant: 'range',
+    id: 'municipioObra',
+    header: 'Municipio Obra',
+    // size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          // backgroundColor: cell.getValue() === 'NO ASIGNADO' ? 'red' : 'white',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          color: cell.getValue() === 'NO ASIGNADO' ? '' : '#94c53c',
+          // maxWidth: '9ch',
+          p: '0.15rem'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+        {/* {cell.getValue()?.toLocaleString?.('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          })} */}
+      </Box>
+    )
   }
 
 ]
-//// console.log('el row:', cell.row.original.anioCorte)
-      // console.log('el row:', cell.getValue())
