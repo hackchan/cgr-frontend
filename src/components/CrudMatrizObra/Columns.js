@@ -48,66 +48,56 @@ export const ColumnsTable = [
 
   {
     accessorFn: (row) => parse(row.fechaSuscripcion, 'yyyy-MM-dd', new Date()),
-    size: 200,
+    size: 350,
     id: 'fechaSuscripcion',
     header: 'Suscripcion',
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     sortingFn: 'date',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
   {
-    accessorFn: (row) => new Date(row.fechaInicio),
+    accessorFn: (row) => parse(row.fechaInicio, 'yyyy-MM-dd', new Date()),
+    size: 350,
     id: 'fechaInicio',
     header: 'Inicio',
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     sortingFn: 'datetime',
-    Cell: ({ cell }) =>
-      cell.getValue()?.toLocaleDateString('en-CA', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }),
+    Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
 
   {
-    accessorFn: (row) => new Date(row.fechaProgramadaTermina),
-    size: 250,
+    accessorFn: (row) => parse(row.fechaProgramadaTermina, 'yyyy-MM-dd', new Date()),
+    size: 350,
     id: 'fechaProgramadaTermina',
     header: 'Programada Termina',
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     sortingFn: 'datetime',
-    Cell: ({ cell }) =>
-      cell.getValue()?.toLocaleDateString('en-CA', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }),
+    Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
 
   {
-    accessorFn: (row) => new Date(row.fechaTermina),
-    size: 200,
+    accessorFn: (row) => parse(row.fechaTermina, 'yyyy-MM-dd', new Date()),
+    size: 350,
     id: 'fechaTermina',
     header: 'Termina',
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     sortingFn: 'datetime',
-    Cell: ({ cell }) =>
-      cell.getValue()?.toLocaleDateString('en-CA', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      }),
+    Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
   {
