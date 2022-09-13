@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import { format, parseISO } from 'date-fns'
+import { format, parse } from 'date-fns'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
@@ -15,7 +15,8 @@ export const ColumnsTable = [
     header: 'ID Contrato'
   },
   {
-    accessorFn: (row) => `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
     id: 'nombreProyecto',
     header: 'Proyecto',
     Cell: ({ cell }) => (
@@ -30,7 +31,8 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
     id: 'objetoProyecto',
     header: 'Objeto',
     Cell: ({ cell }) => (
@@ -45,7 +47,7 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => new Date(row.fechaSuscripcion),
+    accessorFn: (row) => parse(row.fechaSuscripcion, 'yyyy-MM-dd', new Date()),
     size: 200,
     id: 'fechaSuscripcion',
     header: 'Suscripcion',
@@ -53,7 +55,7 @@ export const ColumnsTable = [
       type: 'date'
     },
     sortingFn: 'date',
-    Cell: ({ cell }) => cell.getValue()?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+    Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
   {
@@ -64,7 +66,12 @@ export const ColumnsTable = [
       type: 'date'
     },
     sortingFn: 'datetime',
-    Cell: ({ cell }) => cell.getValue()?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+    Cell: ({ cell }) =>
+      cell.getValue()?.toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
 
@@ -77,7 +84,12 @@ export const ColumnsTable = [
       type: 'date'
     },
     sortingFn: 'datetime',
-    Cell: ({ cell }) => cell.getValue()?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+    Cell: ({ cell }) =>
+      cell.getValue()?.toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
 
@@ -90,7 +102,12 @@ export const ColumnsTable = [
       type: 'date'
     },
     sortingFn: 'datetime',
-    Cell: ({ cell }) => cell.getValue()?.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+    Cell: ({ cell }) =>
+      cell.getValue()?.toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
   {
@@ -153,7 +170,22 @@ export const ColumnsTable = [
     size: 200,
     Cell: ({ cell }) => {
       const desface = cell.getValue() - cell.row.original.avanceFisicoEjecutado
-      return <Box sx={(theme) => ({ color: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+      return (
+        <Box
+          sx={(theme) => ({
+            color:
+              desface < 0.1
+                ? '#1DB954'
+                : desface >= 0.15
+                  ? '#FF033E'
+                  : '#CD5700',
+            borderRadius: '0.25rem',
+            p: '0.25rem'
+          })}
+        >
+          {cell.getValue() * 100 + '%'}
+        </Box>
+      )
     }
   },
 
@@ -163,7 +195,22 @@ export const ColumnsTable = [
     size: 200,
     Cell: ({ cell }) => {
       const desface = cell.row.original.avanceFisicoProgramado - cell.getValue()
-      return <Box sx={(theme) => ({ color: desface < 0.10 ? '#1DB954' : desface >= 0.15 ? '#FF033E' : '#CD5700', borderRadius: '0.25rem', p: '0.25rem' })}>{cell.getValue() * 100 + '%'}</Box>
+      return (
+        <Box
+          sx={(theme) => ({
+            color:
+              desface < 0.1
+                ? '#1DB954'
+                : desface >= 0.15
+                  ? '#FF033E'
+                  : '#CD5700',
+            borderRadius: '0.25rem',
+            p: '0.25rem'
+          })}
+        >
+          {cell.getValue() * 100 + '%'}
+        </Box>
+      )
     }
   },
 
@@ -189,7 +236,8 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => `${row.cantidadSuspenciones ? row.cantidadSuspenciones : 0}`,
+    accessorFn: (row) =>
+      `${row.cantidadSuspenciones ? row.cantidadSuspenciones : 0}`,
     id: 'cantidadSuspenciones',
     size: 250,
     header: 'Cant. Suspenciones',
@@ -404,7 +452,10 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => `${row.razonSocialContratista ? row.razonSocialContratista : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${
+        row.razonSocialContratista ? row.razonSocialContratista : 'NO ASIGNADO'
+      }`,
     id: 'razonSocialContratista',
     header: 'Razon Social Contratista',
     size: 300,
@@ -422,15 +473,16 @@ export const ColumnsTable = [
     accessorKey: 'idContratista',
     header: 'Id Contratista',
     size: 250,
-    Cell: ({ cell }) => (
-      <Box>
-        {cell.getValue()}
-      </Box>
-    )
+    Cell: ({ cell }) => <Box>{cell.getValue()}</Box>
   },
 
   {
-    accessorFn: (row) => `${row.razonSocialNuevoContratista ? row.razonSocialNuevoContratista : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${
+        row.razonSocialNuevoContratista
+          ? row.razonSocialNuevoContratista
+          : 'NO ASIGNADO'
+      }`,
     id: 'razonSocialNuevoContratista',
     header: 'Razon Social Nuevo Contratista',
     size: 350,
@@ -449,14 +501,11 @@ export const ColumnsTable = [
     accessorKey: 'idNuevoContratista',
     header: 'Id Nuevo Contratista',
     size: 250,
-    Cell: ({ cell }) => (
-      <Box>
-        {cell.getValue()}
-      </Box>
-    )
+    Cell: ({ cell }) => <Box>{cell.getValue()}</Box>
   },
   {
-    accessorFn: (row) => `${row.observaciones ? row.observaciones : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${row.observaciones ? row.observaciones : 'NO ASIGNADO'}`,
     id: 'observaciones',
     header: 'Observaciones',
     size: 350,
@@ -486,7 +535,12 @@ export const ColumnsTable = [
     )
   },
   {
-    accessorFn: (row) => `${row.nroContratoInterventoria ? row.nroContratoInterventoria : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${
+        row.nroContratoInterventoria
+          ? row.nroContratoInterventoria
+          : 'NO ASIGNADO'
+      }`,
     id: 'nroContratoInterventoria',
     header: 'Contrato Interventoria',
     size: 250,
@@ -502,7 +556,8 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => `${row.nombreInterventoria ? row.nombreInterventoria : 'NO ASIGNADO'}`,
+    accessorFn: (row) =>
+      `${row.nombreInterventoria ? row.nombreInterventoria : 'NO ASIGNADO'}`,
     id: 'nombreInterventoria',
     header: 'Nombre Interventoria',
     size: 350,
@@ -521,11 +576,7 @@ export const ColumnsTable = [
     accessorKey: 'idInterventoria',
     header: 'ID Interventoria',
     size: 250,
-    Cell: ({ cell }) => (
-      <Box>
-        {cell.getValue()}
-      </Box>
-    )
+    Cell: ({ cell }) => <Box>{cell.getValue()}</Box>
   },
 
   {
@@ -544,8 +595,7 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) =>
-      `${row.sector ? row.sector.name : 'NO ASIGNADO'}`,
+    accessorFn: (row) => `${row.sector ? row.sector.name : 'NO ASIGNADO'}`,
     enableEditing: false,
     // filterVariant: 'range',
     id: 'sector',
@@ -574,8 +624,7 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) =>
-      `${row.estado ? row.estado.name : 'NO ASIGNADO'}`,
+    accessorFn: (row) => `${row.estado ? row.estado.name : 'NO ASIGNADO'}`,
     enableEditing: false,
     // filterVariant: 'range',
     id: 'estado',
@@ -604,8 +653,7 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) =>
-      `${row.entidad ? row.entidad.name : 'NO ASIGNADO'}`,
+    accessorFn: (row) => `${row.entidad ? row.entidad.name : 'NO ASIGNADO'}`,
     enableEditing: false,
     // filterVariant: 'range',
     id: 'entidad',
@@ -662,5 +710,4 @@ export const ColumnsTable = [
       </Box>
     )
   }
-
 ]
