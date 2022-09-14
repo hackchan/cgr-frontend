@@ -280,6 +280,69 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
           </Form.Group>
 
         </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridcontratoInicial'>
+            <FormLabelStyle modedark={modedark.toString()}>Valor contrato Inicial</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('contratoInicial', {
+                required: 'Contrato Inicial es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                pattern: {
+                  value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
+                  message: 'No es un valor valido'
+                }
+              })}
+            />
+            {errors.contratoInicial && (
+              <Form.Text className='errors' onClick={() => clearErrors('contratoInicial')}>
+                {errors.contratoInicial.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridcontratoFinal'>
+            <FormLabelStyle modedark={modedark.toString()}>Valor contrato Final</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('contratoFinal', {
+                required: 'Contrato Final es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                pattern: {
+                  value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
+                  message: 'No es un valor valido'
+                }
+              })}
+            />
+            {errors.contratoFinal && (
+              <Form.Text className='errors' onClick={() => clearErrors('contratoFinal')}>
+                {errors.contratoFinal.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGriAvancefiscoProgramado'>
+            <FormLabelStyle modedark={modedark.toString()}>Avance fisico programado</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoProgramado', {
+                required: 'Avance Fisico Programado es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 1' },
+                pattern: {
+                  value: /^((0)(\.\d{1,2})?|(1))$/,
+                  message: 'No es un valor valido '
+                }
+              })}
+            />
+            {errors.avanceFisicoProgramado && (
+              <Form.Text className='errors' onClick={() => clearErrors('avanceFisicoProgramado')}>
+                {errors.avanceFisicoProgramado.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+        </Row>
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
