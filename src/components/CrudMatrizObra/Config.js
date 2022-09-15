@@ -1,4 +1,4 @@
-const table = 'Estado Obra'
+const table = 'Matriz de Seguimiento de Obras Públicas de Infraestructura'
 export const Config = {
   pageIndex: 0,
   pageSize: 50,
@@ -8,8 +8,8 @@ export const Config = {
   update: `Actualizar ${table}`,
   delete: `Eliminar ${table}`,
   labelRowsPerPage: 'filas por página',
-  buttonRegister: 'Crear Estado Obra',
-  buttonUpdate: 'Actualizar Estado Obra',
+  buttonRegister: 'Crear Matriz Obra',
+  buttonUpdate: 'Actualizar Matriz Obra',
   rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,

@@ -1,0 +1,7 @@
+.special_modal .modal-content {
+    background-color: #212529 !important;
+    color: #fff !important;
+  }
+.btn-close {
+    color:red !important
+}

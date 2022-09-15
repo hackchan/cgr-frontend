@@ -78,10 +78,8 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
   }
   return (
     <BoxForm modedark={modedark}>
-      <div className='avatar'><Logo big /></div>
-      <h2>{preData.register}</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row className='mb-3'>
+        {/* <Row className='mb-3'>
           <ContainerSwitch>
             <Form.Group as={Col} controlId='formGridCapital'>
               <FormCheckStyle
@@ -106,7 +104,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
           </ContainerSwitch>
 
         </Row>
-        <div className='divider' />
+        <div className='divider' /> */}
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridBpin'>
             <FormLabelStyle modedark={modedark.toString()}>Bpin</FormLabelStyle>
@@ -322,6 +320,46 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
           </Form.Group>
         </Row>
         <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGriAvancefiscoProgramado'>
+            <FormLabelStyle modedark={modedark.toString()}>Avance fisico programado</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoProgramado', {
+                required: 'Avance Fisico Programado es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 1' },
+                pattern: {
+                  value: /^((0)(\.\d{1,2})?|(1))$/,
+                  message: 'No es un valor valido '
+                }
+              })}
+            />
+            {errors.avanceFisicoProgramado && (
+              <Form.Text className='errors' onClick={() => clearErrors('avanceFisicoProgramado')}>
+                {errors.avanceFisicoProgramado.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGriAvancefiscoProgramado'>
+            <FormLabelStyle modedark={modedark.toString()}>Avance fisico programado</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoProgramado', {
+                required: 'Avance Fisico Programado es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 1' },
+                pattern: {
+                  value: /^((0)(\.\d{1,2})?|(1))$/,
+                  message: 'No es un valor valido '
+                }
+              })}
+            />
+            {errors.avanceFisicoProgramado && (
+              <Form.Text className='errors' onClick={() => clearErrors('avanceFisicoProgramado')}>
+                {errors.avanceFisicoProgramado.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
           <Form.Group as={Col} controlId='formGriAvancefiscoProgramado'>
             <FormLabelStyle modedark={modedark.toString()}>Avance fisico programado</FormLabelStyle>
             <Form.Control

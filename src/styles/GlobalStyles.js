@@ -252,6 +252,11 @@ export const GlobalStyle = createGlobalStyle`
 .navbar-nav .active {
   color: red !important;
 }
+
+.special_modal .modal-content {
+  background-color: #000;
+  color: #fff;
+}
         /* body {
                 background: #fefefe;
                 height: 100vh;

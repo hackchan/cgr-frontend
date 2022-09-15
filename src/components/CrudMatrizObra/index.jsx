@@ -13,6 +13,7 @@ import { ContainerBox } from '../../styles/box'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
 import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
+import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
@@ -43,6 +44,7 @@ export const MatrizObra = () => {
   const [isRefetching, setIsRefetching] = useState(false)
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
+  const [modalShow, setModalShow] = useState(false)
   const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
   const [modalUpdate, setModalUpdate] = useState(false)
@@ -122,11 +124,9 @@ export const MatrizObra = () => {
           <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizObra={UpdateMatrizObra} modedark={state.darkMode} />
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
-
-      {modal &&
-        <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} modedark={state.darkMode} />
-        </Modal>}
+      <ModalB show={modalShow} fullscreen={modalShow} onHide={() => setModalShow(false)} title={preData.register}>
+        <Register setModal={setModal} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} modedark={state.darkMode} />
+      </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
@@ -246,7 +246,7 @@ export const MatrizObra = () => {
                 </ButtonStyled>
                 <ButtonStyled
                   className='new'
-                  onClick={() => { setModal(true) }}
+                  onClick={() => { setModalShow(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
