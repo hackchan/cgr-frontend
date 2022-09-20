@@ -1,7 +1,7 @@
 const table = 'Departamento'
 export const Config = {
   pageIndex: 0,
-  pageSize: 50,
+  pageSize: 20,
   table,
   relationTable: 'Satelital',
   relationTable2: 'Responsable',

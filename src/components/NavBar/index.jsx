@@ -19,7 +19,8 @@ export const NavBar = () => {
     chgDarkMode(!dark)
   }
   return (
-    <Navbar collapseOnSelect variant={state.darkMode ? 'dark' : 'light'} bg={state.darkMode ? 'dark' : 'light'} expand='lg' className='rounded'>
+    // className='rounded'
+    <Navbar collapseOnSelect variant={state.darkMode ? 'dark' : 'light'} bg={state.darkMode ? 'dark' : 'light'} expand='lg'>
       <Container fluid>
         <div className='d-flex justify-content-start align-items-center'>
           <Navbar.Brand as={Link} to='/' className='d-flex flex-row '>

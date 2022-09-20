@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import {Table} from './Table'
 export const CrudMunicipios = () => {
   const {
     state, getMunicipios, AddMunicipio, DeleteMunicipio, UpdateMunicipio, getDepartments, getTipoMunicipios
@@ -84,34 +85,12 @@ export const CrudMunicipios = () => {
     columnFilters,
     sorting,
     reload])
-  // const boxStyle = {
-  //   display: 'flex',
-  //   alignItems: 'left',
-  //   justifyContent: 'space-between',
-  //   gap: '1rem',
-  //   '&:hover': { color: 'hotpink' }
-  // }
-  // function editableSizeCell ({
-  //   cell
-  // }) {
-  //   return (
-  //     <Tooltip title='double click para editar' placement='top'>
-  //       <Box sx={boxStyle}>
-  //         <Typography>{cell.getValue()}</Typography>
-  //         <ModeEditIcon />
-  //       </Box>
-  //     </Tooltip>
-  //   )
-  // }
 
   const handleSaveRow = ({ row }) => {
-    // employeeData[+row.index] = row._valuesCache
-    // setEmployeeData([...employeeData])
   }
 
   const handleExportData = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
-    // csvExporter.generateCsv(data)
   }
   const columns = useMemo(() => ColumnsTable, [])
 
@@ -126,195 +105,7 @@ export const CrudMunicipios = () => {
   }
   const csvExporter = new ExportToCsv(csvOptions)
   return (
-    <ContainerBox>
-      {modalEliminar &&
-        <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteDepartment={DeleteMunicipio} modedark={state.darkMode} />
-        </Modal>}
-
-      {modalUpdate &&
-        <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} getDepartments={getDepartments} getTipoMunicipios={getTipoMunicipios} UpdateMunicipio={UpdateMunicipio} modedark={state.darkMode} />
-        </Modal>}
-      {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
-
-      {modal &&
-        <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} getDepartments={getDepartments} AddMunicipio={AddMunicipio} getTipoMunicipios={getTipoMunicipios} modedark={state.darkMode} />
-        </Modal>}
-      <ThemeProvider theme={theme}>
-        <MaterialReactTable
-          columns={columns}
-          data={data}
-          localization={preData.localization}
-          initialState={preData.initialState}
-          enableMultiSort
-          enableGlobalFilter
-          positionGlobalFilter='right'
-          muiTableHeadCellProps={{
-            className: 'tableHeaderCell'
-          }}
-          muiTableContainerProps={{ className: 'tableContainer' }}
-          muiTableHeadProps={{
-            className: 'tableHeader'
-          }}
-        // enableRowSelection
-          enableClickToCopy
-          enableColumnOrdering
-          enableColumnDragging
-          enableColumnResizing
-          enablePinning
-        // enableRowOrdering
-          onRowDrop={({ draggedRow, targetRow }) => {
-            if (targetRow) {
-              data.splice(targetRow.index, 0, data.splice(draggedRow.index, 1)[0])
-              setData([...data])
-            }
-          }}
-        // enablePagination
-          muiTablePaginationProps={{
-            labelRowsPerPage: 'filas por página',
-            rowsPerPageOptions: [12, 20, 50, 100],
-            showFirstButton: true,
-            showLastButton: true,
-            SelectProps: { native: true }
-          }}
-          enableRowActions
-          positionActionsColumn='last'
-          positionPagination='bottom'
-          manualPagination
-          manualSorting
-          onColumnFiltersChange={setColumnFilters}
-          onGlobalFilterChange={setGlobalFilter}
-          onPaginationChange={setPagination}
-          onSortingChange={setSorting}
-          editingMode='cell'
-        // enableEditing
-        // paginateExpandedRows
-        // onPaginationChange
-          muiSearchTextFieldProps={{
-
-            variant: 'outlined',
-            placeholder: 'Busqueda global',
-            label: 'Buscar',
-            InputLabelProps: { shrink: true }
-
-          }}
-          muiTableToolbarAlertBannerProps={
-        isError
-          ? {
-              color: 'error',
-              children: error
-            }
-          : undefined
-      }
-          state={{
-            columnFilters,
-            globalFilter,
-            isLoading,
-            pagination,
-            showAlertBanner: isError,
-            showProgressBars: isRefetching,
-            sorting
-          }}
-        // state={{ isLoading, showProgressBars: isRefetching, showAlertBanner: isError, density: 'compact', pagination }}
-        // enableRowSelection // enable some features
-        // enableClickToCopy
-        // enableColumnResizing
-        // enableColumnOrdering
-        // enableGlobalFilter
-        // enablePinning
-        // enableRowActions
-        // autoResetPagination
-        // enableEditing
-        // enableRowNumbers
-        //  enableRowVirtualization
-        //  virtualizerProps={{ overscan: 50 }}
-          enableBottomToolbar={false}
-          rowCount={rowCount}
-          positionToolbarAlertBanner='bottom'
-        // onEditRowSubmit={handleSaveRow}
-          onCellEditBlur={handleSaveRow}
-          renderTopToolbarCustomActions={({ table }) => {
-            // const handleDeactivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     console.log(row._valuesCache)
-            //     window.alert('deactivating ', row._valuesCache)
-            //   })
-            // }
-            // const handleActivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     window.alert('activating ' + row.getValue('name'))
-            //   })
-            // }
-            return (
-              <Box
-                sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
-              >
-                <ButtonStyled
-                  className='export'
-                  onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
-                  startIcon={<FileDownloadIcon />}
-                  variant='contained'
-                >
-                  Exportar
-                </ButtonStyled>
-                <ButtonStyled
-                  className='new'
-                  onClick={() => { setModal(true) }}
-                  startIcon={<PlaylistAddIconStyle />}
-                  variant='contained'
-                >
-                  Nuevo
-                </ButtonStyled>
-                {/* <Button
-                color='error'
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={handleDeactivate}
-                variant='contained'
-              >
-                Deactivate
-              </Button>
-              <Button
-                color='success'
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                // onClick={handleActivate}
-                variant='contained'
-              >
-                Activate
-              </Button> */}
-
-              </Box>
-            )
-          }}
-          renderRowActions={({ row }) => (
-            <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}>
-              <Tooltip title={preData.delete} placement='top'>
-                <DeleteIconStyle
-                  variant='contained'
-                  onClick={() => {
-                    setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
-                  }}
-                />
-              </Tooltip>
-              <Tooltip title={preData.update} placement='top'>
-                <EditIconStyle
-                  variant='contained'
-                  onClick={() => {
-                    setModalUpdate(true)
-                    setDataUpdate(row.original)
-
-                    //       closeMenu()
-                  }}
-                />
-              </Tooltip>
-            </div>
-          )}
-        />
-      </ThemeProvider>
-
-    </ContainerBox>
+    <Table columns={columns} data={ data} />
 
   )
 }

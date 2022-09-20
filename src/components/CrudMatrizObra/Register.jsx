@@ -6,55 +6,111 @@ import Row from 'react-bootstrap/Row'
 import { clearMessage } from '../../utils/time'
 import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
-import { Logo } from '../Logo'
-import { FormCheckStyle, ContainerSwitch } from '../../styles/Check'
 import { StyledSelect } from '../../styles/select'
-import InputGroup from 'react-bootstrap/InputGroup'
 
-export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark }) => {
+export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [currentDepartment, setcurrentDepartment] = useState('')
-  const [activo, setActivo] = useState(true)
-  const [capital, setCapital] = useState(false)
+
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
-  const handleInputActivoChange = () => {
-    setActivo(!activo)
-  }
-  const handleInputCapitalChange = () => {
-    setCapital(!capital)
-  }
 
-  const loadOptions = async (inputValue) => {
+  const getListSector = async (inputValue) => {
     const options = []
-    const response = await getDepartments(null)
+    const response = await GetSectorObra()
+    console.log('response:', response)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((department) => {
+    filter.forEach((sectorObra) => {
       options.push({
-        label: department.name,
-        value: department.id
+        label: sectorObra.name,
+        value: sectorObra.id
       })
     })
     return options
   }
 
-  const loadOptionsTipos = async (inputValue) => {
+  const getListOrigenRecurso = async (inputValue) => {
     const options = []
-    const response = await getTipoMunicipios()
-    const filter = response.filter((option) => {
+    const response = await GetOrigenRecursoObra()
+    console.log('response:', response)
+    const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((department) => {
+    filter.forEach((origen) => {
       options.push({
-        label: department.name,
-        value: department.id
+        label: origen.name,
+        value: origen.id
+      })
+    })
+    return options
+  }
+
+  const getListEstadoObra = async (inputValue) => {
+    const options = []
+    const response = await GetEstadoObra()
+    console.log('response:', response)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((estado) => {
+      options.push({
+        label: estado.name,
+        value: estado.id
+      })
+    })
+    return options
+  }
+
+  const getListDepartamentos = async (inputValue) => {
+    const options = []
+    const response = await getDepartments()
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((depart) => {
+      options.push({
+        label: depart.name,
+        value: depart.id
+      })
+    })
+    return options
+  }
+
+  const getListMunicipios = async (inputValue) => {
+    const options = []
+    const response = await getMunicipios()
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((muni) => {
+      options.push({
+        label: muni.name,
+        value: muni.id
+      })
+    })
+    return options
+  }
+  const getListEntidades = async (inputValue) => {
+    const options = []
+    const response = await GetEntidad()
+    console.log('response:', response)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((entidad) => {
+      options.push({
+        label: entidad.name,
+        value: entidad.id
       })
     })
     return options
@@ -79,32 +135,144 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
   return (
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {/* <Row className='mb-3'>
-          <ContainerSwitch>
-            <Form.Group as={Col} controlId='formGridCapital'>
-              <FormCheckStyle
-                checked={capital}
-                id='switch-1'
-                type='switch'
-                label='Capital'
-                onChange={handleInputCapitalChange}
-                modedark={modedark.toString()}
-              />
-            </Form.Group>
-            <Form.Group as={Col} controlId='formGridActivo'>
-              <FormCheckStyle
-                checked={activo}
-                id='switch-2'
-                type='switch'
-                label='Activo'
-                onChange={handleInputActivoChange}
-                modedark={modedark.toString()}
-              />
-            </Form.Group>
-          </ContainerSwitch>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListEntidad'>
+            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='entidad'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('entidad', { required: 'entidad obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListEntidades}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.entidad && (
+              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
+                {errors.entidad.message}
+              </Form.Text>
+            )}
 
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridListSector'>
+            <FormLabelStyle modedark={modedark.toString()}>Sector Obra</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='sector'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('sector', { required: 'Sector es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListSector}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.sector && (
+              <Form.Text className='errors' onClick={() => clearErrors('sector')}>
+                {errors.sector.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
         </Row>
-        <div className='divider' /> */}
+
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListDepartamento'>
+            <FormLabelStyle modedark={modedark.toString()}>Departamento Obra</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='departamento Obra'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('departamentoObra', { required: 'Departamento Obra es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListDepartamentos}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.departamentoObra && (
+              <Form.Text className='errors' onClick={() => clearErrors('departamentoObra')}>
+                {errors.departamentoObra.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+          <Form.Group as={Col} controlId='formGridListMunicipio'>
+            <FormLabelStyle modedark={modedark.toString()}>Municipio Obra</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='municipio obra'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('municipioObra', { required: 'Municipio Obra es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListMunicipios}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.municipioObra && (
+              <Form.Text className='errors' onClick={() => clearErrors('municipioObra')}>
+                {errors.municipioObra.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+        </Row>
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridBpin'>
             <FormLabelStyle modedark={modedark.toString()}>Bpin</FormLabelStyle>
@@ -807,6 +975,77 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
                 {errors.anioCorte.message}
               </Form.Text>
             )}
+          </Form.Group>
+
+        </Row>
+        <Row>
+
+          <Form.Group as={Col} controlId='formGridListOrigen'>
+            <FormLabelStyle modedark={modedark.toString()}>Origen Recursos</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='origen'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('origen', { required: 'Origen es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListOrigenRecurso}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.origen && (
+              <Form.Text className='errors' onClick={() => clearErrors('origen')}>
+                {errors.origen.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridListEstado'>
+            <FormLabelStyle modedark={modedark.toString()}>Estado Obra</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='estado'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('estado', { required: 'Estado Obra es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListEstadoObra}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.estado && (
+              <Form.Text className='errors' onClick={() => clearErrors('estado')}>
+                {errors.estado.message}
+              </Form.Text>
+            )}
+
           </Form.Group>
 
         </Row>

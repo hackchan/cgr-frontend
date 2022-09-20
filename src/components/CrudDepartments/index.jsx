@@ -229,7 +229,6 @@ export const CrudDepartmets = () => {
               setData([...data])
             }
           }}
-        // enablePagination
           muiTablePaginationProps={{
             labelRowsPerPage: 'filas por página',
             rowsPerPageOptions: [10, 20, 50, 100],
@@ -239,7 +238,7 @@ export const CrudDepartmets = () => {
           }}
           enableRowActions
           positionActionsColumn='last'
-          positionPagination='bottom'
+          positionPagination='top'
           manualPagination
           manualSorting
           onColumnFiltersChange={setColumnFilters}
@@ -348,7 +347,7 @@ export const CrudDepartmets = () => {
               </Box>
             )
           }}
-          renderRowActions={({ row }) => (
+          renderRowActionMenuItems={({ row }) => (
             <div>
               <Tooltip title={preData.delete} placement='top'>
                 <DeleteIconStyle

@@ -23,7 +23,13 @@ export const MatrizObra = () => {
     GetMatrizObras,
     DeleteMatrizObra,
     AddMatrizObra,
-    UpdateMatrizObra
+    UpdateMatrizObra,
+    GetSectorObra,
+    GetOrigenRecursoObra,
+    GetEstadoObra,
+    GetEntidad,
+    getDepartments,
+    getMunicipios
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -45,7 +51,7 @@ export const MatrizObra = () => {
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
   const [modalShow, setModalShow] = useState(false)
-  const [modal, setModal] = useState(false)
+  // const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
   const [modalUpdate, setModalUpdate] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
@@ -125,7 +131,7 @@ export const MatrizObra = () => {
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModal={setModal} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} modedark={state.darkMode} />
+        <Register setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
