@@ -220,7 +220,7 @@ export const CrudSectorObra = () => {
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}
           onCellEditBlur={handleSaveRow}
-          renderToolbarTopCustomActions={({ table }) => {
+          renderTopToolbarCustomActions={({ table }) => {
             // const handleDeactivate = () => {
             //   table.getSelectedRowModel().flatRows.map((row) => {
             //     console.log(row._valuesCache)

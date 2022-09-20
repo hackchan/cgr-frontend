@@ -166,7 +166,7 @@ export const CrudCategorias = () => {
           enableBottomToolbar={false}
           positionToolbarAlertBanner='bottom'
           onCellEditBlur={handleSaveRow}
-          renderToolbarTopCustomActions={({ table }) => {
+          renderTopToolbarCustomActions={({ table }) => {
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}

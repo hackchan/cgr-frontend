@@ -617,7 +617,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
           <Form.Group as={Col} controlId='formGrididContratista'>
             <FormLabelStyle modedark={modedark.toString()}>Id Contratista</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='eje. 51' {...register('idContratista', {
+              style={{ height: 38 }} type='text' placeholder='eje. 985478512' {...register('idContratista', {
                 required: 'Id Contratista es obligatorio',
                 pattern: {
                   value: /^([0-9]{1,13})$/,
@@ -633,14 +633,189 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, modedark
           </Form.Group>
 
         </Row>
+
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridrazonSocialNuevoContratista'>
+            <FormLabelStyle modedark={modedark.toString()}>Razon Social Nuevo Contratista</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. CONSORCIO NORTE SAS' {...register('razonSocialNuevoContratista', {
+                required: 'Razon Social Nuevo Contratista es obligatorio',
+                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-ZÑñ/ ]*[0-9a-zA-Z-_Ññ/ ]*[0-9a-zA-ZÑñ/ ]$)/,
+                  message: 'No es una Razon Social Contratista válido'
+                }
+              })}
+            />
+            {errors.razonSocialNuevoContratista && (
+              <Form.Text className='errors' onClick={() => clearErrors('razonSocialNuevoContratista')}>
+                {errors.razonSocialNuevoContratista.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGrididNuevoContratista'>
+            <FormLabelStyle modedark={modedark.toString()}>Id Nuevo Contratista</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 985478512' {...register('idNuevoContratista', {
+                required: 'Id Nuevo Contratista es obligatorio',
+                pattern: {
+                  value: /^([0-9]{1,13})$/,
+                  message: 'No es un valor valido'
+                }
+              })}
+            />
+            {errors.idNuevoContratista && (
+              <Form.Text className='errors' onClick={() => clearErrors('idNuevoContratista')}>
+                {errors.idNuevoContratista.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
+
+          <Form.Group as={Col} controlId='formGridobservaciones'>
+            <FormLabelStyle modedark={modedark.toString()}>Observaciones</FormLabelStyle>
+            <Form.Control
+              as='textarea' rows={6} placeholder='Eje. Se presentan retrasos en obra derivado a la falta de materias primas.' {...register('observaciones', {
+                required: 'Observaciones obligatorio',
+                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
+                maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]$)/,
+                  message: 'No es un observacion válida'
+                }
+              })}
+            />
+
+            {errors.observaciones && (
+              <Form.Text className='errors' onClick={() => clearErrors('observaciones')}>
+                {errors.observaciones.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGrnroContratoInterventoria'>
+            <FormLabelStyle modedark={modedark.toString()}>Nro Contrato Interventoria</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 45879-2019' {...register('nroContratoInterventoria', {
+                required: 'Nro Contrato Interventoria es obligatorio',
+                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
+                maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
+                  message: 'No es Nro Contrato Interventoria válido'
+                }
+              })}
+            />
+
+            {errors.nroContratoInterventoria && (
+              <Form.Text className='errors' onClick={() => clearErrors('nroContratoInterventoria')}>
+                {errors.nroContratoInterventoria.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridnombreInterventoria'>
+            <FormLabelStyle modedark={modedark.toString()}>Nombre Interventoria</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. LAGO LUNS' {...register('nombreInterventoria', {
+                required: 'Nombre Interventoria es obligatorio',
+                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-ZÑñ/ ]*[0-9a-zA-Z-_Ññ/ ]*[0-9a-zA-ZÑñ/ ]$)/,
+                  message: 'No es un Nombre Interventoria válido'
+                }
+              })}
+            />
+            {errors.nombreInterventoria && (
+              <Form.Text className='errors' onClick={() => clearErrors('nombreInterventoria')}>
+                {errors.nombreInterventoria.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGrididInterventoria'>
+            <FormLabelStyle modedark={modedark.toString()}>Id Interventoria</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 988888777' {...register('idInterventoria', {
+                required: 'Id Interventoria es obligatorio',
+                pattern: {
+                  value: /^([0-9]{1,13})$/,
+                  message: 'No es un valor valido'
+                }
+              })}
+            />
+            {errors.idInterventoria && (
+              <Form.Text className='errors' onClick={() => clearErrors('idInterventoria')}>
+                {errors.idInterventoria.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGrdiaCorte'>
+            <FormLabelStyle modedark={modedark.toString()}>Dia Corte</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='eje. 1' {...register('diaCorte', {
+                required: 'Dia Corte es obligatorio',
+                min: { value: 1, message: 'Dia minimo es 1' },
+                max: { value: 31, message: 'Dia Maximo es 31' }
+
+              })}
+            />
+            {errors.diaCorte && (
+              <Form.Text className='errors' onClick={() => clearErrors('diaCorte')}>
+                {errors.diaCorte.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGmesCorte'>
+            <FormLabelStyle modedark={modedark.toString()}>Mes Corte</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='number' placeholder='eje. 10' {...register('mesCorte', {
+                required: 'Mes Corte es obligatorio',
+                min: { value: 1, message: 'Mes minimo 1' },
+                max: { value: 12, message: 'Mes Maximo es 12' }
+              })}
+            />
+            {errors.mesCorte && (
+              <Form.Text className='errors' onClick={() => clearErrors('mesCorte')}>
+                {errors.mesCorte.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGrdanioCorte'>
+            <FormLabelStyle modedark={modedark.toString()}>Anio Corte</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='number' placeholder='eje. 2022' {...register('anioCorte', {
+                required: 'Anio Corte es obligatorio',
+                min: { value: 2000, message: 'Anio minimo es de 2000' },
+                max: { value: 2050, message: 'Anio maximo permitido 2050' }
+
+              })}
+            />
+            {errors.anioCorte && (
+              <Form.Text className='errors' onClick={() => clearErrors('anioCorte')}>
+                {errors.anioCorte.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+        </Row>
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <Button modedark={modedark} value='Crear Municipio' disabled={disableBtn} loading={disableBtn} />
-        {/* <Button variant='primary' type='submit'>
-          Submit
-        </Button> */}
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Contrato' disabled={disableBtn} loading={disableBtn} /></div>
+
       </Form>
     </BoxForm>
   )

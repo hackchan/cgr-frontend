@@ -192,7 +192,7 @@ export const CrudSubSector = () => {
           enableBottomToolbar={false}
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
-          renderToolbarTopCustomActions={({ table }) => {
+          renderTopToolbarCustomActions={({ table }) => {
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
