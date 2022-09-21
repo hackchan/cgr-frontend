@@ -163,7 +163,7 @@ export const CrudCategorias = () => {
             showAlertBanner: isError,
             showProgressBars: isRefetching
           }}
-          enableBottomToolbar={false}
+          enableBottomToolbar
           positionToolbarAlertBanner='bottom'
           onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {

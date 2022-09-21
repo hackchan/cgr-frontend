@@ -11,11 +11,15 @@ import { StyledSelect } from '../../styles/select'
 export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-
+  const [depart, setDepart] = useState('')
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
+  const handleSelectDepartmentChange = (values) => {
+    console.log('HOMERO SIMS:', values)
+    setDepart(values.label)
+  }
 
   const getListSector = async (inputValue) => {
     const options = []
@@ -84,9 +88,10 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
     return options
   }
 
-  const getListMunicipios = async (inputValue) => {
+  const getListMunicipios = async (inputValue, depart) => {
+    console.log('DEPART SEL:::', depart)
     const options = []
-    const response = await getMunicipios()
+    const response = await getMunicipios(null, depart)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -223,9 +228,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
-                  loadOptions={getListDepartamentos}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
+                  loadOptions={(e) => getListDepartamentos(e)}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
@@ -258,7 +263,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                   defaultOptions
                   // getOptionLabel={e => e.value + ' ' + e.label}
                   // getOptionValue={e => e.value}
-                  loadOptions={getListMunicipios}
+                  loadOptions={(e) => getListMunicipios(e, depart)}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}

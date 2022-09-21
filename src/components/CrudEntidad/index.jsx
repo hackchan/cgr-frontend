@@ -219,7 +219,7 @@ export const CrudEntidad = () => {
         // enableRowNumbers
         // enableRowVirtualization
         // virtualizerProps={{ overscan: 50 }}
-          enableBottomToolbar={false}
+          enableBottomToolbar
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}

@@ -189,7 +189,7 @@ export const CrudSubSector = () => {
             showProgressBars: isRefetching,
             sorting
           }}
-          enableBottomToolbar={false}
+          enableBottomToolbar
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
           renderTopToolbarCustomActions={({ table }) => {

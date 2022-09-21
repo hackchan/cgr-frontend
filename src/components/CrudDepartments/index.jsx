@@ -238,7 +238,7 @@ export const CrudDepartmets = () => {
           }}
           enableRowActions
           positionActionsColumn='last'
-          positionPagination='top'
+          positionPagination='bottom'
           manualPagination
           manualSorting
           onColumnFiltersChange={setColumnFilters}
@@ -287,7 +287,7 @@ export const CrudDepartmets = () => {
         // enableRowNumbers
         // enableRowVirtualization
         // virtualizerProps={{ overscan: 50 }}
-          enableBottomToolbar={false}
+          enableBottomToolbar
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}

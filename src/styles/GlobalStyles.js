@@ -176,7 +176,7 @@ export const GlobalStyle = createGlobalStyle`
         color: #ffffff;
 }
 
-/* .tableContainer{
+ .tableContainer{
         max-height: 75vh;
 }
   @media  (max-width: 1700px) {
@@ -184,16 +184,16 @@ export const GlobalStyle = createGlobalStyle`
         .tableContainer{
         max-height: 70vh;
 }
-  } */
+  } 
 
 
-/* .tableHeader{
+ .tableHeader{
         position: sticky;
         top: 0;
         z-index: 1;
 }
-*/
-.tableHeaderCell{
+
+ .tableHeaderCell{
        color: #89b637 !important;
        background: #1B1B25 !important;
       

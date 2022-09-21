@@ -277,7 +277,7 @@ export const useInitialState = () => {
       url.searchParams.set('globalFilter', globalFilter ?? '')
       url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
       url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
-
+      console.log('URL:', url.href)
       const response = await axios({
         method: 'get',
         url: url.href,

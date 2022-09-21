@@ -55,6 +55,7 @@ export const ColumnsTable = [
       type: 'date'
     },
     filterVariant: 'range',
+    filterFn: 'betweenInclusive',
     sortingFn: 'date',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>

@@ -149,6 +149,10 @@ export const MatrizObra = () => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
+          // muiTableHeadCellFilterTextFieldProps={{
+          //   sx: { m: '0.5rem 0', width: '100%' },
+          //   variant: 'outlined'
+          // }}
         // enableRowSelection
           enableClickToCopy
           enableColumnOrdering
@@ -221,23 +225,13 @@ export const MatrizObra = () => {
         // enableRowNumbers
         //  enableRowVirtualization
         //  virtualizerProps={{ overscan: 50 }}
-          enableBottomToolbar={false}
+          enableBottomToolbar
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}
           onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {
-            // const handleDeactivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     console.log(row._valuesCache)
-            //     window.alert('deactivating ', row._valuesCache)
-            //   })
-            // }
-            // const handleActivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     window.alert('activating ' + row.getValue('name'))
-            //   })
-            // }
+
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}

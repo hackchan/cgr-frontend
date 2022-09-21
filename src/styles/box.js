@@ -3,30 +3,23 @@ import { tableHeight } from '../styles/animation'
 import { theme } from './theme'
 import FormLabel from 'react-bootstrap/FormLabel'
 export const ContainerBox = styled.div`
-  /* background: rgba(2, 2, 2, 0.7);
-  background: red;
+  background: rgba(2, 2, 2, 0.7);
   font-size: 14px;
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(25, 25, 25, 0.2);
   text-align: center;
-  max-height: 85vh;
-  overflow: auto; */
-
-  /* height: 100vh; */
-  /* min-height: 100%;
-  overflow: auto; */
-
-  /* overflow: scroll;
+  min-height: 100%;
+  overflow: auto;
   &::-webkit-scrollbar {
     display: none;
-  } */
+  }
 `
 export const BoxForm = styled.div`
 
-  background: ${theme.light.colors.fondoWin}; /* fallback for old browsers */
-  /* width: 100%;
-  height: 100%; */
-  background: red;
+  background: ${theme.light.colors.fondoWin};
+  width: 100%;
+  height: 100%;
+ 
   padding: 50px 30px;
   border-radius: 10px;
   & h2 {
