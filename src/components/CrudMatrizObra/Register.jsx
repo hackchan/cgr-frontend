@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -11,20 +11,26 @@ import { StyledSelect } from '../../styles/select'
 export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [depart, setDepart] = useState('')
+  const [depart, setDepart] = useState(null)
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
-  const handleSelectDepartmentChange = (values) => {
-    console.log('HOMERO SIMS:', values)
-    setDepart(values.label)
+  const handleDeparts = (e) => {
+    console.log(e)
+    setDepart(e)
   }
-
+  // const handleSelectDepartmentChange = (values) => {
+  //   console.log('HOMERO SIMS:', values)
+  //   if (values) {
+  //     setDepart(values.label)
+  //   }
+  // }
+  useEffect(() => {
+  }, [depart])
   const getListSector = async (inputValue) => {
     const options = []
     const response = await GetSectorObra()
-    console.log('response:', response)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -41,7 +47,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
   const getListOrigenRecurso = async (inputValue) => {
     const options = []
     const response = await GetOrigenRecursoObra()
-    console.log('response:', response)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -58,7 +63,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
   const getListEstadoObra = async (inputValue) => {
     const options = []
     const response = await GetEstadoObra()
-    console.log('response:', response)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -88,10 +92,10 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
     return options
   }
 
-  const getListMunicipios = async (inputValue, depart) => {
-    console.log('DEPART SEL:::', depart)
+  const getListMunicipios = async (inputValue) => {
+    console.log('depart:', depart)
     const options = []
-    const response = await getMunicipios(null, depart)
+    const response = await getMunicipios(null)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -107,7 +111,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
   const getListEntidades = async (inputValue) => {
     const options = []
     const response = await GetEntidad()
-    console.log('response:', response)
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -155,6 +158,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                   {...register('entidad', { required: 'entidad obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
+                  cacheOptions
                 // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
@@ -211,28 +215,33 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         </Row>
 
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListDepartamento'>
+          <Form.Group as={Col} controlId='formGridListdepartamentoObra'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Obra</FormLabelStyle>
             <Controller
               // id='department'
-              name='departamento Obra'
+              name='departamentoObra'
               control={control}
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              render={({ field: { onChange, onBlur, ref, value, ...field } }) => (
                 <StyledSelect
                   {...field}
                   innerRef={ref}
                   {...register('departamentoObra', { required: 'Departamento Obra es obligatorio' })}
                   isClearable
+                  cacheOptions
                   classNamePrefix='Select'
                 // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={(e) => getListDepartamentos(e)}
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  getOptionValue={(option) => option.value}
+                  getOptionLabel={(option) => option.label}
+                  loadOptions={getListDepartamentos}
+                  // loadOptions={(e) => getListDepartamentos(e)}
                   // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); handleDeparts(e) }}
+                  // onChange={onChange}
                   onBlur={onBlur}
                 />
               )}
@@ -248,7 +257,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
             <FormLabelStyle modedark={modedark.toString()}>Municipio Obra</FormLabelStyle>
             <Controller
               // id='department'
-              name='municipio obra'
+              name='municipioObra'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
@@ -259,11 +268,11 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                   isClearable
                   classNamePrefix='Select'
                 // autoload={false}
-                  placeholder='Selecciona...'
                   defaultOptions
+                  placeholder='Selecciona...'
                   // getOptionLabel={e => e.value + ' ' + e.label}
                   // getOptionValue={e => e.value}
-                  loadOptions={(e) => getListMunicipios(e, depart)}
+                  loadOptions={(e) => getListMunicipios(e)}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
