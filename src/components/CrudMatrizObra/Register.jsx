@@ -9,12 +9,12 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
-
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [depart, setDepart] = useState('')
+  const [muni, setMuni] = useState('')
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
@@ -28,11 +28,12 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
 
   const extendedLoadOptions = useCallback(
     async (search, prevOptions) => {
-      const result = await getListMunicipios(search, prevOptions, depart)
+      const result = await getListMunicipios(search, prevOptions, depart, muni)
       return result
     },
-    [depart]
+    [depart, muni]
   )
+
   // const selectRef = useRef()
   // const HandleOnChange = (option) => {
   //   console.log('options:', option)
@@ -124,13 +125,14 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
 
   const getListMunicipios = async (search, prevOptions, depart) => {
     console.log('depart==>', depart)
+    console.log('muni==>', muni)
     const options = []
     const response = await getMunicipios(null, depart)
-    // const filter = response.data.filter((option) => {
-    //   return option.name.toLowerCase().includes(depart.toLowerCase())
-    // })
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(muni.toLowerCase())
+    })
 
-    response.data.forEach((muni) => {
+    filter.forEach((muni) => {
       options.push({
         label: muni.name,
         value: muni.id
@@ -295,13 +297,14 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
                   loadOptions={extendedLoadOptions}
-                  cacheUniqs={[depart]}
+                  cacheUniqs={[depart, muni]}
                   shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
                     return scrollHeight - scrollTop < 1000
                   }}
                   // value={currentDepartment}
                   onChange={(e) => { console.log('la e es:', e) }}
-                  onBlur={onBlur}
+                  onBlur={(e) => { console.log('la ee es:', e) }}
+                  onInputChange={(e) => { setMuni(e); console.log('type', e) }}
                 />
               )}
             />
