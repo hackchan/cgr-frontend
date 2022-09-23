@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -7,27 +7,42 @@ import { clearMessage } from '../../utils/time'
 import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
-
+import { AsyncPaginateStyled } from '../../styles/paginate'
+import { AsyncPaginate } from 'react-select-async-paginate'
+// const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [depart, setDepart] = useState(null)
+  const [value, onChange] = useState(null)
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
-  const handleDeparts = (e) => {
-    console.log(e)
-    setDepart(e)
-  }
+  // const selectRef = useRef()
+  // const HandleOnChange = (option) => {
+  //   console.log('options:', option)
+  //   setValue(option)
+  //   setInputValue(option ? option.label : '')
+  // }
+  // const onInputChange = (inputValue, { action }) => {
+  //   // onBlur => setInputValue to last selected value
+  //   // if (action === "input-blur") {
+  //   //   setInputValue(value ? value.label : "");
+  //   // }
+
+  //   // onInputChange => update inputValue
+  //   if (action === 'input-change') {
+  //     setInputValue(inputValue)
+  //   }
+  // }
+  // const onFocus = () => value && selectRef.current.select.inputRef.select()
   // const handleSelectDepartmentChange = (values) => {
   //   console.log('HOMERO SIMS:', values)
   //   if (values) {
   //     setDepart(values.label)
   //   }
   // }
-  useEffect(() => {
-  }, [depart])
+
   const getListSector = async (inputValue) => {
     const options = []
     const response = await GetSectorObra()
@@ -89,11 +104,10 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         value: depart.id
       })
     })
-    return options
+    return { options }
   }
 
   const getListMunicipios = async (inputValue) => {
-    console.log('depart:', depart)
     const options = []
     const response = await getMunicipios(null)
     const filter = response.data.filter((option) => {
@@ -218,31 +232,19 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridListdepartamentoObra'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Obra</FormLabelStyle>
             <Controller
-              // id='department'
               name='departamentoObra'
               control={control}
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, value, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('departamentoObra', { required: 'Departamento Obra es obligatorio' })}
-                  isClearable
-                  cacheOptions
-                  classNamePrefix='Select'
-                // autoload={false}
+              render={() => (
+                <AsyncPaginate
+                  {...register('departamentoObra', { required: 'Departamento Obra es requerido' })}
+                  noOptionsMessage={() => 'No se encontraron opciones'}
                   placeholder='Selecciona...'
-                  defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
-                  getOptionValue={(option) => option.value}
-                  getOptionLabel={(option) => option.label}
+                  isClearable
+                  classNamePrefix='Select'
+                  value={value}
                   loadOptions={getListDepartamentos}
-                  // loadOptions={(e) => getListDepartamentos(e)}
-                  // value={currentDepartment}
-                  onChange={(e) => { onChange(e); handleDeparts(e) }}
-                  // onChange={onChange}
-                  onBlur={onBlur}
+                  onChange={onChange}
                 />
               )}
             />
@@ -264,14 +266,13 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 <StyledSelect
                   {...field}
                   innerRef={ref}
-                  {...register('municipioObra', { required: 'Municipio Obra es obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
                 // autoload={false}
                   defaultOptions
                   placeholder='Selecciona...'
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   loadOptions={(e) => getListMunicipios(e)}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
