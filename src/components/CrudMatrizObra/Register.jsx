@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -8,16 +8,31 @@ import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
-import { AsyncPaginate } from 'react-select-async-paginate'
+
+
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [value, onChange] = useState(null)
+  const [depart, setDepart] = useState('')
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
+  const handleDeparts = (e) => {
+    if (e) {
+      setDepart(e.label)
+      console.log(e)
+    }
+  }
+
+  const extendedLoadOptions = useCallback(
+    async (search, prevOptions) => {
+      const result = await getListMunicipios(search, prevOptions, depart)
+      return result
+    },
+    [depart]
+  )
   // const selectRef = useRef()
   // const HandleOnChange = (option) => {
   //   console.log('options:', option)
@@ -104,23 +119,24 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         value: depart.id
       })
     })
-    return { options }
+    return options
   }
 
-  const getListMunicipios = async (inputValue) => {
+  const getListMunicipios = async (search, prevOptions, depart) => {
+    console.log('depart==>', depart)
     const options = []
-    const response = await getMunicipios(null)
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
+    const response = await getMunicipios(null, depart)
+    // const filter = response.data.filter((option) => {
+    //   return option.name.toLowerCase().includes(depart.toLowerCase())
+    // })
 
-    filter.forEach((muni) => {
+    response.data.forEach((muni) => {
       options.push({
         label: muni.name,
         value: muni.id
       })
     })
-    return options
+    return { options }
   }
   const getListEntidades = async (inputValue) => {
     const options = []
@@ -140,8 +156,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
 
   const onSubmit = async (dataForm) => {
     try {
+      console.log('DEPART OK:', depart)
       setDisableBtn(true)
-      await AddMatrizObra(dataForm)
+      // await AddMatrizObra(dataForm)
       setModal(false)
       setReload(true)
     } catch (error) {
@@ -235,16 +252,19 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
               name='departamentoObra'
               control={control}
               rules={{ required: true }}
-              render={() => (
-                <AsyncPaginate
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
                   {...register('departamentoObra', { required: 'Departamento Obra es requerido' })}
                   noOptionsMessage={() => 'No se encontraron opciones'}
                   placeholder='Selecciona...'
+                  defaultOptions
                   isClearable
                   classNamePrefix='Select'
-                  value={value}
                   loadOptions={getListDepartamentos}
-                  onChange={onChange}
+                  onChange={(e) => { onChange(e); handleDeparts(e) }}
+                  onBlur={onBlur}
                 />
               )}
             />
@@ -263,28 +283,33 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
+                <AsyncPaginateStyled
                   {...field}
                   innerRef={ref}
                   isClearable
                   classNamePrefix='Select'
+                  // {...register('municipioObra', { required: 'Municipio Obra es requerido' })}
                 // autoload={false}
                   defaultOptions
                   placeholder='Selecciona...'
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
-                  loadOptions={(e) => getListMunicipios(e)}
+                  loadOptions={extendedLoadOptions}
+                  cacheUniqs={[depart]}
+                  shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
+                    return scrollHeight - scrollTop < 1000
+                  }}
                   // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { console.log('la e es:', e) }}
                   onBlur={onBlur}
                 />
               )}
             />
-            {errors.municipioObra && (
+            {/* {errors.municipioObra && (
               <Form.Text className='errors' onClick={() => clearErrors('municipioObra')}>
                 {errors.municipioObra.message}
               </Form.Text>
-            )}
+            )} */}
 
           </Form.Group>
         </Row>
