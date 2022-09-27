@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -10,54 +10,39 @@ import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, modedark }) => {
+export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
+  const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [depart, setDepart] = useState('')
+  const [errorMuni, setErrorMuni] = useState('')
+  const [departId, setDepartId] = useState('')
+  const [departmentSel] = useState('')
   const [muni, setMuni] = useState('')
+  const [municipioSel, setMunicipioSel] = useState('')
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange'
   })
   const handleDeparts = (e) => {
+    setMunicipioSel('')
     if (e) {
-      setDepart(e.label)
-      console.log(e)
+      setDepartId(e.value)
+    }
+  }
+
+  const handleMunicipios = async (e) => {
+    if (e) {
+      setMunicipioSel(e)
     }
   }
 
   const extendedLoadOptions = useCallback(
     async (search, prevOptions) => {
-      const result = await getListMunicipios(search, prevOptions, depart, muni)
+      const result = await getListMunicipios(search, prevOptions, departId, muni, municipioSel)
       return result
     },
-    [depart, muni]
+    [departId, muni, municipioSel]
   )
-
-  // const selectRef = useRef()
-  // const HandleOnChange = (option) => {
-  //   console.log('options:', option)
-  //   setValue(option)
-  //   setInputValue(option ? option.label : '')
-  // }
-  // const onInputChange = (inputValue, { action }) => {
-  //   // onBlur => setInputValue to last selected value
-  //   // if (action === "input-blur") {
-  //   //   setInputValue(value ? value.label : "");
-  //   // }
-
-  //   // onInputChange => update inputValue
-  //   if (action === 'input-change') {
-  //     setInputValue(inputValue)
-  //   }
-  // }
-  // const onFocus = () => value && selectRef.current.select.inputRef.select()
-  // const handleSelectDepartmentChange = (values) => {
-  //   console.log('HOMERO SIMS:', values)
-  //   if (values) {
-  //     setDepart(values.label)
-  //   }
-  // }
 
   const getListSector = async (inputValue) => {
     const options = []
@@ -123,22 +108,22 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
     return options
   }
 
-  const getListMunicipios = async (search, prevOptions, depart) => {
-    console.log('depart==>', depart)
-    console.log('muni==>', muni)
-    const options = []
-    const response = await getMunicipios(null, depart)
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(muni.toLowerCase())
-    })
-
-    filter.forEach((muni) => {
-      options.push({
-        label: muni.name,
-        value: muni.id
+  const getListMunicipios = async (search, prevOptions, departId, muni, municipioSel) => {
+    if (departId) {
+      const options = []
+      const response = await GetMunicipiosByDepartment(departId)
+      const filter = response.data.filter((option) => {
+        return option.name.toLowerCase().includes(muni.toLowerCase())
       })
-    })
-    return { options }
+
+      filter.forEach((muni) => {
+        options.push({
+          label: muni.name,
+          value: muni.id
+        })
+      })
+      return { options }
+    } else return { options: [] }
   }
   const getListEntidades = async (inputValue) => {
     const options = []
@@ -158,7 +143,42 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log('DEPART OK:', depart)
+      console.log('dataForm1:', dataForm)
+      console.log('ref.current:', ref.current.commonProps.selectProps.value)
+      console.log('municipio seleccionado:', municipioSel)
+      if (!municipioSel) {
+        setErrorMuni('Debe seleccionar un municipio de obra')
+        throw new Error('')
+      }
+      dataForm = {
+        ...dataForm,
+        diaCorte: Number(dataForm.diaCorte),
+        mesCorte: Number(dataForm.mesCorte),
+        anioCorte: Number(dataForm.anioCorte),
+        estado: dataForm.estado.value,
+        origen: dataForm.origen.value,
+        idContratista: Number(dataForm.idContratista),
+        idInterventoria: Number(dataForm.idInterventoria),
+        idNuevoContratista: Number(dataForm.idNuevoContratista),
+        valorTotalAdiciones: Number(dataForm.valorTotalAdiciones),
+        valorComprometido: Number(dataForm.valorComprometido),
+        valorObligado: Number(dataForm.valorObligado),
+        valorPagado: Number(dataForm.valorPagado),
+        valorAnticipo: Number(dataForm.valorAnticipo),
+        cantidadSuspenciones: Number(dataForm.cantidadSuspenciones),
+        cantidadProrrogas: Number(dataForm.cantidadProrrogas),
+        tiempoSuspenciones: Number(dataForm.tiempoSuspenciones),
+        tiempoProrrogas: Number(dataForm.tiempoProrrogas),
+        cantidadAdiciones: Number(dataForm.cantidadAdiciones),
+        valorContratoInicial: Number(dataForm.valorContratoInicial),
+        valorContratoFinal: Number(dataForm.valorContratoFinal),
+        avanceFisicoProgramado: Number(dataForm.avanceFisicoProgramado),
+        avanceFisicoEjecutado: Number(dataForm.avanceFisicoEjecutado),
+        avanceFinancieroEjecutado: Number(dataForm.avanceFinancieroEjecutado),
+        municipioObra: municipioSel.value
+
+      }
+      console.log('dataForm2:', dataForm)
       setDisableBtn(true)
       // await AddMatrizObra(dataForm)
       setModal(false)
@@ -177,92 +197,22 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidad'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
-            <Controller
-              // id='department'
-              name='entidad'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('entidad', { required: 'entidad obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
-                  cacheOptions
-                // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
-                  loadOptions={getListEntidades}
-                  // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            {errors.entidad && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
-                {errors.entidad.message}
-              </Form.Text>
-            )}
-
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='formGridListSector'>
-            <FormLabelStyle modedark={modedark.toString()}>Sector Obra</FormLabelStyle>
-            <Controller
-              // id='department'
-              name='sector'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('sector', { required: 'Sector es obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
-                // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
-                  loadOptions={getListSector}
-                  // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            {errors.sector && (
-              <Form.Text className='errors' onClick={() => clearErrors('sector')}>
-                {errors.sector.message}
-              </Form.Text>
-            )}
-
-          </Form.Group>
-        </Row>
-
-        <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListdepartamentoObra'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Obra</FormLabelStyle>
             <Controller
+              defaultValue={departmentSel}
               name='departamentoObra'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={departmentSel}
                   {...field}
                   innerRef={ref}
                   {...register('departamentoObra', { required: 'Departamento Obra es requerido' })}
                   noOptionsMessage={() => 'No se encontraron opciones'}
                   placeholder='Selecciona...'
                   defaultOptions
-                  isClearable
                   classNamePrefix='Select'
                   loadOptions={getListDepartamentos}
                   onChange={(e) => { onChange(e); handleDeparts(e) }}
@@ -279,43 +229,31 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           </Form.Group>
           <Form.Group as={Col} controlId='formGridListMunicipio'>
             <FormLabelStyle modedark={modedark.toString()}>Municipio Obra</FormLabelStyle>
-            <Controller
-              // id='department'
-              name='municipioObra'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <AsyncPaginateStyled
-                  {...field}
-                  innerRef={ref}
-                  isClearable
-                  classNamePrefix='Select'
-                  // {...register('municipioObra', { required: 'Municipio Obra es requerido' })}
-                // autoload={false}
-                  defaultOptions
-                  placeholder='Selecciona...'
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={extendedLoadOptions}
-                  cacheUniqs={[depart, muni]}
-                  shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
-                    return scrollHeight - scrollTop < 1000
-                  }}
-                  // value={currentDepartment}
-                  onChange={(e) => { console.log('la e es:', e) }}
-                  onBlur={(e) => { console.log('la ee es:', e) }}
-                  onInputChange={(e) => { setMuni(e); console.log('type', e) }}
-                />
-              )}
+            <AsyncPaginateStyled
+              required
+              value={municipioSel}
+              selectRef={ref}
+              classNamePrefix='Select'
+              defaultOptions
+              placeholder='Selecciona...'
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+              loadOptions={extendedLoadOptions}
+              cacheUniqs={[departId, muni, municipioSel]}
+              shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
+                return scrollHeight - scrollTop < 1000
+              }}
+              onChange={(e) => {
+                handleMunicipios(e)
+              }}
+              onBlur={(e) => { console.log('la ee es:', e) }}
+              onInputChange={(e) => { setMuni(e); console.log('type', e) }}
             />
-            {/* {errors.municipioObra && (
-              <Form.Text className='errors' onClick={() => clearErrors('municipioObra')}>
-                {errors.municipioObra.message}
-              </Form.Text>
-            )} */}
+            {errorMuni && clearMessage(5000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>}
 
           </Form.Group>
         </Row>
+
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridBpin'>
             <FormLabelStyle modedark={modedark.toString()}>Bpin</FormLabelStyle>
@@ -381,7 +319,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           </Form.Group>
 
         </Row>
-
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombreProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Nombre Proyecto</FormLabelStyle>
@@ -514,7 +451,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridcontratoInicial'>
             <FormLabelStyle modedark={modedark.toString()}>Valor contrato Inicial</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('contratoInicial', {
+              style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('valorContratoInicial', {
                 required: 'Contrato Inicial es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
@@ -524,9 +461,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 }
               })}
             />
-            {errors.contratoInicial && (
-              <Form.Text className='errors' onClick={() => clearErrors('contratoInicial')}>
-                {errors.contratoInicial.message}
+            {errors.valorContratoInicial && (
+              <Form.Text className='errors' onClick={() => clearErrors('valorContratoInicial')}>
+                {errors.valorContratoInicial.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -534,7 +471,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridcontratoFinal'>
             <FormLabelStyle modedark={modedark.toString()}>Valor contrato Final</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('contratoFinal', {
+              style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorContratoFinal', {
                 required: 'Contrato Final es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
@@ -544,9 +481,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 }
               })}
             />
-            {errors.contratoFinal && (
-              <Form.Text className='errors' onClick={() => clearErrors('contratoFinal')}>
-                {errors.contratoFinal.message}
+            {errors.valorContratoFinal && (
+              <Form.Text className='errors' onClick={() => clearErrors('valorContratoFinal')}>
+                {errors.valorContratoFinal.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -703,6 +640,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
             )}
           </Form.Group>
         </Row>
+
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridvalorTotalAdiciones'>
             <FormLabelStyle modedark={modedark.toString()}>Valor Total Adiciones</FormLabelStyle>
@@ -844,7 +782,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           </Form.Group>
 
         </Row>
-
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridrazonSocialNuevoContratista'>
             <FormLabelStyle modedark={modedark.toString()}>Razon Social Nuevo Contratista</FormLabelStyle>
@@ -1097,7 +1034,6 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         </div>
         <br />
         <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Contrato' disabled={disableBtn} loading={disableBtn} /></div>
-
       </Form>
     </BoxForm>
   )

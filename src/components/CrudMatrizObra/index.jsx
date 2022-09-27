@@ -29,7 +29,9 @@ export const MatrizObra = () => {
     GetEstadoObra,
     GetEntidad,
     getDepartments,
-    getMunicipios
+    getMunicipios,
+    GetMunicipiosByDepartment,
+    GetDepartamentoByIdMunicipio
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -131,7 +133,7 @@ export const MatrizObra = () => {
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} modedark={state.darkMode} />
+        <Register setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetDepartamentoByIdMunicipio={GetDepartamentoByIdMunicipio} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
@@ -231,7 +233,6 @@ export const MatrizObra = () => {
         // onEditRowSubmit={handleSaveRow}
           onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {
-
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}

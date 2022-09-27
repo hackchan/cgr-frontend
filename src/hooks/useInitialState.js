@@ -295,6 +295,44 @@ export const useInitialState = () => {
     }
   }
 
+  const GetMunicipiosByDepartment = async (id) => {
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `http://localhost:3010/api/v2/municipio/consulta/${id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const GetDepartamentoByIdMunicipio = async (id) => {
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `http://localhost:3010/api/v2/municipio/consulta/department/${id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const AddMunicipio = async (payload) => {
     try {
       console.log('payload:', payload)
@@ -1264,6 +1302,8 @@ export const useInitialState = () => {
     DeleteDepartment,
     UpdateDepartment,
     getMunicipios,
+    GetMunicipiosByDepartment,
+    GetDepartamentoByIdMunicipio,
     AddMunicipio,
     DeleteMunicipio,
     UpdateMunicipio,
