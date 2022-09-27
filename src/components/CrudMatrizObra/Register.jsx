@@ -10,7 +10,7 @@ import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
+export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
@@ -155,8 +155,10 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         diaCorte: Number(dataForm.diaCorte),
         mesCorte: Number(dataForm.mesCorte),
         anioCorte: Number(dataForm.anioCorte),
+        entidad: dataForm.entidad.value,
         estado: dataForm.estado.value,
         origen: dataForm.origen.value,
+        sector: dataForm.sector.value,
         idContratista: Number(dataForm.idContratista),
         idInterventoria: Number(dataForm.idInterventoria),
         idNuevoContratista: Number(dataForm.idNuevoContratista),
@@ -178,10 +180,11 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
         municipioObra: municipioSel.value
 
       }
+      delete dataForm.departamentoObra
       console.log('dataForm2:', dataForm)
       setDisableBtn(true)
-      // await AddMatrizObra(dataForm)
-      setModal(false)
+      await AddMatrizObra([dataForm])
+      setModalShow(false)
       setReload(true)
     } catch (error) {
       if (error.response) {
@@ -196,6 +199,96 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
   return (
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row>
+          <Form.Group as={Col} controlId='formGridLinkSecop'>
+            <FormLabelStyle modedark={modedark.toString()}>Link Secop</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. https://www.contratos.gov.co/consultas/detalleProceso.do?numConstanc' {...register('linkSecop', {
+                required: 'Link secop es obligatorio',
+                pattern: {
+                  value: /^(ftp|http|https):\/\/[^ "]+$/,
+                  message: 'No es link válido'
+                }
+              })}
+            />
+
+            {errors.linkSecop && (
+              <Form.Text className='errors' onClick={() => clearErrors('linkSecop')}>
+                {errors.linkSecop.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListEntidad'>
+            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+            <Controller
+    // id='department'
+              name='entidad'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('entidad', { required: 'Entidad es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+      // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+        // getOptionLabel={e => e.value + ' ' + e.label}
+        // getOptionValue={e => e.value}
+                  loadOptions={getListEntidades}
+        // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.entidad && (
+              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
+                {errors.entidad.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridListSector'>
+            <FormLabelStyle modedark={modedark.toString()}>Sector Obra</FormLabelStyle>
+            <Controller
+    // id='department'
+              name='sector'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('estado', { required: 'Sector es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+      // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+        // getOptionLabel={e => e.value + ' ' + e.label}
+        // getOptionValue={e => e.value}
+                  loadOptions={getListSector}
+        // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.sector && (
+              <Form.Text className='errors' onClick={() => clearErrors('sector')}>
+                {errors.sector.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListdepartamentoObra'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Obra</FormLabelStyle>
@@ -258,7 +351,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridBpin'>
             <FormLabelStyle modedark={modedark.toString()}>Bpin</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. 6490-788745' {...register('bpin', {
+              style={{ height: 38 }} type='text' placeholder='Eje. 6490-788745' {...register('idBpin', {
                 required: 'código bpin es obligatorio',
                 minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
                 maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
@@ -269,9 +362,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
               })}
             />
 
-            {errors.bpin && (
-              <Form.Text className='errors' onClick={() => clearErrors('bpin')}>
-                {errors.bpin.message}
+            {errors.idBpin && (
+              <Form.Text className='errors' onClick={() => clearErrors('idBpin')}>
+                {errors.idBpin.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -323,7 +416,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridNombreProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Nombre Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('nombreproyecto', {
+              style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('nombreProyecto', {
                 required: 'nombre proyecto es obligatorio',
                 minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
                 maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
@@ -333,9 +426,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 }
               })}
             />
-            {errors.nombreproyecto && (
-              <Form.Text className='errors' onClick={() => clearErrors('nombreproyecto')}>
-                {errors.nombreproyecto.message}
+            {errors.nombreProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('nombreProyecto')}>
+                {errors.nombreProyecto.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -343,7 +436,7 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridUnidadFuncional'>
             <FormLabelStyle modedark={modedark.toString()}>Unidad Funcional</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('unidadfuncional', {
+              style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('unidadFuncional', {
                 required: 'Unidad funcional es obligatorio',
                 minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
                 maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
@@ -353,9 +446,9 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
                 }
               })}
             />
-            {errors.unidadfuncional && (
-              <Form.Text className='errors' onClick={() => clearErrors('unidadfuncional')}>
-                {errors.unidadfuncional.message}
+            {errors.unidadFuncional && (
+              <Form.Text className='errors' onClick={() => clearErrors('unidadFuncional')}>
+                {errors.unidadFuncional.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -366,20 +459,20 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridObjetoProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Objecto Proyecto</FormLabelStyle>
             <Form.Control
-              as='textarea' rows={6} placeholder='Eje. Reconstruccion de la estructura de viviendas afectadas en el departamento de Antioquia' {...register('objectoProyecto', {
+              as='textarea' rows={6} placeholder='Eje. Reconstruccion de la estructura de viviendas afectadas en el departamento de Antioquia' {...register('objetoProyecto', {
                 required: 'Objecto de proyecto es obligatorio',
                 minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
                 maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]$)/,
-                  message: 'No es un objectoProyecto válido'
+                  message: 'No es un objeto proyecto válido'
                 }
               })}
             />
 
-            {errors.objectoProyecto && (
-              <Form.Text className='errors' onClick={() => clearErrors('objectoProyecto')}>
-                {errors.objectoProyecto.message}
+            {errors.objetoProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('objetoProyecto')}>
+                {errors.objetoProyecto.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -419,14 +512,14 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridfechaProgTerminacion'>
             <FormLabelStyle modedark={modedark.toString()}>Fecha Progra Terminacion</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaProgTerminacion', {
+              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaProgramadaTermina', {
                 required: 'Fecha Suscripcion es obligatorio'
               })}
             />
 
-            {errors.fechaProgTerminacion && (
-              <Form.Text className='errors' onClick={() => clearErrors('fechaProgTerminacion')}>
-                {errors.fechaProgTerminacion.message}
+            {errors.fechaProgramadaTermina && (
+              <Form.Text className='errors' onClick={() => clearErrors('fechaProgramadaTermina')}>
+                {errors.fechaProgramadaTermina.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -434,14 +527,14 @@ export const Register = ({ setModal, setReload, preData, AddMatrizObra, GetSecto
           <Form.Group as={Col} controlId='formGridFechaTerminacion'>
             <FormLabelStyle modedark={modedark.toString()}>Fecha Terminación</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaTerminacion', {
+              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaTermina', {
                 required: 'Fecha terminacion es obligatorio'
               })}
             />
 
-            {errors.fechaTerminacion && (
-              <Form.Text className='errors' onClick={() => clearErrors('fechaTerminacion')}>
-                {errors.fechaTerminacion.message}
+            {errors.fechaTermina && (
+              <Form.Text className='errors' onClick={() => clearErrors('fechaTermina')}>
+                {errors.fechaTermina.message}
               </Form.Text>
             )}
           </Form.Group>

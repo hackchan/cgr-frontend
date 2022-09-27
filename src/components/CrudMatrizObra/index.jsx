@@ -53,9 +53,9 @@ export const MatrizObra = () => {
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
   const [modalShow, setModalShow] = useState(false)
+  const [modalUpdateShow, setModalUpdateShow] = useState(false)
   // const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
-  const [modalUpdate, setModalUpdate] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
   const [dataEliminar, setDataEliminar] = useState({})
   const [reload, setReload] = useState(false)
@@ -127,13 +127,12 @@ export const MatrizObra = () => {
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizObra} modedark={state.darkMode} />
         </Modal>}
 
-      {modalUpdate &&
-        <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizObra={UpdateMatrizObra} modedark={state.darkMode} />
-        </Modal>}
+      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizObra={UpdateMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetDepartamentoByIdMunicipio={GetDepartamentoByIdMunicipio} modedark={state.darkMode} />
+      </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
-      <ModalB show={modalShow} fullscreen={modalShow} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetDepartamentoByIdMunicipio={GetDepartamentoByIdMunicipio} modedark={state.darkMode} />
+      <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetDepartamentoByIdMunicipio={GetDepartamentoByIdMunicipio} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
@@ -288,7 +287,7 @@ export const MatrizObra = () => {
                 <EditIconStyle
                   variant='contained'
                   onClick={() => {
-                    setModalUpdate(true)
+                    setModalUpdateShow(true)
                     setDataUpdate(row.original)
 
                     //       closeMenu()
