@@ -8,8 +8,8 @@ export const Config = {
   update: `Actualizar ${table}`,
   delete: `Eliminar ${table}`,
   labelRowsPerPage: 'filas por página',
-  buttonRegister: 'Crear Matriz Obra',
-  buttonUpdate: 'Actualizar Matriz Obra',
+  buttonRegister: 'Adicionar Contrato',
+  buttonUpdate: 'Actualizar Contrato',
   rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -9,13 +9,13 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
-import { Logo } from '../Logo'
-
-export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
+export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [departmentSel] = useState('')
-  const [municipioSel] = useState('')
+  const [errorMuni, setErrorMuni] = useState('')
+  const [muni, setMuni] = useState('')
+  const [departmentSel, setDepartmentSel] = useState({ label: data.municipioObra.department.name, value: data.municipioObra.department.id })
+  const [municipioSel, setMunicipioSel] = useState({ label: data.municipioObra.name, value: data.municipioObra.id })
   const [entidadSel, setEntidadSel] = useState({ label: data.entidad.name, value: data.entidad.id })
   const [sectorSel, setsectorSel] = useState({ label: data.sector.name, value: data.sector.id })
   const [origenRecursoSel, setOrigenRecursoSel] = useState({ label: data.origen.name, value: data.origen.id })
@@ -65,14 +65,15 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
 
     }
   })
-  console.log('data enviada data:', data)
-  // const extendedLoadOptions = useCallback(
-  //   async (search, prevOptions) => {
-  //     const result = await getListMunicipios(search, prevOptions, departId, muni, municipioSel)
-  //     return result
-  //   },
-  //   [departId, muni, municipioSel]
-  // )
+
+  const extendedLoadOptions = useCallback(
+    async (search, prevOptions) => {
+      setDepartmentSel(departmentSel)
+      const result = await getListMunicipios(search, prevOptions, municipioSel, departmentSel, muni)
+      return result
+    },
+    [municipioSel, departmentSel, muni]
+  )
 
   const getListSector = async (inputValue) => {
     const options = []
@@ -138,10 +139,10 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
     return options
   }
 
-  const getListMunicipios = async (search, prevOptions, departId, muni, municipioSel) => {
-    if (departId) {
+  const getListMunicipios = async (search, prevOptions, municipioSel, departmentSel, muni) => {
+    if (departmentSel) {
       const options = []
-      const response = await GetMunicipiosByDepartment(departId)
+      const response = await GetMunicipiosByDepartment(departmentSel.value)
       const filter = response.data.filter((option) => {
         return option.name.toLowerCase().includes(muni.toLowerCase())
       })
@@ -153,7 +154,8 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
         })
       })
       return { options }
-    } else return { options: [] }
+    }
+    return { options: [] }
   }
   const getListEntidades = async (inputValue) => {
     const options = []
@@ -174,8 +176,45 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
+      if (!municipioSel) {
+        setErrorMuni('Debe seleccionar un municipio de obra')
+        throw new Error('')
+      }
+      dataForm = {
+        ...dataForm,
+        diaCorte: Number(dataForm.diaCorte),
+        mesCorte: Number(dataForm.mesCorte),
+        anioCorte: Number(dataForm.anioCorte),
+        entidad: dataForm.entidad.value,
+        estado: dataForm.estado.value,
+        origen: dataForm.origen.value,
+        sector: dataForm.sector.value,
+        idContratista: Number(dataForm.idContratista),
+        idInterventoria: Number(dataForm.idInterventoria),
+        idNuevoContratista: Number(dataForm.idNuevoContratista),
+        valorTotalAdiciones: Number(dataForm.valorTotalAdiciones),
+        valorComprometido: Number(dataForm.valorComprometido),
+        valorObligado: Number(dataForm.valorObligado),
+        valorPagado: Number(dataForm.valorPagado),
+        valorAnticipo: Number(dataForm.valorAnticipo),
+        cantidadSuspenciones: Number(dataForm.cantidadSuspenciones),
+        cantidadProrrogas: Number(dataForm.cantidadProrrogas),
+        tiempoSuspenciones: Number(dataForm.tiempoSuspenciones),
+        tiempoProrrogas: Number(dataForm.tiempoProrrogas),
+        cantidadAdiciones: Number(dataForm.cantidadAdiciones),
+        valorContratoInicial: Number(dataForm.valorContratoInicial),
+        valorContratoFinal: Number(dataForm.valorContratoFinal),
+        avanceFisicoProgramado: Number(dataForm.avanceFisicoProgramado),
+        avanceFisicoEjecutado: Number(dataForm.avanceFisicoEjecutado),
+        avanceFinancieroEjecutado: Number(dataForm.avanceFinancieroEjecutado),
+        municipioObra: municipioSel.value
+
+      }
+      delete dataForm.departamentoObra
+      delete dataForm.id
+      console.log('dataForm Update:', dataForm)
       await UpdateMatrizObra(dataForm, data.id)
-      setModal(false)
+      setModalUpdateShow(false)
       setReload(true)
     } catch (error) {
       if (error.response) {
@@ -189,8 +228,8 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
   }
   return (
     <BoxForm modedark={modedark}>
-      <div className='avatar'><Logo big /></div>
-      <h2>{preData.update}</h2>
+      {/* <div className='avatar'><Logo big /></div>
+      <h2>{preData.update}</h2> */}
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Form.Group as={Col} controlId='formGridLinkSecop'>
@@ -262,7 +301,7 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
                   value={sectorSel}
                   {...field}
                   innerRef={ref}
-                  {...register('estado', { required: 'Sector es obligatorio' })}
+                  {...register('sector', { required: 'Sector es obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
       // autoload={false}
@@ -305,7 +344,7 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
                   defaultOptions
                   classNamePrefix='Select'
                   loadOptions={getListDepartamentos}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setDepartmentSel(e); setMunicipioSel('') }}
                   onBlur={onBlur}
                 />
               )}
@@ -327,18 +366,18 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
               placeholder='Selecciona...'
                   // getOptionLabel={e => e.value + ' ' + e.label}
                   // getOptionValue={e => e.value}
-              // loadOptions={extendedLoadOptions}
-              // cacheUniqs={[departId, muni, municipioSel]}
+              loadOptions={extendedLoadOptions}
+              cacheUniqs={[municipioSel, departmentSel]}
               shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
                 return scrollHeight - scrollTop < 1000
               }}
-              // onChange={(e) => {
-              //   //handleMunicipios(e)
-              // }}
+              onChange={(e) => {
+                setMunicipioSel(e)
+              }}
               onBlur={(e) => { console.log('la ee es:', e) }}
-              onInputChange={(e) => { console.log('type', e) }}
+              onInputChange={(e) => { setMuni(e) }}
             />
-            {/* {errorMuni && clearMessage(5000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>} */}
+            {errorMuni && clearMessage(15000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>}
 
           </Form.Group>
         </Row>
@@ -1123,10 +1162,10 @@ export const Update = ({ setModal, setReload, preData, data, UpdateMatrizObra, G
 
         </Row>
         <div>
-          {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
+          {error && clearMessage(35000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Contrato' disabled={disableBtn} loading={disableBtn} /></div>
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value={preData.buttonUpdate} disabled={disableBtn} loading={disableBtn} /></div>
       </Form>
     </BoxForm>
   )

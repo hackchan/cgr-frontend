@@ -265,7 +265,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                 <StyledSelect
                   {...field}
                   innerRef={ref}
-                  {...register('estado', { required: 'Sector es obligatorio' })}
+                  {...register('sector', { required: 'Sector es obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
       // autoload={false}
