@@ -28,7 +28,7 @@ export const Delete = ({ data, closeModal, preData, setReload, DeleteMatrizObra,
         <Logo big />
       </div>
       <Title>{preData.delete}</Title>
-      <Message>Esta seguro que desea Eliminar el {preData.table} {data.name}?</Message>
+      <Message>Esta seguro que desea Eliminar el {preData.table} {data.nombreProyecto}?</Message>
 
       <ButtonLoading onClick={() => closeModal(false)} value='cancelar' />
       <ButtonLoading onClick={() => handleDelete()} className='danger' disabled={disableBtn} loading={disableBtn} value='Eliminar' />

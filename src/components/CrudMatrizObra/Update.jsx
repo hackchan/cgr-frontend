@@ -1161,7 +1161,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMat
           </Form.Group>
 
         </Row>
-        <div>
+        <div className='mt-4 text-center'>
           {error && clearMessage(35000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />

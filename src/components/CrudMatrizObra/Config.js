@@ -1,4 +1,4 @@
-const table = 'Matriz de Seguimiento de Obras Públicas de Infraestructura'
+const table = 'Contrato de Obra'
 export const Config = {
   pageIndex: 0,
   pageSize: 50,

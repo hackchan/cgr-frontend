@@ -8,4 +8,7 @@ export const ButtonStyled = styled(Button)`
   &.export {
     background: #94c53c !important;
   }
+  &.csv {
+    background: #f2791d !important;
+  }
 `

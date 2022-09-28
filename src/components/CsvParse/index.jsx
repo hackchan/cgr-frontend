@@ -1,26 +1,17 @@
 import React, { useState, useRef } from 'react'
 import Papa from 'papaparse'
-import { InputFile, DragArea, WrapFile, FileLoaded, IcoClose, WrapTable } from './styles'
-import { GrDocumentCsv } from 'react-icons/gr'
+import { InputFile, DragArea, WrapFile, FileLoaded, IcoClose } from './styles'
 import { Button } from '../Button'
-import { useNavigate } from 'react-router-dom'
-import { Loading } from '../../components/Loading'
-export const CsvParser = () => {
-  const navigate = useNavigate()
+import { clearMessage } from '../../utils/time'
+
+export const CsvParser = ({ setModalCsv, setReload, preData, AddMatrizObra, modedark }) => {
   const inputRef = useRef()
   const [file, setFile] = useState(false)
   const [nameFile, setNameFile] = useState('')
   const [sizeFile, setSizeFile] = useState('')
-  const [dataJson, setDataJson] = useState('')
+  const [error, setError] = useState('')
+  const [disableBtn, setDisableBtn] = useState(false)
 
-  const [tableRows, setTableRows] = useState([])
-  const [tableColumns, setTableColumns] = useState([])
-  // const TableInput = props => {
-  //   console.log('TableInput', props)
-  //   const { column, row, cell, updateData } = props
-  //   const onChange = e => updateData(row.index, column.id, e.target.value)
-  //   return <input type='number' value={cell.value} onChange={onChange} />
-  // }
   const handleUploadCSV = () => {
     const input = inputRef?.current
     const reader = new window.FileReader()
@@ -33,31 +24,21 @@ export const CsvParser = () => {
         skipEmptyLines: true,
         delimiter: '|',
         worker: undefined,
-        // step: function (results) {
-        //   console.log(results.data)
-
-        //   if (results.errors.length === 0) {
-        //     setMatrix(...matrix, results.data)
-        //   }
-        // },
-        // transform: function () {
-        //   console.log('entro tranform')
-        //   console.log(val)
-        // }
-        complete: function (result) {
-          const data = result.data
-          const headersArray = result.meta.fields
-          console.log('HEADERS:', headersArray)
-          console.log('data:', data)
-          setDataJson(result.data)
-          const headersTable = headersArray.map((header) => {
-            return { Header: header, Footer: header, accessor: header }
-          })
-          console.log('headersTable:', headersTable)
-
-          setTableRows(data)
-          setTableColumns(headersTable)
-          navigate('/load-table', { replace: true, state: { data: result.data, header: headersTable } })
+        complete: async function (result) {
+          try {
+            console.log('resul data:', result.data)
+            await AddMatrizObra(result.data)
+            setModalCsv(false)
+            setReload(true)
+          } catch (error) {
+            if (error.response) {
+              setError(error.response.data.error.message)
+            } else {
+              setError(error.message)
+            }
+          } finally {
+            setDisableBtn(false)
+          }
         },
         error: (error) => window.alert(error),
         beforeFirstChunk: () => {
@@ -69,25 +50,14 @@ export const CsvParser = () => {
     }
 
     if (file) { reader.readAsText(file) }
-    // console.log('test', inputRef.current.value)
-    // Papa.parse(inputRef.current.value, {
-    //   delimiter: '',
-    //   chunkSize: 3,
-    //   header: false,
-    //   complete: function (responses) {
-    //     console.log(responses.data.length, responses)
-    //   }
-    // })
   }
 
   const onCloseFile = (e) => {
     inputRef.current.value = ''
     setFile(false)
-    // setDataJson(null)
   }
   const handleChange = (e) => {
     try {
-      console.log('entro')
       const { target: { files } } = e
       const file = files[0]
       setFile(true)
@@ -118,17 +88,14 @@ export const CsvParser = () => {
           <InputFile ref={inputRef} type='file' onChange={handleChange} accept='text/csv' />
 
         </WrapFile>
+        <div>
+          {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
+        </div>
+        <br />
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Contrato' disabled={disableBtn} loading={disableBtn} onClick={handleUploadCSV} /></div>
+        {/* <Button color='hotpink' size={15} className={!file && 'btnoff'} value='open csv' onClick={handleUploadCSV} /> */}
 
-        <Button color='hotpink' size={15} className={!file && 'btnoff'} value='open csv' onClick={handleUploadCSV} />
-
-        {/* <button onClick={importCSV}>Click Me</button> */}
       </DragArea>
-      {/* <WrapTable>
-
-        {dataJson && <TableData
-          columnJson={tableColumns} dataJson={tableRows} style={{ background: 'red' }}
-                     />}
-      </WrapTable> */}
 
     </>
 

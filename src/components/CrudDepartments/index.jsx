@@ -327,6 +327,8 @@ export const CrudDepartmets = () => {
                 >
                   Nuevo
                 </ButtonStyled>
+
+                
                 {/* <Button
                 color='error'
                 disabled={table.getSelectedRowModel().flatRows.length === 0}

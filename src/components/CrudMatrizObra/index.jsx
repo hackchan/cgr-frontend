@@ -10,13 +10,14 @@ import { esES } from '@mui/material/locale'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { ContainerBox } from '../../styles/box'
-import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
+import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle, CloudUploadIconStyle } from '../../styles/icons'
 import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
 import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { CsvParser } from '../CsvParse'
 export const MatrizObra = () => {
   const {
     state,
@@ -54,6 +55,7 @@ export const MatrizObra = () => {
   const [error, setError] = useState('')
   const [modalShow, setModalShow] = useState(false)
   const [modalUpdateShow, setModalUpdateShow] = useState(false)
+  const [modalCsv, setModalCsv] = useState(false)
   // const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
@@ -126,6 +128,10 @@ export const MatrizObra = () => {
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizObra} modedark={state.darkMode} />
         </Modal>}
+
+      <ModalB show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update}>
+        <CsvParser setModalCsv={setModalCsv} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizObra} modedark={state.darkMode} />
+      </ModalB>
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
         <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizObra={UpdateMatrizObra} GetSectorObra={GetSectorObra} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoObra={GetEstadoObra} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetDepartamentoByIdMunicipio={GetDepartamentoByIdMunicipio} modedark={state.darkMode} />
@@ -251,6 +257,15 @@ export const MatrizObra = () => {
                   variant='contained'
                 >
                   Nuevo
+                </ButtonStyled>
+                <ButtonStyled
+                  className='csv'
+                  // style={{ background: '#94c' }}
+                  onClick={() => { setModalCsv(true) }}
+                  startIcon={<CloudUploadIconStyle />}
+                  variant='contained'
+                >
+                  Load csv
                 </ButtonStyled>
                 {/* <Button
                 color='error'

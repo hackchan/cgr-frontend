@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Edit, Delete, PlaylistAdd, Clear, Add } from '@mui/icons-material'
+import { Edit, Delete, PlaylistAdd, Clear, Add, CloudUpload } from '@mui/icons-material'
 
 export const EditIconStyle = styled(Edit)`
   font-size: 18px !important;
@@ -29,6 +29,12 @@ export const ClearIconStyle = styled(Clear)`
 `
 
 export const AddIconStyle = styled(Add)`
+  font-size: 18px !important;
+  color: white;
+  cursor: pointer;
+`
+
+export const CloudUploadIconStyle = styled(CloudUpload)`
   font-size: 18px !important;
   color: white;
   cursor: pointer;
