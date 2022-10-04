@@ -7,135 +7,49 @@ import { clearMessage } from '../../utils/time'
 import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
-import { AsyncPaginateStyled } from '../../styles/paginate'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
+export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, GetTypeUsers }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [errorMuni, setErrorMuni] = useState('')
-  const [departId, setDepartId] = useState('')
-  const [departmentSel] = useState('')
-  const [muni, setMuni] = useState('')
   const [municipioSel, setMunicipioSel] = useState('')
+
+  const formSchema = Yup.object().shape({
+    role: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(12, 'Longitud maxima es de 12 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
+    tipouser: Yup.object().shape().required('Tipo user es obligatorio!'),
+    username: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
+    nombres: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,24}$)/, 'Nombres no valido'),
+    apellidos: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,24}$)/, 'Apellidos no valido'),
+    email: Yup.string().min(3, 'Longitud minima es de 5 caracteres').matches(/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/, 'No es un email válido'),
+    celular: Yup.string().min(10, 'Longitud minima y maxima de 10').matches(/^(300|301|302|304|305|324|302|323|304|305|310|311|312|313|314|320|321|322|323|315|316|317|318|319|324|350|351)[0-9]{7}$/, 'No es un numero de celular válido'),
+    password: Yup.string()
+      .required('Password es obligatorio')
+      .min(8, 'longitud minima es de 8 caracteres')
+      .matches(/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/, 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.'),
+    confirmPwd: Yup.string()
+      .required('Confirmacion de password es obligatorio')
+      .oneOf([Yup.ref('password')], 'Passwords no coinciden')
+  })
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    resolver: yupResolver(formSchema)
   })
-  const handleDeparts = (e) => {
-    setMunicipioSel('')
-    if (e) {
-      setDepartId(e.value)
-    }
-  }
 
-  const handleMunicipios = async (e) => {
-    if (e) {
-      setMunicipioSel(e)
-    }
-  }
-
-  const extendedLoadOptions = useCallback(
-    async (search, prevOptions) => {
-      const result = await getListMunicipios(search, prevOptions, departId, muni, municipioSel)
-      return result
-    },
-    [departId, muni, municipioSel]
-  )
-
-  const getListSector = async (inputValue) => {
+  const getListTypeUsers = async (inputValue) => {
     const options = []
-    const response = await GetSectorObra()
+    const response = await GetTypeUsers()
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((sectorObra) => {
+    filter.forEach((tipouser) => {
       options.push({
-        label: sectorObra.name,
-        value: sectorObra.id
-      })
-    })
-    return options
-  }
-
-  const getListOrigenRecurso = async (inputValue) => {
-    const options = []
-    const response = await GetOrigenRecursoObra()
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
-
-    filter.forEach((origen) => {
-      options.push({
-        label: origen.name,
-        value: origen.id
-      })
-    })
-    return options
-  }
-
-  const getListEstadoObra = async (inputValue) => {
-    const options = []
-    const response = await GetEstadoObra()
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
-
-    filter.forEach((estado) => {
-      options.push({
-        label: estado.name,
-        value: estado.id
-      })
-    })
-    return options
-  }
-
-  const getListDepartamentos = async (inputValue) => {
-    const options = []
-    const response = await getDepartments()
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
-
-    filter.forEach((depart) => {
-      options.push({
-        label: depart.name,
-        value: depart.id
-      })
-    })
-    return options
-  }
-
-  const getListMunicipios = async (search, prevOptions, departId, muni, municipioSel) => {
-    if (departId) {
-      const options = []
-      const response = await GetMunicipiosByDepartment(departId)
-      const filter = response.data.filter((option) => {
-        return option.name.toLowerCase().includes(muni.toLowerCase())
-      })
-
-      filter.forEach((muni) => {
-        options.push({
-          label: muni.name,
-          value: muni.id
-        })
-      })
-      return { options }
-    } else return { options: [] }
-  }
-  const getListEntidades = async (inputValue) => {
-    const options = []
-    const response = await GetEntidad()
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
-
-    filter.forEach((entidad) => {
-      options.push({
-        label: entidad.name,
-        value: entidad.id
+        label: tipouser.name,
+        value: tipouser.id
       })
     })
     return options
@@ -143,41 +57,13 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
 
   const onSubmit = async (dataForm) => {
     try {
-      if (!municipioSel) {
-        setErrorMuni('Debe seleccionar un municipio de obra')
-        throw new Error('')
-      }
       dataForm = {
-        ...dataForm,
-        diaCorte: Number(dataForm.diaCorte),
-        mesCorte: Number(dataForm.mesCorte),
-        anioCorte: Number(dataForm.anioCorte),
-        entidad: dataForm.entidad.value,
-        estado: dataForm.estado.value,
-        origen: dataForm.origen.value,
-        sector: dataForm.sector.value,
-        valorTotalAdiciones: Number(dataForm.valorTotalAdiciones),
-        valorComprometido: Number(dataForm.valorComprometido),
-        valorObligado: Number(dataForm.valorObligado),
-        valorPagado: Number(dataForm.valorPagado),
-        valorAnticipo: Number(dataForm.valorAnticipo),
-        cantidadSuspenciones: Number(dataForm.cantidadSuspenciones),
-        cantidadProrrogas: Number(dataForm.cantidadProrrogas),
-        tiempoSuspenciones: Number(dataForm.tiempoSuspenciones),
-        tiempoProrrogas: Number(dataForm.tiempoProrrogas),
-        cantidadAdiciones: Number(dataForm.cantidadAdiciones),
-        valorContratoInicial: Number(dataForm.valorContratoInicial),
-        valorContratoFinal: Number(dataForm.valorContratoFinal),
-        avanceFisicoProgramado: Number(dataForm.avanceFisicoProgramado),
-        avanceFisicoEjecutado: Number(dataForm.avanceFisicoEjecutado),
-        avanceFinancieroEjecutado: Number(dataForm.avanceFinancieroEjecutado),
-        municipioObra: municipioSel.value
+        ...dataForm
 
       }
       delete dataForm.departamentoObra
-      console.log('dataForm2:', dataForm)
       setDisableBtn(true)
-      await AddMatrizObra([dataForm])
+      await AddUser([dataForm])
       setModalShow(false)
       setReload(true)
     } catch (error) {
@@ -195,18 +81,18 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
       <Form onSubmit={handleSubmit(onSubmit)}>
 
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidad'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+          <Form.Group as={Col} controlId='formGridListTipoUser'>
+            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
             <Controller
     // id='department'
-              name='entidad'
+              name='tipouser'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
                   {...field}
                   innerRef={ref}
-                  {...register('entidad', { required: 'Entidad es obligatorio' })}
+                  {...register('tipouser', { required: 'Tipo usuario obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
       // autoload={false}
@@ -214,16 +100,16 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                   defaultOptions
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
-                  loadOptions={getListEntidades}
+                  loadOptions={getListTypeUsers}
         // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
                 />
               )}
             />
-            {errors.entidad && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
-                {errors.entidad.message}
+            {errors.tipouser && (
+              <Form.Text className='errors' onClick={() => clearErrors('tipouser')}>
+                {errors.tipouser.message}
               </Form.Text>
             )}
 
@@ -235,15 +121,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
           <Form.Group as={Col} controlId='formGridNombre'>
             <FormLabelStyle modedark={modedark.toString()}>Nombres</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' {...register('nombres', {
-                required: 'nombres son obligatorios',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
-                pattern: {
-                  value: /(^[a-zA-ZÑñ ]{3,64}$)/,
-                  message: 'nombres no válido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' {...register('nombres')}
             />
             {errors.nombres && (
               <Form.Text className='errors' onClick={() => clearErrors('nombres')}>
@@ -272,25 +150,17 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             )}
           </Form.Group>
         </Row>
-        <Row>
+        <Row className='mb-3'>
 
           <Form.Group as={Col} controlId='formGridPhone'>
             <FormLabelStyle modedark={modedark.toString()}>Celular</FormLabelStyle>
             <Form.Control
-              type='text' placeholder='Eje. 3183895020' {...register('Celular', {
-                required: 'Celular es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
-                pattern: {
-                  value: /^(300|301|302|304|305|324|302|323|304|305|310|311|312|313|314|320|321|322|323|315|316|317|318|319|324|350|351)[0-9]{7}$/,
-                  message: 'No es un numero de celular válido'
-                }
-              })}
+              type='text' placeholder='Eje. 3183895020' {...register('celular')}
             />
 
-            {errors.Celular && (
-              <Form.Text className='errors' onClick={() => clearErrors('Celular')}>
-                {errors.Celular.message}
+            {errors.celular && (
+              <Form.Text className='errors' onClick={() => clearErrors('celular')}>
+                {errors.celular.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -298,38 +168,21 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
           <Form.Group as={Col} controlId='formGridEmail'>
             <FormLabelStyle modedark={modedark.toString()}>Email</FormLabelStyle>
             <Form.Control
-              type='text' placeholder='Eje. 3183895020' {...register('Email', {
-                required: 'Celular es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
-                pattern: {
-                  value: /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
-                  message: 'No es un email válido'
-                }
-              })}
+              type='text' placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
             />
-
-            {errors.Email && (
-              <Form.Text className='errors' onClick={() => clearErrors('Email')}>
-                {errors.Email.message}
+            {errors.email && (
+              <Form.Text className='errors' onClick={() => clearErrors('email')}>
+                {errors.email.message}
               </Form.Text>
             )}
           </Form.Group>
         </Row>
 
-        <Row>
+        <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombre'>
             <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username', {
-                required: 'Username esobligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
-                pattern: {
-                  value: /(^[0-9a-zA-Z-]{3,24}$)/,
-                  message: 'Username no valido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
             />
             {errors.username && (
               <Form.Text className='errors' onClick={() => clearErrors('username')}>
@@ -337,19 +190,23 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               </Form.Text>
             )}
           </Form.Group>
-
+          <Form.Group as={Col} controlId='formGridRole'>
+            <FormLabelStyle modedark={modedark.toString()}>Role</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. entidad' {...register('role')}
+            />
+            {errors.role && (
+              <Form.Text className='errors' onClick={() => clearErrors('role')}>
+                {errors.role.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+        <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridpassword'>
             <FormLabelStyle modedark={modedark.toString()}>password</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='password' placeholder='*******' {...register('password', {
-                required: 'password esobligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
-                pattern: {
-                  value: /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/,
-                  message: 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.'
-                }
-              })}
+              style={{ height: 38 }} type='password' placeholder='' {...register('password')}
             />
             {errors.password && (
               <Form.Text className='errors' onClick={() => clearErrors('password')}>
@@ -357,14 +214,24 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               </Form.Text>
             )}
           </Form.Group>
-
+          <Form.Group as={Col} controlId='formGridrepassword'>
+            <FormLabelStyle modedark={modedark.toString()}>confirmacion password</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='password' placeholder='' {...register('confirmPwd')}
+            />
+            {errors.confirmPwd && (
+              <Form.Text className='errors' onClick={() => clearErrors('confirmPwd')}>
+                {errors.confirmPwd.message}
+              </Form.Text>
+            )}
+          </Form.Group>
         </Row>
 
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Contrato' disabled={disableBtn} loading={disableBtn} /></div>
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Registrar Usuario' disabled={disableBtn} loading={disableBtn} /></div>
       </Form>
     </BoxForm>
   )

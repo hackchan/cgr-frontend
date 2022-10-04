@@ -51,6 +51,7 @@ export const NavBar = () => {
               menuVariant={state.darkMode ? 'dark' : 'light'}
             >
               <NavDropdown.Item as={StyledNavLink} to='/Usuarios'>Usuarios</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/tipo-user'>Tipo Usuario</NavDropdown.Item>
 
             </NavDropdown>
             <NavDropdown

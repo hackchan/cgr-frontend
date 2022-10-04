@@ -13,18 +13,12 @@ import { ContainerBox } from '../../styles/box'
 import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
 import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
-import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
-export const GestionUsurios = () => {
+export const TypeUser = () => {
   const {
-    state,
-    AddUser,
-    UpdateUser,
-    DeleteUser,
-    GetUsers,
-    GetTypeUsers
+    state, GetTypeUsers, AddTypeUsers, DeleteTypeUsers, UpdateTypeUsers
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -45,10 +39,9 @@ export const GestionUsurios = () => {
   const [isRefetching, setIsRefetching] = useState(false)
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
-  const [modalShow, setModalShow] = useState(false)
-  const [modalUpdateShow, setModalUpdateShow] = useState(false)
-  // const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
+  const [modalUpdate, setModalUpdate] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
   const [dataEliminar, setDataEliminar] = useState({})
   const [reload, setReload] = useState(false)
@@ -71,7 +64,7 @@ export const GestionUsurios = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetUsers(pagination, globalFilter, columnFilters, sorting)
+        const response = await GetTypeUsers(pagination, globalFilter, columnFilters, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
@@ -105,7 +98,7 @@ export const GestionUsurios = () => {
 
   const csvOptions = {
     quoteStrings: '"',
-    decimalSeparator: '.',
+    decimalSeparator: ',',
     fieldSeparator: '|',
     showLabels: true,
     useBom: true,
@@ -117,16 +110,19 @@ export const GestionUsurios = () => {
     <ContainerBox>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteUser={DeleteUser} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteTypeUsers={DeleteTypeUsers} modedark={state.darkMode} />
         </Modal>}
 
-      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} modedark={state.darkMode} />
-      </ModalB>
+      {modalUpdate &&
+        <Modal closeModal={setModalUpdate}>
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateTypeUsers={UpdateTypeUsers} modedark={state.darkMode} />
+        </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
-      <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddUser={AddUser} GetTypeUsers={GetTypeUsers} modedark={state.darkMode} />
-      </ModalB>
+
+      {modal &&
+        <Modal closeModal={setModal}>
+          <Register setModal={setModal} setReload={setReload} preData={preData} AddTypeUsers={AddTypeUsers} modedark={state.darkMode} />
+        </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
@@ -143,10 +139,6 @@ export const GestionUsurios = () => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
-          // muiTableHeadCellFilterTextFieldProps={{
-          //   sx: { m: '0.5rem 0', width: '100%' },
-          //   variant: 'outlined'
-          // }}
         // enableRowSelection
           enableClickToCopy
           enableColumnOrdering
@@ -225,6 +217,17 @@ export const GestionUsurios = () => {
         // onEditRowSubmit={handleSaveRow}
           onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {
+            // const handleDeactivate = () => {
+            //   table.getSelectedRowModel().flatRows.map((row) => {
+            //     console.log(row._valuesCache)
+            //     window.alert('deactivating ', row._valuesCache)
+            //   })
+            // }
+            // const handleActivate = () => {
+            //   table.getSelectedRowModel().flatRows.map((row) => {
+            //     window.alert('activating ' + row.getValue('name'))
+            //   })
+            // }
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
@@ -239,13 +242,12 @@ export const GestionUsurios = () => {
                 </ButtonStyled>
                 <ButtonStyled
                   className='new'
-                  onClick={() => { setModalShow(true) }}
+                  onClick={() => { setModal(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
                   Nuevo
                 </ButtonStyled>
-
                 {/* <Button
                 color='error'
                 disabled={table.getSelectedRowModel().flatRows.length === 0}
@@ -281,7 +283,7 @@ export const GestionUsurios = () => {
                 <EditIconStyle
                   variant='contained'
                   onClick={() => {
-                    setModalUpdateShow(true)
+                    setModalUpdate(true)
                     setDataUpdate(row.original)
 
                     //       closeMenu()
