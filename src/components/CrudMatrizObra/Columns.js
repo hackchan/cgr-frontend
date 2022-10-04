@@ -17,6 +17,7 @@ export const ColumnsTable = [
   {
     accessorFn: (row) =>
       `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
+    size: 350,
     id: 'nombreProyecto',
     header: 'Proyecto',
     Cell: ({ cell }) => (
@@ -34,6 +35,7 @@ export const ColumnsTable = [
     accessorFn: (row) =>
       `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
     id: 'objetoProyecto',
+    size: 650,
     header: 'Objeto',
     Cell: ({ cell }) => (
       <Box
@@ -75,7 +77,8 @@ export const ColumnsTable = [
   },
 
   {
-    accessorFn: (row) => parse(row.fechaProgramadaTermina, 'yyyy-MM-dd', new Date()),
+    accessorFn: (row) =>
+      parse(row.fechaProgramadaTermina, 'yyyy-MM-dd', new Date()),
     size: 350,
     id: 'fechaProgramadaTermina',
     header: 'Programada Termina',
@@ -499,7 +502,7 @@ export const ColumnsTable = [
       `${row.observaciones ? row.observaciones : 'NO ASIGNADO'}`,
     id: 'observaciones',
     header: 'Observaciones',
-    size: 350,
+    size: 650,
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
@@ -514,7 +517,7 @@ export const ColumnsTable = [
     accessorFn: (row) => `${row.linkSecop ? row.linkSecop : 'NO ASIGNADO'}`,
     id: 'linkSecop',
     header: 'Link Secop',
-    size: 450,
+    size: 650,
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
@@ -620,7 +623,7 @@ export const ColumnsTable = [
     // filterVariant: 'range',
     id: 'estado',
     header: 'Estado',
-    // size: 300,
+    size: 300,
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({

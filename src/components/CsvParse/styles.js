@@ -1,11 +1,6 @@
 import styled, { css } from 'styled-components'
 import { AiFillCloseCircle } from 'react-icons/ai'
 export const DragArea = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width:800px;
-  transform: translate(-50%, -50%);
   & h4 {
     position: absolute;
     color: white;
@@ -49,7 +44,7 @@ export const InputFile = styled.input`
   height: 100%;
   cursor: pointer;
   opacity: 0;
-  z-index: 1;
+  
 `
 
 export const FileLoaded = styled.div`

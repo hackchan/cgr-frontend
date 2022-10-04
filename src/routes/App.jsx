@@ -31,7 +31,8 @@ import { CrudEntidad } from '../components/CrudEntidad'
 import { CrudEstadoObra } from '../components/CrudEstadoObra'
 import { CrudSectorObra } from '../components/CrudSectorObra'
 import { CrudOrigenRecurso } from '../components/CrudOrigenRecurso'
-import {  MatrizObra } from '../components/CrudMatrizObra'
+import { MatrizObra } from '../components/CrudMatrizObra'
+import { GestionUsurios } from '../components/CrudGestionUsuarios'
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -59,7 +60,7 @@ export const App = () => {
         <Route path='logout' element={<Logout />} />
         <Route path='payment' element={<Payment />} />
         <Route path='succes' element={<Succes />} />
-        <Route path='usuarios' element={<Table />} />
+        <Route path='usuarios' element={<GestionUsurios />} />
         <Route path='reset' element={<ResetPassword />} />
         <Route path='newpass' element={<NewPassword />} />
 

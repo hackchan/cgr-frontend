@@ -47,6 +47,14 @@ export const NavBar = () => {
             <Nav.Link as={StyledNavLink} to='/'>Features</Nav.Link>
             <NavDropdown
               id='nav-dropdown-dark-example'
+              title='Gestion Usuarios'
+              menuVariant={state.darkMode ? 'dark' : 'light'}
+            >
+              <NavDropdown.Item as={StyledNavLink} to='/Usuarios'>Usuarios</NavDropdown.Item>
+
+            </NavDropdown>
+            <NavDropdown
+              id='nav-dropdown-dark-example'
               title='Gestion Matriz Obras'
               menuVariant={state.darkMode ? 'dark' : 'light'}
             >

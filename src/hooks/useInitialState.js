@@ -741,6 +741,96 @@ export const useInitialState = () => {
   }
 
   // Crud Gestion Usuario
+  const AddUser = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3010/api/v2/users',
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateUser = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://localhost:3010/api/v2/users/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteUser = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:3010/api/v2/users/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const GetUsers = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      console.log('payload:', payload)
+      const url = new URL('/api/v2/users', 'http://localhost:3010')
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body, status } = response.data
+      console.log('status:', status)
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const GetUserCGR = async (payload) => {
     try {
       console.log('payload:', payload)
@@ -1343,6 +1433,10 @@ export const useInitialState = () => {
     GetMatrizObras,
     DeleteMatrizObra,
     AddMatrizObra,
-    UpdateMatrizObra
+    UpdateMatrizObra,
+    AddUser,
+    UpdateUser,
+    DeleteUser,
+    GetUsers
   }
 }

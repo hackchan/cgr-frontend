@@ -143,9 +143,6 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log('dataForm1:', dataForm)
-      console.log('ref.current:', ref.current.commonProps.selectProps.value)
-      console.log('municipio seleccionado:', municipioSel)
       if (!municipioSel) {
         setErrorMuni('Debe seleccionar un municipio de obra')
         throw new Error('')
@@ -159,9 +156,6 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
         estado: dataForm.estado.value,
         origen: dataForm.origen.value,
         sector: dataForm.sector.value,
-        idContratista: Number(dataForm.idContratista),
-        idInterventoria: Number(dataForm.idInterventoria),
-        idNuevoContratista: Number(dataForm.idNuevoContratista),
         valorTotalAdiciones: Number(dataForm.valorTotalAdiciones),
         valorComprometido: Number(dataForm.valorComprometido),
         valorObligado: Number(dataForm.valorObligado),
@@ -237,8 +231,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
       // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-        // getOptionLabel={e => e.value + ' ' + e.label}
-        // getOptionValue={e => e.value}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   loadOptions={getListEntidades}
         // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
@@ -271,8 +265,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
       // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-        // getOptionLabel={e => e.value + ' ' + e.label}
-        // getOptionValue={e => e.value}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   loadOptions={getListSector}
         // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
@@ -306,6 +300,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                   noOptionsMessage={() => 'No se encontraron opciones'}
                   placeholder='Selecciona...'
                   defaultOptions
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   classNamePrefix='Select'
                   loadOptions={getListDepartamentos}
                   onChange={(e) => { onChange(e); handleDeparts(e) }}
@@ -329,8 +325,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               classNamePrefix='Select'
               defaultOptions
               placeholder='Selecciona...'
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
+              getOptionLabel={e => e.value + ' ' + e.label}
+              getOptionValue={e => e.value}
               loadOptions={extendedLoadOptions}
               cacheUniqs={[departId, muni, municipioSel]}
               shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
@@ -862,7 +858,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               style={{ height: 38 }} type='text' placeholder='eje. 985478512' {...register('idContratista', {
                 required: 'Id Contratista es obligatorio',
                 pattern: {
-                  value: /^([0-9]{1,13})$/,
+                  value: /^([0-9A-Z]{1,30})$/,
                   message: 'No es un valor valido'
                 }
               })}
@@ -1070,8 +1066,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                 // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   loadOptions={getListOrigenRecurso}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
@@ -1104,8 +1100,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                 // autoload={false}
                   placeholder='Selecciona...'
                   defaultOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
                   loadOptions={getListEstadoObra}
                   // value={currentDepartment}
                   onChange={(e) => { onChange(e) }}
