@@ -52,6 +52,7 @@ export const NavBar = () => {
             >
               <NavDropdown.Item as={StyledNavLink} to='/Usuarios'>Usuarios</NavDropdown.Item>
               <NavDropdown.Item as={StyledNavLink} to='/tipo-user'>Tipo Usuario</NavDropdown.Item>
+              <NavDropdown.Item as={StyledNavLink} to='/roles'>Roles</NavDropdown.Item>
 
             </NavDropdown>
             <NavDropdown

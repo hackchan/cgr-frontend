@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -12,10 +12,8 @@ import * as Yup from 'yup'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, GetTypeUsers }) => {
-  const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [municipioSel, setMunicipioSel] = useState('')
 
   const formSchema = Yup.object().shape({
     role: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(12, 'Longitud maxima es de 12 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),

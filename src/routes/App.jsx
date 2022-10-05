@@ -34,6 +34,7 @@ import { CrudOrigenRecurso } from '../components/CrudOrigenRecurso'
 import { MatrizObra } from '../components/CrudMatrizObra'
 import { GestionUsurios } from '../components/CrudGestionUsuarios'
 import { TypeUser } from '../components/CrudTypeUser'
+import { Roles } from '../components/CrudRoles'
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -63,6 +64,7 @@ export const App = () => {
         <Route path='succes' element={<Succes />} />
         <Route path='usuarios' element={<GestionUsurios />} />
         <Route path='tipo-user' element={<TypeUser />} />
+        <Route path='roles' element={<Roles />} />
         <Route path='reset' element={<ResetPassword />} />
         <Route path='newpass' element={<NewPassword />} />
 
