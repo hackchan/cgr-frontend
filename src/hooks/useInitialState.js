@@ -2,6 +2,7 @@ import { useState } from 'react'
 import initialState from '../initialState'
 import axios from 'axios'
 import { useLocalStorage } from './useLocalStorage'
+import config from '../config'
 export const useInitialState = () => {
   const [state, setState] = useState(initialState)
   const [auth, setAuth] = useLocalStorage('user', null)
@@ -9,10 +10,9 @@ export const useInitialState = () => {
 
   const changePass = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/login/change-password',
+        url: `http://${config.dominio}:${config.port}/api/v2/login/change-password`,
         data: {
           token: payload.token,
           newPassword: payload.password
@@ -22,7 +22,6 @@ export const useInitialState = () => {
       })
 
       const { body, status } = response.data
-      console.log('status:', status)
       return body
     } catch (error) {
       console.log(error)
@@ -34,7 +33,7 @@ export const useInitialState = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/login/recovery',
+        url: `http://${config.dominio}:${config.port}/api/v2/login/recovery`,
         data: {
           email: payload.email
         },
@@ -42,8 +41,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -54,7 +52,7 @@ export const useInitialState = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/login',
+        url: `http://${config.dominio}:${config.port}/api/v2/login`,
         data: {
           username: payload.username,
           password: payload.password
@@ -85,17 +83,15 @@ export const useInitialState = () => {
 
   const getSatelitales = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:3010/api/v2/satelital',
+        url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -105,17 +101,15 @@ export const useInitialState = () => {
 
   const AddSatelitales = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/satelital',
+        url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
         data: { name: payload.satelital },
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -125,17 +119,15 @@ export const useInitialState = () => {
 
   const DeleteSatelital = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/satelital/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/satelital/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -145,17 +137,15 @@ export const useInitialState = () => {
 
   const UpdateSatelitales = async (payload) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/satelital/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/satelital/${payload.id}`,
         data: { name: payload.name },
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -172,7 +162,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/department', 'http://localhost:3010')
+      const url = new URL('/api/v2/department', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -190,8 +180,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -201,17 +190,15 @@ export const useInitialState = () => {
 
   const AddDepartment = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/department',
+        url: `http://${config.dominio}:${config.port}/api/v2/department`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -221,17 +208,15 @@ export const useInitialState = () => {
 
   const DeleteDepartment = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/department/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/department/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -241,17 +226,15 @@ export const useInitialState = () => {
 
   const UpdateDepartment = async (payload) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/department/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/department/${payload.id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -267,8 +250,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/municipio', 'http://localhost:3010')
+      const url = new URL('/api/v2/municipio', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -277,7 +259,6 @@ export const useInitialState = () => {
       url.searchParams.set('globalFilter', globalFilter ?? '')
       url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
       url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
-      console.log('URL:', url.href)
       const response = await axios({
         method: 'get',
         url: url.href,
@@ -287,7 +268,6 @@ export const useInitialState = () => {
       })
 
       const { body, status } = response.data
-      console.log('status:', status)
       return body
     } catch (error) {
       console.log(error)
@@ -299,14 +279,13 @@ export const useInitialState = () => {
     try {
       const response = await axios({
         method: 'get',
-        url: `http://localhost:3010/api/v2/municipio/consulta/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio/consulta/${id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -318,14 +297,13 @@ export const useInitialState = () => {
     try {
       const response = await axios({
         method: 'get',
-        url: `http://localhost:3010/api/v2/municipio/consulta/department/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio/consulta/department/${id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -335,17 +313,15 @@ export const useInitialState = () => {
 
   const AddMunicipio = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/municipio',
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
       const { body, status } = response.data
-      console.log('status:', status)
       return body
     } catch (error) {
       console.log(error)
@@ -355,17 +331,15 @@ export const useInitialState = () => {
 
   const DeleteMunicipio = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/municipio/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -375,17 +349,15 @@ export const useInitialState = () => {
 
   const UpdateMunicipio = async (payload) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/municipio/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio/${payload.id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -396,17 +368,15 @@ export const useInitialState = () => {
   // Crud tipo Municipio
   const getTipoMunicipios = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:3010/api/v2/municipio-types',
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio-types`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -415,17 +385,15 @@ export const useInitialState = () => {
   }
   const AddTipoMunicipios = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/municipio-types',
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio-types`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -435,17 +403,15 @@ export const useInitialState = () => {
 
   const DeleteTipoMunicipios = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/municipio-types/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio-types/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -455,17 +421,15 @@ export const useInitialState = () => {
 
   const UpdateTipoMunicipios = async (payload) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/municipio-types/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/municipio-types/${payload.id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -476,17 +440,15 @@ export const useInitialState = () => {
   // Crud Categorias
   const getCategorias = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:3010/api/v2/categoria',
+        url: `http://${config.dominio}:${config.port}/api/v2/categoria`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -496,17 +458,15 @@ export const useInitialState = () => {
 
   const AddCategorias = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/categoria',
+        url: `http://${config.dominio}:${config.port}/api/v2/categoria`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -516,17 +476,15 @@ export const useInitialState = () => {
 
   const DeleteCategoria = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/categoria/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/categoria/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -536,17 +494,15 @@ export const useInitialState = () => {
 
   const UpdateCategoria = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/categoria/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/categoria/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -556,8 +512,7 @@ export const useInitialState = () => {
   // Crud sector
   const getSector = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/sector', 'http://localhost:3010')
+      const url = new URL('/api/v2/sector', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -575,8 +530,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -586,17 +540,15 @@ export const useInitialState = () => {
 
   const AddSector = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/sector',
+        url: `http://${config.dominio}:${config.port}/api/v2/sector`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -606,17 +558,15 @@ export const useInitialState = () => {
 
   const DeleteSector = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/sector/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/sector/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -626,17 +576,15 @@ export const useInitialState = () => {
 
   const UpdateSector = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/sector/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/sector/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -652,8 +600,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/subsector', 'http://localhost:3010')
+      const url = new URL('/api/v2/subsector', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -671,8 +618,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -682,17 +628,15 @@ export const useInitialState = () => {
 
   const AddSubSector = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/subsector',
+        url: `http://${config.dominio}:${config.port}/api/v2/subsector`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -705,14 +649,13 @@ export const useInitialState = () => {
       console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/subsector/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/subsector/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -722,17 +665,15 @@ export const useInitialState = () => {
 
   const UpdateSubSector = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/subsector/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/subsector/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -748,8 +689,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/tipouser', 'http://localhost:3010')
+      const url = new URL('/api/v2/tipouser', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -767,8 +707,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -781,14 +720,13 @@ export const useInitialState = () => {
       console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/tipouser',
+        url: `http://${config.dominio}:${config.port}/api/v2/tipouser`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -798,17 +736,15 @@ export const useInitialState = () => {
 
   const DeleteTypeUsers = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/tipouser/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/tipouser/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.date
       return body
     } catch (error) {
       console.log(error)
@@ -818,17 +754,15 @@ export const useInitialState = () => {
 
   const UpdateTypeUsers = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/tipouser/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/tipouser/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -839,17 +773,15 @@ export const useInitialState = () => {
   // Crud Gestion Usuario
   const AddUser = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/users',
+        url: `http://${config.dominio}:${config.port}/api/v2/users`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -862,14 +794,13 @@ export const useInitialState = () => {
       console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/users/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/users/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -882,14 +813,13 @@ export const useInitialState = () => {
       console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/users/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/users/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -899,8 +829,7 @@ export const useInitialState = () => {
 
   const GetUsers = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/users', 'http://localhost:3010')
+      const url = new URL('/api/v2/users', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -918,8 +847,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -929,17 +857,15 @@ export const useInitialState = () => {
 
   const GetUserCGR = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:3010/api/v2/users/cgr',
+        url: `http://${config.dominio}:${config.port}/api/v2/users/cgr`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -949,8 +875,7 @@ export const useInitialState = () => {
   // Crud Entidad
   const GetEntidad = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/entidad', 'http://localhost:3010')
+      const url = new URL('/api/v2/entidad', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -968,8 +893,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -979,17 +903,15 @@ export const useInitialState = () => {
 
   const AddEntidad = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/entidad',
+        url: `http://${config.dominio}:${config.port}/api/v2/entidad`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -999,17 +921,15 @@ export const useInitialState = () => {
 
   const DeleteEntidad = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/entidad/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/entidad/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1018,7 +938,6 @@ export const useInitialState = () => {
   }
   const UpdateEntidad = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
         url: `http://localhost:3010/api/v2/entidad/${id}`,
@@ -1027,8 +946,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1044,8 +962,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/estado-obra', 'http://localhost:3010')
+      const url = new URL('/api/v2/estado-obra', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1063,8 +980,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1077,14 +993,13 @@ export const useInitialState = () => {
       console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/estado-obra',
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-obra`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1094,17 +1009,15 @@ export const useInitialState = () => {
 
   const DeleteEstadoObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/estado-obra/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-obra/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1114,17 +1027,15 @@ export const useInitialState = () => {
 
   const UpdateEstadoObra = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/estado-obra/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-obra/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1140,8 +1051,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/sector-obra', 'http://localhost:3010')
+      const url = new URL('/api/v2/sector-obra', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1159,8 +1069,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1170,17 +1079,15 @@ export const useInitialState = () => {
 
   const AddSectorObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/sector-obra',
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-obra`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1190,17 +1097,15 @@ export const useInitialState = () => {
 
   const DeleteSectorObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/sector-obra/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-obra/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1213,14 +1118,13 @@ export const useInitialState = () => {
       console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/sector-obra/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-obra/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1236,8 +1140,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/origen-recurso', 'http://localhost:3010')
+      const url = new URL('/api/v2/origen-recurso', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1255,8 +1158,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1266,17 +1168,15 @@ export const useInitialState = () => {
 
   const AddOrigenRecursoObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/origen-recurso',
+        url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1286,17 +1186,15 @@ export const useInitialState = () => {
 
   const DeleteOrigenRecursoObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/origen-recurso/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1306,17 +1204,15 @@ export const useInitialState = () => {
 
   const UpdateOrigenRecursoObra = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/origen-recurso/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1332,8 +1228,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/obra', 'http://localhost:3010')
+      const url = new URL('/api/v2/obra', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1351,8 +1246,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1362,17 +1256,15 @@ export const useInitialState = () => {
 
   const AddMatrizObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/obra',
+        url: `http://${config.dominio}:${config.port}/api/v2/obra`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1382,17 +1274,15 @@ export const useInitialState = () => {
 
   const DeleteMatrizObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/obra/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/obra/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1402,17 +1292,15 @@ export const useInitialState = () => {
 
   const UpdateMatrizObra = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/obra/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/obra/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1428,8 +1316,7 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      console.log('payload:', payload)
-      const url = new URL('/api/v2/role', 'http://localhost:3010')
+      const url = new URL('/api/v2/role', `http://${config.dominio}:${config.port}`)
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1447,7 +1334,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1457,17 +1344,15 @@ export const useInitialState = () => {
 
   const AddRole = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3010/api/v2/role',
+        url: `http://${config.dominio}:${config.port}/api/v2/role`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1477,17 +1362,15 @@ export const useInitialState = () => {
 
   const DeleteRole = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:3010/api/v2/role/${payload.id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/role/${payload.id}`,
         data: {},
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -1500,14 +1383,13 @@ export const useInitialState = () => {
       console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
-        url: `http://localhost:3010/api/v2/role/${id}`,
+        url: `http://${config.dominio}:${config.port}/api/v2/role/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
-      console.log('status:', status)
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
