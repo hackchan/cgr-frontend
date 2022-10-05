@@ -1,8 +1,5 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 export default {
-  dominio: process.env.DOMINIO,
-  port: process.env.PORT ?? 3010
+  dominio: '192.168.41.17',
+  port: '3010' ?? 3010
 
 }
