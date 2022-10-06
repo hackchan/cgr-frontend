@@ -21,7 +21,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -267,7 +267,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -321,7 +321,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body, status } = response.data
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)
@@ -744,7 +744,7 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
 
-      const { body } = response.date
+      const { body } = response.data
       return body
     } catch (error) {
       console.log(error)

@@ -9,20 +9,21 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
+import { roRO } from '@mui/material/locale'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, GetTypeUsers }) => {
+export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, modedark, GetTypeUsers }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
 
   const formSchema = Yup.object().shape({
-    role: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(12, 'Longitud maxima es de 12 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
-    tipouser: Yup.object().shape().required('Tipo user es obligatorio!'),
+    tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
+    role: Yup.object().shape().required('Role obligatorio'),
     username: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
-    nombres: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,24}$)/, 'Nombres no valido'),
-    apellidos: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,24}$)/, 'Apellidos no valido'),
+    name: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,64}$)/, 'Nombres no valido'),
+    lastName: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,64}$)/, 'Apellidos no valido'),
     email: Yup.string().min(3, 'Longitud minima es de 5 caracteres').matches(/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/, 'No es un email válido'),
-    celular: Yup.string().min(10, 'Longitud minima y maxima de 10').matches(/^(300|301|302|304|305|324|302|323|304|305|310|311|312|313|314|320|321|322|323|315|316|317|318|319|324|350|351)[0-9]{7}$/, 'No es un numero de celular válido'),
+    phone: Yup.string().min(10, 'Longitud minima y maxima de 10').matches(/^(300|301|302|304|305|324|302|323|304|305|310|311|312|313|314|320|321|322|323|315|316|317|318|319|324|350|351)[0-9]{7}$/, 'No es un numero de celular válido'),
     password: Yup.string()
       .required('Password es obligatorio')
       .min(8, 'longitud minima es de 8 caracteres')
@@ -53,15 +54,38 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
     return options
   }
 
+  const getRolesList = async (inputValue) => {
+    const options = []
+    const response = await GetRoles()
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((role) => {
+      options.push({
+        label: role.name,
+        value: role.id
+      })
+    })
+    return options
+  }
+
   const onSubmit = async (dataForm) => {
     try {
+      console.log('dataForm:', dataForm)
       dataForm = {
-        ...dataForm
+        ...dataForm,
+        tipo: dataForm.tipo.value,
+        auth: { username: dataForm.username, password: dataForm.password, role: [dataForm.role.label] }
 
       }
-      delete dataForm.departamentoObra
+      delete dataForm.role
+      delete dataForm.confirmPwd
+      delete dataForm.username
+      delete dataForm.password
+      console.log('dataForm2-->>>:', dataForm)
       setDisableBtn(true)
-      await AddUser([dataForm])
+      await AddUser(dataForm)
       setModalShow(false)
       setReload(true)
     } catch (error) {
@@ -79,18 +103,18 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
       <Form onSubmit={handleSubmit(onSubmit)}>
 
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListTipoUser'>
+          <Form.Group as={Col} controlId='formGridListtipo'>
             <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
             <Controller
     // id='department'
-              name='tipouser'
+              name='tipo'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
                   {...field}
                   innerRef={ref}
-                  {...register('tipouser', { required: 'Tipo usuario obligatorio' })}
+                  {...register('tipo')}
                   isClearable
                   classNamePrefix='Select'
       // autoload={false}
@@ -105,9 +129,9 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
                 />
               )}
             />
-            {errors.tipouser && (
-              <Form.Text className='errors' onClick={() => clearErrors('tipouser')}>
-                {errors.tipouser.message}
+            {errors.tipo && (
+              <Form.Text className='errors' onClick={() => clearErrors('tipo')}>
+                {errors.tipo.message}
               </Form.Text>
             )}
 
@@ -119,11 +143,11 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
           <Form.Group as={Col} controlId='formGridNombre'>
             <FormLabelStyle modedark={modedark.toString()}>Nombres</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' {...register('nombres')}
+              style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' {...register('name')}
             />
-            {errors.nombres && (
-              <Form.Text className='errors' onClick={() => clearErrors('nombres')}>
-                {errors.nombres.message}
+            {errors.name && (
+              <Form.Text className='errors' onClick={() => clearErrors('name')}>
+                {errors.name.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -131,7 +155,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
           <Form.Group as={Col} controlId='formGridApellido'>
             <FormLabelStyle modedark={modedark.toString()}>Apellidos</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Rojas Martha' {...register('apellidos', {
+              style={{ height: 38 }} type='text' placeholder='Eje. Rojas Martha' {...register('lastName', {
                 required: 'apellidos son obligatorios',
                 minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
                 maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
@@ -141,9 +165,9 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
                 }
               })}
             />
-            {errors.apellidos && (
-              <Form.Text className='errors' onClick={() => clearErrors('apellidos')}>
-                {errors.apellidos.message}
+            {errors.lastName && (
+              <Form.Text className='errors' onClick={() => clearErrors('lastName')}>
+                {errors.lastName.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -153,12 +177,12 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
           <Form.Group as={Col} controlId='formGridPhone'>
             <FormLabelStyle modedark={modedark.toString()}>Celular</FormLabelStyle>
             <Form.Control
-              type='text' placeholder='Eje. 3183895020' {...register('celular')}
+              type='text' placeholder='Eje. 3183895020' {...register('phone')}
             />
 
-            {errors.celular && (
-              <Form.Text className='errors' onClick={() => clearErrors('celular')}>
-                {errors.celular.message}
+            {errors.phone && (
+              <Form.Text className='errors' onClick={() => clearErrors('phone')}>
+                {errors.phone.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -188,16 +212,38 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, modedark, 
               </Form.Text>
             )}
           </Form.Group>
-          <Form.Group as={Col} controlId='formGridRole'>
-            <FormLabelStyle modedark={modedark.toString()}>Role</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. entidad' {...register('role')}
+          <Form.Group as={Col} controlId='formGridListRoles'>
+            <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
+            <Controller
+    // id='department'
+              name='role'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('role')}
+                  isClearable
+                  classNamePrefix='Select'
+      // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getRolesList}
+        // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
             />
             {errors.role && (
               <Form.Text className='errors' onClick={() => clearErrors('role')}>
                 {errors.role.message}
               </Form.Text>
             )}
+
           </Form.Group>
         </Row>
         <Row className='mb-3'>
