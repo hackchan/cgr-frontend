@@ -9,8 +9,8 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import { roRO } from '@mui/material/locale'
 
+import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, modedark, GetTypeUsers }) => {
   const [disableBtn, setDisableBtn] = useState(false)
@@ -19,6 +19,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
   const formSchema = Yup.object().shape({
     tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
     role: Yup.object().shape().required('Role obligatorio'),
+    image: Yup.string(),
     username: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
     name: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,64}$)/, 'Nombres no valido'),
     lastName: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,64}$)/, 'Apellidos no valido'),
@@ -100,38 +101,34 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
   }
   return (
     <BoxForm modedark={modedark}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
 
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListtipo'>
-            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
+          <Form.Group as={Col} controlId='formGridNombre'>
+            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
+            />
+            {errors.username && (
+              <Form.Text className='errors' onClick={() => clearErrors('username')}>
+                {errors.username.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+          <Form.Group as={Col} controlId='formImage'>
+            <FormLabelStyle modedark={modedark.toString()}>Avatar</FormLabelStyle>
             <Controller
     // id='department'
-              name='tipo'
+              name='image'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('tipo')}
-                  isClearable
-                  classNamePrefix='Select'
-      // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={getListTypeUsers}
-        // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
-                />
+                <UploadAvatar />
               )}
             />
-            {errors.tipo && (
-              <Form.Text className='errors' onClick={() => clearErrors('tipo')}>
-                {errors.tipo.message}
+            {errors.image && (
+              <Form.Text className='errors' onClick={() => clearErrors('image')}>
+                {errors.image.message}
               </Form.Text>
             )}
 
@@ -201,17 +198,40 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
         </Row>
 
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridNombre'>
-            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
+          <Form.Group as={Col} controlId='formGridListtipo'>
+            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
+            <Controller
+    // id='department'
+              name='tipo'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('tipo')}
+                  isClearable
+                  classNamePrefix='Select'
+      // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
+                  loadOptions={getListTypeUsers}
+        // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
             />
-            {errors.username && (
-              <Form.Text className='errors' onClick={() => clearErrors('username')}>
-                {errors.username.message}
+            {errors.tipo && (
+              <Form.Text className='errors' onClick={() => clearErrors('tipo')}>
+                {errors.tipo.message}
               </Form.Text>
             )}
+
           </Form.Group>
+
           <Form.Group as={Col} controlId='formGridListRoles'>
             <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
             <Controller

@@ -85,9 +85,6 @@ export const CrudMunicipios = () => {
     sorting,
     reload])
 
-  const handleSaveRow = ({ row }) => {
-  }
-
   const handleExportData = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
   }
@@ -125,10 +122,8 @@ export const CrudMunicipios = () => {
           columns={columns}
           data={data}
           localization={preData.localization}
-          initialState={preData.initialState}
-          enableMultiSort
-          enableGlobalFilter
-          positionGlobalFilter='right'
+          getRowId={(row) => row.id}
+          initialState={{ showColumnFilters: false, density: 'compact' }}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
@@ -136,51 +131,18 @@ export const CrudMunicipios = () => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
-        // enableRowSelection
-          enableClickToCopy
-          enableStickyHeader
-          enableStickyFooter
-          enableColumnOrdering
-          enableColumnDragging
-          enableColumnResizing
-          enablePinning
-        // enableRowOrdering
-          onRowDrop={({ draggedRow, targetRow }) => {
-            if (targetRow) {
-              data.splice(targetRow.index, 0, data.splice(draggedRow.index, 1)[0])
-              setData([...data])
-            }
-          }}
-        // enablePagination
-          muiTablePaginationProps={{
-            labelRowsPerPage: 'filas por página',
-            rowsPerPageOptions: [12, 20, 50, 100],
-            showFirstButton: true,
-            showLastButton: true,
-            SelectProps: { native: true }
-          }}
-          enableRowActions
-          positionActionsColumn='last'
-          positionPagination='both'
+          manualFiltering
           manualPagination
           manualSorting
-          onColumnFiltersChange={setColumnFilters}
-          onGlobalFilterChange={setGlobalFilter}
-          onPaginationChange={setPagination}
-          onSortingChange={setSorting}
-          editingMode='cell'
-        // enableEditing
-        // paginateExpandedRows
-        // onPaginationChange
-          muiSearchTextFieldProps={{
-
-            variant: 'outlined',
-            placeholder: 'Busqueda global',
-            label: 'Buscar',
-            InputLabelProps: { shrink: true }
-
-          }}
-          muiToolbarAlertBannerChipProps={
+          enableRowActions
+          // enableClickToCopy
+          // enableColumnDragging
+          // enableColumnResizing
+          positionActionsColumn='last'
+          enableRowNumbers
+          enableRowVirtualization
+          virtualizerProps={{ overscan: 20 }}
+          muiToolbarAlertBannerProps={
         isError
           ? {
               color: 'error',
@@ -188,6 +150,11 @@ export const CrudMunicipios = () => {
             }
           : undefined
       }
+          onColumnFiltersChange={setColumnFilters}
+          onGlobalFilterChange={setGlobalFilter}
+          onPaginationChange={setPagination}
+          onSortingChange={setSorting}
+          rowCount={rowCount}
           state={{
             columnFilters,
             globalFilter,
@@ -197,11 +164,12 @@ export const CrudMunicipios = () => {
             showProgressBars: isRefetching,
             sorting
           }}
-          enableBottomToolbar
-          rowCount={rowCount}
-          positionToolbarAlertBanner='bottom'
-        // onEditRowSubmit={handleSaveRow}
-          onCellEditBlur={handleSaveRow}
+          muiTablePaginationProps={{
+            labelRowsPerPage: 'filas por página',
+            showFirstButton: true,
+            showLastButton: true,
+            SelectProps: { native: true }
+          }}
           renderTopToolbarCustomActions={({ table }) => {
             return (
               <Box

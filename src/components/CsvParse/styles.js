@@ -28,7 +28,7 @@ export const WrapFile = styled.div`
     props.file &&
     css`
        {
-        background: rgba(255,255,255,.3);
+        background: rgba(22,25,255,.3);
       }
     `}
 
