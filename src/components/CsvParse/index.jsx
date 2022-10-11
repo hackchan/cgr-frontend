@@ -11,7 +11,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { MatrizObraError } from '../CsvTableErrorObras'
-import { object, string, number, date, InferType, array } from 'yup'
+
 export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetEntidad, modedark }) => {
   const inputRef = useRef()
   const [file, setFile] = useState(false)
@@ -49,74 +49,77 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
     reader.onloadend = ({ target }) => {
       Papa.parse(target.result, {
         header: true,
-        dynamicTyping: true,
+        dynamicTyping: false,
         skipEmptyLines: 'greedy',
         delimiter: '|',
-        // transform: (val, col) => {
-        //   if (col === 'idBpin' ||
-        //      col === 'idContrato' ||
-        //      col === 'nombreProyecto' ||
-        //      col === 'objetoProyecto' ||
-        //      col === 'unidadFuncional' ||
-        //      col === 'razonSocialContratista' ||
-        //      col === 'idContratista' ||
-        //      col === 'razonSocialNuevoContratista' ||
-        //      col === 'idNuevoContratista' ||
-        //      col === 'observaciones' ||
-        //      col === 'linkSecop' ||
-        //      col === 'nroContratoInterventoria' ||
-        //      col === 'nombreInterventoria' ||
-        //      col === 'idInterventoria') {
-        //     return val.toString()
-        //   } else if (
-        //     col === 'cantidadSuspenciones' ||
-        //      col === 'cantidadProrrogas' ||
-        //      col === 'tiempoSuspenciones' ||
-        //      col === 'tiempoProrrogas' ||
-        //      col === 'cantidadAdiciones' ||
-        //      col === 'diaCorte' ||
-        //      col === 'mesCorte' ||
-        //      col === 'anioCorte' ||
-        //      col === 'sector' ||
-        //      col === 'origen' ||
-        //      col === 'estado' ||
-        //      col === 'entidad' ||
-        //      col === 'municipioObra'
-        //   ) { return parseInt(val) } else if (col === 'valorContratoInicial' ||
-        //      col === 'valorContratoFinal' ||
-        //      col === 'avanceFisicoProgramado' ||
-        //      col === 'avanceFisicoEjecutado' ||
-        //      col === 'avanceFinancieroEjecutado' ||
-        //      col === 'valorTotalAdiciones' ||
-        //      col === 'valorComprometido' ||
-        //      col === 'valorObligado' ||
-        //      col === 'valorPagado' ||
-        //      col === 'valorAnticipo'
-        //   ) { return parseFloat(val) } else return val
-        // },
+        transform: (val, col) => {
+          if (col === 'idBpin' ||
+             col === 'idContrato' ||
+             col === 'nombreProyecto' ||
+             col === 'objetoProyecto' ||
+             col === 'unidadFuncional' ||
+             col === 'razonSocialContratista' ||
+             col === 'idContratista' ||
+             col === 'razonSocialNuevoContratista' ||
+             col === 'idNuevoContratista' ||
+             col === 'observaciones' ||
+             col === 'linkSecop' ||
+             col === 'nroContratoInterventoria' ||
+             col === 'nombreInterventoria' ||
+             col === 'idInterventoria') {
+            return val.toString()
+          } else if (
+            col === 'cantidadSuspenciones' ||
+             col === 'cantidadProrrogas' ||
+             col === 'tiempoSuspenciones' ||
+             col === 'tiempoProrrogas' ||
+             col === 'cantidadAdiciones' ||
+             col === 'diaCorte' ||
+             col === 'mesCorte' ||
+             col === 'anioCorte' ||
+             col === 'sector' ||
+             col === 'origen' ||
+             col === 'estado' ||
+             col === 'entidad' ||
+             col === 'municipioObra'
+          ) { return parseInt(val) } else if (col === 'valorContratoInicial' ||
+             col === 'valorContratoFinal' ||
+             col === 'avanceFisicoProgramado' ||
+             col === 'avanceFisicoEjecutado' ||
+             col === 'avanceFinancieroEjecutado' ||
+             col === 'valorTotalAdiciones' ||
+             col === 'valorComprometido' ||
+             col === 'valorObligado' ||
+             col === 'valorPagado' ||
+             col === 'valorAnticipo'
+          ) { return parseFloat(val) } else return val
+        },
 
         // transform: async function (result) {
         //   console.log('result:', result)
         // },
         complete: async function (result) {
           try {
-            const obrasSchema = array().of(object(
-              { municipioObra: number().integer().min(1).typeError('lalala') }))
+            // const obrasSchema = array().of(object(
+            //   {
+            //     idBpin: string('debe ser un cadena').min(2, 'longitud minima de 2 caracteres').max(20, 'longitud maxima de 20 caracteres').matches(/(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/, 'no coincide con el patrón requerido alfanumerico'),
+            //     municipioObra: number().integer().min(1).typeError('debe ser un numero entero')
+            //   }))
 
             // const csvArray = result.data.map((row) => {
             //   return { ...row, entidad: entidadId }
             // })
             setData(result.data)
-            console.log(result.data)
-            const user = obrasSchema.validateSync(JSON.stringify(result.data), { abortEarly: false })
-            console.log('validate===>', user)
+            // console.log(result.data)
+            // const user = obrasSchema.validateSync(JSON.stringify(result.data), { abortEarly: false })
+            // console.log('validate===>', user)
 
             // console.log('resul data:', JSON.stringify(csvArray))
             // await MatrizCargada(JSON.stringify(csvArray))
-            setModalCsv(false)
-            setReload(true)
+            // setModalCsv(false)
+            // setReload(true)
           } catch (error) {
-            // console.log('el error es:', error.inner)
+            console.log('el error es:', error.inner)
             // console.log('detail:', error.inner.ValidationError[0])
             setErrorDetail(error.inner)
             if (error.response) {
@@ -144,6 +147,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
     inputRef.current.value = ''
     setFile(false)
     setError('')
+    setData([])
   }
   const handleChange = (e) => {
     try {
@@ -236,7 +240,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
             {error && <p><span className='errors'>{error}</span></p>}
           </div>
           <div>
-            {error && (<MatrizObraError data={data} errorDetail={errorDetail} />)}
+            {data.length > 0 && (<MatrizObraError data={data} errorDetail={errorDetail} />)}
           </div>
           <br />
           <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Cargar CSV' disabled={disableBtn} loading={disableBtn} /></div>
