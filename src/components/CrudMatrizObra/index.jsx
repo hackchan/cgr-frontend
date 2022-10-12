@@ -265,7 +265,7 @@ export const MatrizObra = () => {
                   startIcon={<CloudUploadIconStyle />}
                   variant='contained'
                 >
-                  Load csv
+                  Cargar csv
                 </ButtonStyled>
                 {/* <Button
                 color='error'

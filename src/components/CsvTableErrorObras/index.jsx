@@ -26,21 +26,29 @@ export const MatrizObraError = ({ data }) => {
   const [error, setError] = useState('')
   const [upload, setUpload] = useState(true)
   const [validationErrors, setValidationErrors] = useState({})
-  const [municipios, setMunicipios] = useState([{ id: 1, name: 'CUCUTA' }])
+  const [totalError, setTotalError] = useState(0)
+  const [municipios, setMunicipios] = useState([])
   const [progress, setProgress] = useState(false)
   const usStates = [
     { name: 'Alabama', id: 1 }
 
   ]
-  const fetchMyAPI = useCallback(async () => {
-    const munis = await getMunicipios()
-    console.log('munissssss', munis)
-    setMunicipios(munis.data)
-  }, [municipios])
-  useEffect(() => {
-    fetchMyAPI()
-  }, [])
+  // const fetchMyAPI = useCallback(async () => {
+  //   const munis = await getMunicipios()
+  //   console.log('munissssss', munis)
+  //   setMunicipios(munis.data)
+  // }, [municipios])
+  // useEffect(() => {
+  //   fetchMyAPI()
+  // }, [])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMunicipios()
+      setMunicipios(response.data)
+    }
+    fetchData()
+  })
   const getCommonEditTextFieldProps = useCallback(
     (cell) => {
       return {
@@ -98,26 +106,34 @@ export const MatrizObraError = ({ data }) => {
       accessorKey: 'sector',
       header: 'sector'
     },
-
     {
       accessorKey: 'municipioObra',
       header: 'municipioObra',
       muiTableBodyCellEditTextFieldProps: {
-        select: true, // change to select for a dropdown
-        children: municipios?.map((state) => {
-          console.log(' E L  S T A T E:', state)
-          return (
-            <MenuItem key={state.id} value={state.id}>
-              {state.name}
-            </MenuItem>
-          )
-        })
+        required: true,
+        type: 'number'
       }
-      // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-      //   // ...getCommonEditTextFieldProps(cell),
-      //   type: 'select'
-      // })
     },
+
+    // {
+    //   accessorKey: 'municipioObra',
+    //   header: 'municipioObra',
+    //   muiTableBodyCellEditTextFieldProps: {
+    //     select: true, // change to select for a dropdown
+    //     children: municipios?.map((state) => {
+    //       console.log(' E L  S T A T E:', state)
+    //       return (
+    //         <MenuItem key={state.id} value={state.id}>
+    //           {state.name}
+    //         </MenuItem>
+    //       )
+    //     })
+    //   }
+    //   // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+    //   //   // ...getCommonEditTextFieldProps(cell),
+    //   //   type: 'select'
+    //   // })
+    // },
 
     {
       accessorKey: 'nombreProyecto',
@@ -136,21 +152,37 @@ export const MatrizObraError = ({ data }) => {
 
     {
       accessorKey: 'fechaSuscripcion',
-      header: 'fechaSuscripcion'
+      header: 'fechaSuscripcion',
+      muiTableBodyCellEditTextFieldProps: {
+        required: true,
+        type: 'date'
+      }
     },
 
     {
       accessorKey: 'fechaInicio',
-      header: 'fechaInicio'
+      header: 'fechaInicio',
+      muiTableBodyCellEditTextFieldProps: {
+        required: true,
+        type: 'date'
+      }
     },
     {
       accessorKey: 'fechaProgramadaTermina',
-      header: 'fechaProgramadaTermina'
+      header: 'fechaProgramadaTermina',
+      muiTableBodyCellEditTextFieldProps: {
+        required: true,
+        type: 'date'
+      }
     },
 
     {
       accessorKey: 'fechaTermina',
-      header: 'fechaTermina'
+      header: 'fechaTermina',
+      muiTableBodyCellEditTextFieldProps: {
+        required: true,
+        type: 'date'
+      }
     },
 
     {
@@ -326,13 +358,15 @@ export const MatrizObraError = ({ data }) => {
       accessorKey: 'anioCorte',
       header: 'anioCorte'
     }
-  ], [getCommonEditTextFieldProps])
+  ], [])
 
   const handleUploadData = (rows) => {
     console.log(tableData)
   }
   const handleValidateData = (rows) => {
     try {
+      setTotalError(0)
+      setError('')
       setProgress(true)
       setErrorDetail([])
       console.log('data a validar es:', tableData)
@@ -340,7 +374,7 @@ export const MatrizObraError = ({ data }) => {
       const obrasSchema = array().of(object(
         {
           idBpin: string('debe ser un cadena').min(2, 'longitud minima de 2 caracteres').max(20, 'longitud maxima de 20 caracteres').matches(/(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/, 'no coincide con el patrón requerido alfanumerico'),
-          municipioObra: number().integer().min(1).typeError('debe ser un numero entero'),
+          municipioObra: number().integer().min(1, 'debe ser un entero mayor a 0').typeError('debe ser un numero entero'),
           valorContratoInicial: number().positive()
             .test(
               'is-decimal',
@@ -366,6 +400,7 @@ export const MatrizObraError = ({ data }) => {
       console.log('el error es:', error.inner)
       // console.log('detail:', error.inner.ValidationError[0])
       setErrorDetail(error.inner)
+      setTotalError(error.inner.length)
       if (error.response) {
         setError(error.response.data.error.message)
       } else {
@@ -389,6 +424,13 @@ export const MatrizObraError = ({ data }) => {
   const handleSaveCell = (cell, value) => {
     setProgress(true)
     setUpload(true)
+    console.log('cell:', cell)
+    console.log('value:', value)
+    console.log('cell.row.index:', cell.row.index)
+    console.log('cell.column.id:', cell.column.id)
+    if (cell.column.id === 'municipioObra') {
+      value = parseInt(value)
+    }
     setTimeout(() => {
       tableData[cell.row.index][cell.column.id] = value
       setTableData([...tableData])
@@ -411,6 +453,7 @@ export const MatrizObraError = ({ data }) => {
   return (
     <ContainerBox>
       <ThemeProvider theme={theme}>
+        {error && <p><span className='errors'>{`total de errores ${totalError}`}</span></p>}
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
             hover: true,
@@ -490,6 +533,7 @@ export const MatrizObraError = ({ data }) => {
           }}
 
         />
+
       </ThemeProvider>
 
     </ContainerBox>

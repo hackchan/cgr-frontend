@@ -140,7 +140,7 @@ export const GlobalStyle = createGlobalStyle`
     .errors::before {
         transition: .3s;
         font-size: 18px;
-        content: '🚀';
+        content: '💥';
         display: flex;
         justify-content: center;
         align-items: center;

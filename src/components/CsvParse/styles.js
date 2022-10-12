@@ -4,7 +4,7 @@ export const DragArea = styled.div`
   & h4 {
     position: absolute;
     color: white;
-    z-index: -999;
+    
     ${(props) =>
       props.file &&
       css`
@@ -28,7 +28,7 @@ export const WrapFile = styled.div`
     props.file &&
     css`
        {
-        background: rgba(22,25,255,.3);
+        background: rgba(2,2,2,.3);
       }
     `}
 
@@ -72,7 +72,7 @@ export const IcoClose = styled(AiFillCloseCircle)`
   position: absolute;
   top: 5px;
   right: 5px;
-  z-index:10;
+  z-index:1;
   cursor: pointer;
 `
 
