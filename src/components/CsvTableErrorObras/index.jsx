@@ -1,13 +1,13 @@
 
 import React, { useMemo, useState, useContext, useEffect, useCallback } from 'react'
-import { ColumnsTable } from './Columns'
 import MaterialReactTable from 'material-react-table'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { ContainerBox } from '../../styles/box'
-import { Box, createTheme, ThemeProvider, MenuItem } from '@mui/material'
+import { Box, createTheme, ThemeProvider, MenuItem, Link as MuiLink } from '@mui/material'
 import { esES } from '@mui/material/locale'
 import { ButtonStyled } from '../../styles/button'
 import { object, string, number, array } from 'yup'
+import { Link } from 'react-router-dom'
 
 const validateRequired = (value) => !!value.length
 const validateEmail = (email) =>
@@ -26,7 +26,20 @@ export const MatrizObraError = ({ data }) => {
   const [error, setError] = useState('')
   const [upload, setUpload] = useState(true)
   const [validationErrors, setValidationErrors] = useState({})
-  const [municipios, setMunicipios] = useState([])
+  const [municipios, setMunicipios] = useState([{ id: 1, name: 'CUCUTA' }])
+  const [progress, setProgress] = useState(false)
+  const usStates = [
+    { name: 'Alabama', id: 1 }
+
+  ]
+  const fetchMyAPI = useCallback(async () => {
+    const munis = await getMunicipios()
+    console.log('munissssss', munis)
+    setMunicipios(munis.data)
+  }, [municipios])
+  useEffect(() => {
+    fetchMyAPI()
+  }, [])
 
   const getCommonEditTextFieldProps = useCallback(
     (cell) => {
@@ -91,10 +104,10 @@ export const MatrizObraError = ({ data }) => {
       header: 'municipioObra',
       muiTableBodyCellEditTextFieldProps: {
         select: true, // change to select for a dropdown
-        children: municipios.map((state) => {
+        children: municipios?.map((state) => {
           console.log(' E L  S T A T E:', state)
           return (
-            <MenuItem key={state.name} value={state.name}>
+            <MenuItem key={state.id} value={state.id}>
               {state.name}
             </MenuItem>
           )
@@ -270,8 +283,15 @@ export const MatrizObraError = ({ data }) => {
 
     {
       accessorKey: 'linkSecop',
+      disableFilters: true,
+      enableGlobalFilter: false,
       header: 'linkSecop',
-      size: 250
+      Cell: ({ cell, row }) => (
+        <a href={cell.getValue()} target='_blank' rel='noreferrer'>
+          {row.original?.linkSecop}
+        </a>
+      )
+
     },
 
     {
@@ -313,6 +333,7 @@ export const MatrizObraError = ({ data }) => {
   }
   const handleValidateData = (rows) => {
     try {
+      setProgress(true)
       setErrorDetail([])
       console.log('data a validar es:', tableData)
       const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
@@ -350,6 +371,8 @@ export const MatrizObraError = ({ data }) => {
       } else {
         setError(error.message)
       }
+    } finally {
+      setProgress(false)
     }
   }
   const handleSaveRow = async ({ exitEditingMode, row, values }) => {
@@ -363,14 +386,15 @@ export const MatrizObraError = ({ data }) => {
     exitEditingMode() // required to exit editing mode
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const munis = await getMunicipios()
-      console.log('munis:', munis.data)
-      setMunicipios(munis.data)
-    }
-    fetchData()
-  }, [])
+  const handleSaveCell = (cell, value) => {
+    setProgress(true)
+    setUpload(true)
+    setTimeout(() => {
+      tableData[cell.row.index][cell.column.id] = value
+      setTableData([...tableData])
+      setProgress(false)
+    }, 200)
+  }
 
   useEffect(() => {
     const relationError = {}
@@ -389,6 +413,7 @@ export const MatrizObraError = ({ data }) => {
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
+            hover: true,
             sx: {
               backgroundColor: row.index % 2 === 0 ? 'rgba(52, 54, 245, 0.08)' : ''
             }
@@ -421,13 +446,20 @@ export const MatrizObraError = ({ data }) => {
           enableSorting={false}
           enableBottomToolbar
           enableTopToolbar
-          muiTableBodyRowProps={{ hover: true }}
-          editingMode='row'
+          editingMode='cell'
           enableEditing
-          onEditingRowSave={handleSaveRow}
+          muiTableBodyCellEditTextFieldProps={({ cell }) => ({
+            onBlur: (event) => {
+              handleSaveCell(cell, event.target.value)
+            }
+          })}
+          // onEditingRowSave={handleSaveRow}
           initialState={{
             columnVisibility: { description: false },
             density: 'compact'
+          }}
+          state={{
+            showProgressBars: progress
           }}
           renderTopToolbarCustomActions={({ table }) => {
             return (
