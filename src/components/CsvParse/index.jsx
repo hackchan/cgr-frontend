@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react'
 import Papa from 'papaparse'
 import { InputFile, DragArea, WrapFile, FileLoaded, IcoClose } from './styles'
 import { ButtonLoading as Button } from '../ButtonLoading'
-import { clearMessage } from '../../utils/time'
 
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -49,7 +48,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
     reader.onloadend = ({ target }) => {
       Papa.parse(target.result, {
         header: true,
-        dynamicTyping: false,
+        dynamicTyping: true,
         skipEmptyLines: 'greedy',
         delimiter: '|',
         transform: (val, col) => {
@@ -82,7 +81,11 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
              col === 'estado' ||
              col === 'entidad' ||
              col === 'municipioObra'
-          ) { return parseInt(val) } else if (col === 'valorContratoInicial' ||
+          ) {
+            if (!isNaN(parseInt(val))) {
+              return parseInt(val)
+            } else { return val }
+          } else if (col === 'valorContratoInicial' ||
              col === 'valorContratoFinal' ||
              col === 'avanceFisicoProgramado' ||
              col === 'avanceFisicoEjecutado' ||
@@ -92,7 +95,11 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
              col === 'valorObligado' ||
              col === 'valorPagado' ||
              col === 'valorAnticipo'
-          ) { return parseFloat(val) } else return val
+          ) {
+            if (!isNaN(parseFloat(val))) {
+              return parseFloat(val)
+            } else { return val }
+          } else return val
         },
 
         // transform: async function (result) {

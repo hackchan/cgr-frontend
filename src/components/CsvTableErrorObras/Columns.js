@@ -1,3 +1,4 @@
+import React from 'react'
 
 export const ColumnsTable = [
   {
@@ -13,12 +14,14 @@ export const ColumnsTable = [
     accessorKey: 'sector',
     header: 'sector'
   },
-
   {
     accessorKey: 'municipioObra',
     header: 'municipioObra'
+    // muiTableBodyCellEditTextFieldProps: {
+    //   required: true,
+    //   type: 'number'
+    // }
   },
-
   {
     accessorKey: 'nombreProyecto',
     header: 'nombreProyecto'
@@ -36,21 +39,37 @@ export const ColumnsTable = [
 
   {
     accessorKey: 'fechaSuscripcion',
-    header: 'fechaSuscripcion'
+    header: 'fechaSuscripcion',
+    muiTableBodyCellEditTextFieldProps: {
+      required: true,
+      type: 'date'
+    }
   },
 
   {
     accessorKey: 'fechaInicio',
-    header: 'fechaInicio'
+    header: 'fechaInicio',
+    muiTableBodyCellEditTextFieldProps: {
+      required: true,
+      type: 'date'
+    }
   },
   {
     accessorKey: 'fechaProgramadaTermina',
-    header: 'fechaProgramadaTermina'
+    header: 'fechaProgramadaTermina',
+    muiTableBodyCellEditTextFieldProps: {
+      required: true,
+      type: 'date'
+    }
   },
 
   {
     accessorKey: 'fechaTermina',
-    header: 'fechaTermina'
+    header: 'fechaTermina',
+    muiTableBodyCellEditTextFieldProps: {
+      required: true,
+      type: 'date'
+    }
   },
 
   {
@@ -183,8 +202,15 @@ export const ColumnsTable = [
 
   {
     accessorKey: 'linkSecop',
+    disableFilters: true,
+    enableGlobalFilter: false,
     header: 'linkSecop',
-    size: 250
+    Cell: ({ cell, row }) => (
+      <a href={cell.getValue()} target='_blank' rel='noreferrer'>
+        {row.original?.linkSecop}
+      </a>
+    )
+
   },
 
   {
@@ -218,5 +244,4 @@ export const ColumnsTable = [
   {
     accessorKey: 'anioCorte',
     header: 'anioCorte'
-  }
-]
+  }]

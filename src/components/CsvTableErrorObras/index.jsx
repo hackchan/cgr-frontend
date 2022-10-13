@@ -1,22 +1,14 @@
 
-import React, { useMemo, useState, useContext, useEffect, useCallback } from 'react'
+import React, { useMemo, useState, useContext, useEffect } from 'react'
 import MaterialReactTable from 'material-react-table'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { ContainerBox } from '../../styles/box'
-import { Box, createTheme, ThemeProvider, MenuItem, Link as MuiLink } from '@mui/material'
+import { Box, createTheme, ThemeProvider } from '@mui/material'
 import { esES } from '@mui/material/locale'
 import { ButtonStyled } from '../../styles/button'
-import { object, string, number, array } from 'yup'
-import { Link } from 'react-router-dom'
-
-const validateRequired = (value) => !!value.length
-const validateEmail = (email) =>
-  !!email.length &&
-  email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-const validateAge = (age) => age >= 18 && age <= 50
+import { obrasSchema } from './Schema'
+// import { object, string, number, array, date } from 'yup'
+import { ColumnsTable } from './Columns'
 
 export const MatrizObraError = ({ data }) => {
   const [tableData, setTableData] = useState(() => data)
@@ -25,61 +17,10 @@ export const MatrizObraError = ({ data }) => {
   const [errorDetail, setErrorDetail] = useState([])
   const [error, setError] = useState('')
   const [upload, setUpload] = useState(true)
-  const [validationErrors, setValidationErrors] = useState({})
   const [totalError, setTotalError] = useState(0)
-  const [municipios, setMunicipios] = useState([])
   const [progress, setProgress] = useState(false)
-  const usStates = [
-    { name: 'Alabama', id: 1 }
 
-  ]
-  // const fetchMyAPI = useCallback(async () => {
-  //   const munis = await getMunicipios()
-  //   console.log('munissssss', munis)
-  //   setMunicipios(munis.data)
-  // }, [municipios])
-  // useEffect(() => {
-  //   fetchMyAPI()
-  // }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getMunicipios()
-      setMunicipios(response.data)
-    }
-    fetchData()
-  })
-  const getCommonEditTextFieldProps = useCallback(
-    (cell) => {
-      return {
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
-        onBlur: (event) => {
-          const isValid =
-            cell.column.id === 'email'
-              ? validateEmail(event.target.value)
-              : cell.column.id === 'age'
-                ? validateAge(+event.target.value)
-                : validateRequired(event.target.value)
-          if (!isValid) {
-            // set validation error for cell if invalid
-            setValidationErrors({
-              ...validationErrors,
-              [cell.id]: `${cell.column.columnDef.header} is required`
-            })
-          } else {
-            // remove validation error for cell if valid
-            delete validationErrors[cell.id]
-            setValidationErrors({
-              ...validationErrors
-            })
-          }
-        }
-      }
-    },
-    [validationErrors]
-  )
-  const { state, getMunicipios } = useContext(AppContext)
+  const { state } = useContext(AppContext)
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
@@ -92,313 +33,22 @@ export const MatrizObraError = ({ data }) => {
       }
     }
   }, esES)
-  const columns = useMemo(() => [
-    {
-      accessorKey: 'idBpin',
-      header: 'idBpin'
-    },
-    {
-      accessorKey: 'idContrato',
-      header: 'idContrato'
-    },
 
-    {
-      accessorKey: 'sector',
-      header: 'sector'
-    },
-    {
-      accessorKey: 'municipioObra',
-      header: 'municipioObra',
-      muiTableBodyCellEditTextFieldProps: {
-        required: true,
-        type: 'number'
-      }
-    },
-
-    // {
-    //   accessorKey: 'municipioObra',
-    //   header: 'municipioObra',
-    //   muiTableBodyCellEditTextFieldProps: {
-    //     select: true, // change to select for a dropdown
-    //     children: municipios?.map((state) => {
-    //       console.log(' E L  S T A T E:', state)
-    //       return (
-    //         <MenuItem key={state.id} value={state.id}>
-    //           {state.name}
-    //         </MenuItem>
-    //       )
-    //     })
-    //   }
-    //   // muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-    //   //   // ...getCommonEditTextFieldProps(cell),
-    //   //   type: 'select'
-    //   // })
-    // },
-
-    {
-      accessorKey: 'nombreProyecto',
-      header: 'nombreProyecto'
-    },
-
-    {
-      accessorKey: 'objetoProyecto',
-      header: 'objetoProyecto'
-    },
-
-    {
-      accessorKey: 'unidadFuncional',
-      header: 'unidadFuncional'
-    },
-
-    {
-      accessorKey: 'fechaSuscripcion',
-      header: 'fechaSuscripcion',
-      muiTableBodyCellEditTextFieldProps: {
-        required: true,
-        type: 'date'
-      }
-    },
-
-    {
-      accessorKey: 'fechaInicio',
-      header: 'fechaInicio',
-      muiTableBodyCellEditTextFieldProps: {
-        required: true,
-        type: 'date'
-      }
-    },
-    {
-      accessorKey: 'fechaProgramadaTermina',
-      header: 'fechaProgramadaTermina',
-      muiTableBodyCellEditTextFieldProps: {
-        required: true,
-        type: 'date'
-      }
-    },
-
-    {
-      accessorKey: 'fechaTermina',
-      header: 'fechaTermina',
-      muiTableBodyCellEditTextFieldProps: {
-        required: true,
-        type: 'date'
-      }
-    },
-
-    {
-      accessorKey: 'valorContratoInicial',
-      header: 'valorContratoInicial'
-    },
-
-    {
-      accessorKey: 'valorContratoFinal',
-      header: 'valorContratoFinal'
-    },
-
-    {
-      accessorKey: 'avanceFisicoProgramado',
-      header: 'avanceFisicoProgramado',
-      size: 200
-    },
-
-    {
-      accessorKey: 'avanceFisicoEjecutado',
-      header: 'avanceFisicoEjecutado'
-    },
-
-    {
-      accessorKey: 'avanceFinancieroEjecutado',
-      header: 'avanceFinancieroEjecutado',
-      size: 250
-    },
-    {
-      accessorKey: 'nroContrato',
-      header: 'nroContrato',
-      size: 200
-    },
-
-    {
-      accessorKey: 'cantidadSuspenciones',
-      header: 'cantidadSuspenciones',
-      size: 200
-    },
-
-    {
-      accessorKey: 'cantidadProrrogas',
-      header: 'cantidadProrrogas',
-      size: 200
-    },
-
-    {
-      accessorKey: 'tiempoSuspenciones',
-      header: 'tiempoSuspenciones',
-      size: 200
-    },
-
-    {
-      accessorKey: 'tiempoProrrogas',
-      header: 'tiempoProrrogas',
-      size: 200
-    },
-
-    {
-      accessorKey: 'cantidadAdiciones',
-      header: 'cantidadAdiciones',
-      size: 200
-    },
-
-    {
-      accessorKey: 'valorTotalAdiciones',
-      header: 'valorTotalAdiciones',
-      size: 200
-    },
-
-    {
-      accessorKey: 'origen',
-      header: 'origen',
-      size: 200
-    },
-
-    {
-      accessorKey: 'valorComprometido',
-      header: 'valorComprometido'
-    },
-
-    {
-      accessorKey: 'valorObligado',
-      header: 'valorObligado'
-    },
-
-    {
-      accessorKey: 'valorPagado',
-      header: 'valorPagado'
-    },
-
-    {
-      accessorKey: 'valorAnticipo',
-      header: 'valorAnticipo'
-    },
-
-    {
-      accessorKey: 'estado',
-      header: 'estado'
-    },
-
-    {
-      accessorKey: 'razonSocialContratista',
-      header: 'razonSocialContratista'
-    },
-
-    {
-      accessorKey: 'idContratista',
-      header: 'idContratista',
-      size: 250
-    },
-
-    {
-      accessorKey: 'razonSocialNuevoContratista',
-      header: 'razonSocialNuevoContratista',
-      size: 250
-    },
-
-    {
-      accessorKey: 'idNuevoContratista',
-      header: 'idNuevoContratista',
-      size: 250
-    },
-
-    {
-      accessorKey: 'observaciones',
-      header: 'observaciones',
-      size: 250
-    },
-
-    {
-      accessorKey: 'linkSecop',
-      disableFilters: true,
-      enableGlobalFilter: false,
-      header: 'linkSecop',
-      Cell: ({ cell, row }) => (
-        <a href={cell.getValue()} target='_blank' rel='noreferrer'>
-          {row.original?.linkSecop}
-        </a>
-      )
-
-    },
-
-    {
-      accessorKey: 'nroContratoInterventoria',
-      header: 'nroContratoInterventoria',
-      size: 250
-    },
-
-    {
-      accessorKey: 'nombreInterventoria',
-      header: 'nombreInterventoria',
-      size: 250
-    },
-
-    {
-      accessorKey: 'idInterventoria',
-      header: 'idInterventoria',
-      size: 250
-    },
-
-    {
-      accessorKey: 'diaCorte',
-      header: 'diaCorte'
-    },
-
-    {
-      accessorKey: 'mesCorte',
-      header: 'mesCorte'
-    },
-
-    {
-      accessorKey: 'anioCorte',
-      header: 'anioCorte'
-    }
-  ], [])
+  const columnsData = useMemo(() => ColumnsTable, [])
 
   const handleUploadData = (rows) => {
     console.log(tableData)
   }
-  const handleValidateData = (rows) => {
+  const handleValidateData = () => {
     try {
       setTotalError(0)
       setError('')
       setProgress(true)
       setErrorDetail([])
-      console.log('data a validar es:', tableData)
-      const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
-      const obrasSchema = array().of(object(
-        {
-          idBpin: string('debe ser un cadena').min(2, 'longitud minima de 2 caracteres').max(20, 'longitud maxima de 20 caracteres').matches(/(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/, 'no coincide con el patrón requerido alfanumerico'),
-          municipioObra: number().integer().min(1, 'debe ser un entero mayor a 0').typeError('debe ser un numero entero'),
-          valorContratoInicial: number().positive()
-            .test(
-              'is-decimal',
-              'el valor debe ser un decimal con maximo 2 digitos despues de la comma',
-              (val) => {
-                if (val !== undefined) {
-                  return patternTwoDigisAfterComma.test(val)
-                }
-                return true
-              }
-            )
-            .min(5, 'Minimo 0')
-            .max(9999999999999.99, 'Maximo 9999999999999.99'),
-          idContrato: string('debe ser un cadena').min(2, 'longitud minima de 2 caracteres').max(20, 'longitud maxima de 20 caracteres').matches(/(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/, 'no coincide con el patrón requerido alfanumerico'),
-          nombreProyecto: string('debe ser un cadena').trim().lowercase('debe ser minuscula').min(3, 'longitud minima de 3 caracteres').max(64, 'longitud maxima de 64 caracteres'),
-          objetoProyecto: string().min(1, 'longitud minima de 1 caracter').max(255, 'longitud maxima de 255 caracter')
-        }))
       obrasSchema.validateSync(tableData, { abortEarly: false })
       setUpload(false)
-    // csvExporter.generateCsv(data)
     } catch (error) {
       setUpload(true)
-      console.log('el error es:', error.inner)
-      // console.log('detail:', error.inner.ValidationError[0])
       setErrorDetail(error.inner)
       setTotalError(error.inner.length)
       if (error.response) {
@@ -410,31 +60,24 @@ export const MatrizObraError = ({ data }) => {
       setProgress(false)
     }
   }
-  const handleSaveRow = async ({ exitEditingMode, row, values }) => {
-    setUpload(true)
-    // if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
-    console.log('values:', values)
-    const valuesTyping = { ...values }
-    tableData[row.index] = valuesTyping
-    // send/receive api updates here
-    setTableData([...tableData])
-    exitEditingMode() // required to exit editing mode
-  }
 
   const handleSaveCell = (cell, value) => {
     setProgress(true)
     setUpload(true)
-    console.log('cell:', cell)
-    console.log('value:', value)
-    console.log('cell.row.index:', cell.row.index)
-    console.log('cell.column.id:', cell.column.id)
-    if (cell.column.id === 'municipioObra') {
-      value = parseInt(value)
+    if (cell.column.id === 'municipioObra' || cell.column.id === 'entidad' || cell.column.id === 'estado' || cell.column.id === 'origen' || cell.column.id === 'sector' || cell.column.id === 'anioCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'diaCorte' || cell.column.id === 'cantidadAdiciones' || cell.column.id === 'tiempoProrrogas' || cell.column.id === 'tiempoSuspenciones' || cell.column.id === 'cantidadProrrogas' || cell.column.id === 'cantidadSuspenciones') {
+      if (!isNaN(parseInt(value))) {
+        value = parseInt(value)
+      }
+    } else if (cell.column.id === 'valorContratoInicial' || cell.column.id === 'valorContratoFinal' || cell.column.id === 'avanceFisicoProgramado' || cell.column.id === 'avanceFisicoEjecutado' || cell.column.id === 'avanceFinancieroEjecutado' || cell.column.id === 'valorTotalAdiciones' || cell.column.id === 'valorComprometido' || cell.column.id === 'valorObligado' || cell.column.id === 'valorPagado' || cell.column.id === 'valorAnticipo') {
+      if (!isNaN(parseFloat(value))) {
+        value = parseFloat(value)
+      }
     }
     setTimeout(() => {
       tableData[cell.row.index][cell.column.id] = value
       setTableData([...tableData])
       setProgress(false)
+      handleValidateData()
     }, 200)
   }
 
@@ -446,8 +89,6 @@ export const MatrizObraError = ({ data }) => {
     })
     setColumnsWithError(res)
     setmessagesError(relationError)
-    console.log('error detail:', res)
-    console.log('error message', relationError)
   }, [errorDetail, tableData])
 
   return (
@@ -474,7 +115,7 @@ export const MatrizObraError = ({ data }) => {
                 // access the row data to determine if the checkbox should be disabled
               })
           }}
-          columns={columns}
+          columns={columnsData}
           data={tableData}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
@@ -511,7 +152,7 @@ export const MatrizObraError = ({ data }) => {
               >
                 <ButtonStyled
                   className='export'
-                  onClick={() => { handleValidateData(table.getPrePaginationRowModel().rows) }}
+                  onClick={() => { handleValidateData() }}
                   // startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >
@@ -531,9 +172,7 @@ export const MatrizObraError = ({ data }) => {
               </Box>
             )
           }}
-
         />
-
       </ThemeProvider>
 
     </ContainerBox>
