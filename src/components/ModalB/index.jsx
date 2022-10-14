@@ -19,7 +19,7 @@ export const ModalB = ({ closeModal, children, ...props }) => {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={props.onHide}>Close</Button>
+        <Button variant='secondary' onClick={props.onHide}>Cerrar</Button>
       </Modal.Footer>
     </Modal>
   )

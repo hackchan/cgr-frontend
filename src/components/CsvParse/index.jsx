@@ -17,7 +17,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
   const [nameFile, setNameFile] = useState('')
   const [sizeFile, setSizeFile] = useState('')
   const [error, setError] = useState('')
-  const [errorDetail, setErrorDetail] = useState([])
+  // const [errorDetail, setErrorDetail] = useState([])
   const [disableBtn, setDisableBtn] = useState(false)
   const [data, setData] = useState([])
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
@@ -48,7 +48,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
     reader.onloadend = ({ target }) => {
       Papa.parse(target.result, {
         header: true,
-        dynamicTyping: true,
+        dynamicTyping: false,
         skipEmptyLines: 'greedy',
         delimiter: '|',
         transform: (val, col) => {
@@ -113,10 +113,10 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
             //     municipioObra: number().integer().min(1).typeError('debe ser un numero entero')
             //   }))
 
-            // const csvArray = result.data.map((row) => {
-            //   return { ...row, entidad: entidadId }
-            // })
-            setData(result.data)
+            const csvArray = result.data.map((row) => {
+              return { ...row, entidad: entidadId }
+            })
+            setData(csvArray)
             // console.log(result.data)
             // const user = obrasSchema.validateSync(JSON.stringify(result.data), { abortEarly: false })
             // console.log('validate===>', user)
@@ -128,7 +128,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
           } catch (error) {
             console.log('el error es:', error.inner)
             // console.log('detail:', error.inner.ValidationError[0])
-            setErrorDetail(error.inner)
+            // setErrorDetail(error.inner)
             if (error.response) {
               setError(error.response.data.error.message)
             } else {
@@ -247,7 +247,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
             {error && <p><span className='errors'>{error}</span></p>}
           </div>
           <div>
-            {data.length > 0 && (<MatrizObraError data={data} errorDetail={errorDetail} />)}
+            {data.length > 0 && (<MatrizObraError data={data} setModalCsv={setModalCsv} setReload={setReload} MatrizCargada={MatrizCargada} />)}
           </div>
           <br />
           <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Cargar CSV' disabled={disableBtn} loading={disableBtn} /></div>

@@ -18,6 +18,7 @@ import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
 import { CsvParser } from '../CsvParse'
+import config from '../../config'
 export const MatrizObra = () => {
   const {
     state,
@@ -129,7 +130,9 @@ export const MatrizObra = () => {
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizObra} modedark={state.darkMode} />
         </Modal>}
 
-      <ModalB show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update}>
+      <ModalB
+        show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
+      >
         <CsvParser setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizObra} GetEntidad={GetEntidad} modedark={state.darkMode} />
       </ModalB>
 
@@ -144,7 +147,7 @@ export const MatrizObra = () => {
         <MaterialReactTable
           columns={columns}
           data={data}
-          localization={preData.localization}
+          localization={config.localization}
           initialState={preData.initialState}
           enableMultiSort
           enableGlobalFilter

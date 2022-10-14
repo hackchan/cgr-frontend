@@ -259,7 +259,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                 <StyledSelect
                   {...field}
                   innerRef={ref}
-                  {...register('sector', { required: 'Sector es obligatorio' })}
+                  {...register('sector', { required: 'sector es obligatorio' })}
                   isClearable
                   classNamePrefix='Select'
       // autoload={false}
@@ -296,7 +296,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                   value={departmentSel}
                   {...field}
                   innerRef={ref}
-                  {...register('departamentoObra', { required: 'Departamento Obra es requerido' })}
+                  {...register('departamentoObra', { required: 'departamento obra es requerido' })}
                   noOptionsMessage={() => 'No se encontraron opciones'}
                   placeholder='Selecciona...'
                   defaultOptions
@@ -335,7 +335,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               onChange={(e) => {
                 handleMunicipios(e)
               }}
-              onBlur={(e) => { console.log('la ee es:', e) }}
+              // onBlur={(e) => { console.log('la ee es:', e) }}
               onInputChange={(e) => { setMuni(e); console.log('type', e) }}
             />
             {errorMuni && clearMessage(5000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>}
@@ -349,8 +349,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. 6490-788745' {...register('idBpin', {
                 required: 'código bpin es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 20, message: 'La longitud máxima es de 20 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
                   message: 'No es un código bpin válido'
@@ -370,8 +370,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. LL45-122' {...register('idContrato', {
                 required: 'código idContrato es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 20, message: 'La longitud máxima es de 20 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
                   message: 'No es un código idContrato válido'
@@ -391,8 +391,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. c-4587-2021' {...register('nroContrato', {
                 required: 'Nro Contrato es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 20, message: 'La longitud máxima es de 20 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
                   message: 'No es Nro Contrato válido'
@@ -414,8 +414,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('nombreProyecto', {
                 required: 'nombre proyecto es obligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÑñ ]*[0-9a-zA-Z-_Ññ ]*[0-9a-zA-ZÑñ ]$)/,
                   message: 'No es un nombre proyecto válido'
@@ -434,8 +434,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. FNGRD-127 - Mejoramiento Viviendas' {...register('unidadFuncional', {
                 required: 'Unidad funcional es obligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÑñ ]*[0-9a-zA-Z-_Ññ ]*[0-9a-zA-ZÑñ ]$)/,
                   message: 'No es un nombre unidad funcional válido'
@@ -457,8 +457,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               as='textarea' rows={6} placeholder='Eje. Reconstruccion de la estructura de viviendas afectadas en el departamento de Antioquia' {...register('objetoProyecto', {
                 required: 'Objecto de proyecto es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]$)/,
                   message: 'No es un objeto proyecto válido'
@@ -479,7 +479,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Fecha Suscripcion</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaSuscripcion', {
-                required: 'Fecha Suscripcion es obligatorio'
+                required: 'Fecha suscripción es obligatorio'
               })}
             />
 
@@ -494,7 +494,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Fecha Inicio</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaInicio', {
-                required: 'Fecha Inicio es obligatorio'
+                required: 'Fecha inicio es obligatorio'
               })}
             />
 
@@ -509,7 +509,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Fecha Progra Terminacion</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaProgramadaTermina', {
-                required: 'Fecha Suscripcion es obligatorio'
+                required: 'Fecha Programada de terminación es obligatorio'
               })}
             />
 
@@ -524,7 +524,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Fecha Terminación</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaTermina', {
-                required: 'Fecha terminacion es obligatorio'
+                required: 'Fecha terminación es obligatorio'
               })}
             />
 
@@ -541,12 +541,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor contrato Inicial</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('valorContratoInicial', {
-                required: 'Contrato Inicial es obligatorio',
+                required: 'Contrato inicial es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -561,12 +561,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor contrato Final</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorContratoFinal', {
-                required: 'Contrato Final es obligatorio',
+                required: 'Contrato final es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -582,12 +582,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Avance fisico programado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoProgramado', {
-                required: 'Avance Fisico Programado es obligatorio',
+                required: 'Avance físico programado es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 1' },
                 pattern: {
                   value: /^((0)(\.\d{1,2})?|(1))$/,
-                  message: 'No es un valor valido '
+                  message: 'No es un valor válido '
                 }
               })}
             />
@@ -602,12 +602,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Avance Fisico Ejecutado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoEjecutado', {
-                required: 'Avance Fisico Ejecutado es obligatorio',
+                required: 'Avance físico 3jecutado es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 1' },
                 pattern: {
                   value: /^((0)(\.\d{1,2})?|(1))$/,
-                  message: 'No es un valor valido '
+                  message: 'No es un valor válido '
                 }
               })}
             />
@@ -622,10 +622,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Avance Financiero Ejecutado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFinancieroEjecutado', {
-                required: 'Avance Financiero Ejecutado es obligatorio',
+                required: 'Avance financiero ejecutado es obligatorio',
                 pattern: {
                   value: /^((0)(\.\d{1,2})?|(1))$/,
-                  message: 'No es un valor valido, solo valores entre 0 y 1 '
+                  message: 'No es un valor válido, solo valores entre 0 y 1 '
                 }
               })}
             />
@@ -642,10 +642,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Cantidad de Suspenciones</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 2' {...register('cantidadSuspenciones', {
-                required: 'Cantidad Suspenciones es obligatorio',
+                required: 'Cantidad suspenciones es obligatorio',
                 pattern: {
                   value: /^(([0-9])(\d)?|(100))$/,
-                  message: 'No es un valor valido, solo número entre 0 y 100'
+                  message: 'No es un valor válido, solo número entre 0 y 100'
                 }
               })}
             />
@@ -660,10 +660,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Cantidad Prorrogas</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 2' {...register('cantidadProrrogas', {
-                required: 'Cantidad Prorrogas es obligatorio',
+                required: 'Cantidad prorrogas es obligatorio',
                 pattern: {
                   value: /^(([0-9])(\d)?|(100))$/,
-                  message: 'No es un valor valido, solo número entre 0 y 100'
+                  message: 'No es un valor válido, solo número entre 0 y 100'
                 }
               })}
             />
@@ -678,10 +678,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Cantidad Adiciones</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 2' {...register('cantidadAdiciones', {
-                required: 'Cantidad Adiciones es obligatorio',
+                required: 'Cantidad adiciones es obligatorio',
                 pattern: {
                   value: /^(([0-9])(\d)?|(100))$/,
-                  message: 'No es un valor valido, solo número entre 0 y 100'
+                  message: 'No es un valor válido, solo número entre 0 y 100'
                 }
               })}
             />
@@ -697,10 +697,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Tiempo Suspenciones en dias</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 100' {...register('tiempoSuspenciones', {
-                required: 'Tiempo Suspenciones es obligatorio',
+                required: 'Tiempo suspenciones es obligatorio',
                 pattern: {
                   value: /^([0-9]{1,6})$/,
-                  message: 'No es un valor valido, expresar en dias'
+                  message: 'No es un valor válido, expresar en días'
                 }
               })}
             />
@@ -715,10 +715,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Tiempo Prorrogas en dias</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 51' {...register('tiempoProrrogas', {
-                required: 'Tiempo Prorrogas es obligatorio',
+                required: 'Tiempo prorrogas es obligatorio',
                 pattern: {
                   value: /^([0-9]{1,6})$/,
-                  message: 'No es un valor valido, expresar en dias'
+                  message: 'No es un valor válido, expresar en días'
                 }
               })}
             />
@@ -735,12 +735,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor Total Adiciones</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('valorTotalAdiciones', {
-                required: 'Valor Total Adicioneses obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                required: 'Valor total adiciones obligatorio',
+                minLength: { value: 1, message: 'el valor mínimo es de 0' },
+                maxLength: { value: 16, message: 'el valor máximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -755,12 +755,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor Comprometido</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorComprometido', {
-                required: 'Valor Comprometido es obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                required: 'Valor comprometido es obligatorio',
+                minLength: { value: 1, message: 'el valor mínimo es de 0' },
+                maxLength: { value: 16, message: 'el valor máximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -775,12 +775,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor Obligado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorObligado', {
-                required: 'Valor Obligado es obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                required: 'Valor obligado es obligatorio',
+                minLength: { value: 1, message: 'el valor mínimo es de 0' },
+                maxLength: { value: 16, message: 'el valor máximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -795,12 +795,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor Pagado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorPagado', {
-                required: 'Valor Pagado es obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                required: 'Valor pagado es obligatorio',
+                minLength: { value: 1, message: 'el valor mínimo es de 0' },
+                maxLength: { value: 16, message: 'el valor máximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -815,12 +815,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Valor Anticipo</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1500364540.00' {...register('valorAnticipo', {
-                required: 'Valor Anticipo es obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
+                required: 'Valor anticipo es obligatorio',
+                minLength: { value: 1, message: 'el valor mínimo es de 0' },
+                maxLength: { value: 16, message: 'el valor máximo es de 9999999999999.99' },
                 pattern: {
                   value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -836,9 +836,9 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Razon Social Contratista</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. FUNDACION ALIANZA SAS' {...register('razonSocialContratista', {
-                required: 'Razon Social Contratista es obligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                required: 'Razon social contratista es obligatorio',
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÑñ ]*[0-9a-zA-Z-_Ññ ]*[0-9a-zA-ZÑñ ]$)/,
                   message: 'No es una Razon Social Contratista válido'
@@ -856,10 +856,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Id Contratista</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 985478512' {...register('idContratista', {
-                required: 'Id Contratista es obligatorio',
+                required: 'Id contratista es obligatorio',
                 pattern: {
                   value: /^([0-9A-Z]{1,30})$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -876,12 +876,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Razon Social Nuevo Contratista</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. CONSORCIO NORTE SAS' {...register('razonSocialNuevoContratista', {
-                required: 'Razon Social Nuevo Contratista es obligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                required: 'Razon social nuevo contratista es obligatorio',
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÑñ/ ]*[0-9a-zA-Z-_Ññ/ ]*[0-9a-zA-ZÑñ/ ]$)/,
-                  message: 'No es una Razon Social Contratista válido'
+                  message: 'No es una razon social contratista válido'
                 }
               })}
             />
@@ -896,10 +896,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Id Nuevo Contratista</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 985478512' {...register('idNuevoContratista', {
-                required: 'Id Nuevo Contratista es obligatorio',
+                required: 'Id nuevo contratista es obligatorio',
                 pattern: {
                   value: /^([0-9]{1,13})$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -918,11 +918,11 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               as='textarea' rows={6} placeholder='Eje. Se presentan retrasos en obra derivado a la falta de materias primas.' {...register('observaciones', {
                 required: 'Observaciones obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud maxima es de 300 caracteres' },
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]$)/,
-                  message: 'No es un observacion válida'
+                  message: 'No es un observación válida'
                 }
               })}
             />
@@ -939,12 +939,12 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Nro Contrato Interventoria</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. 45879-2019' {...register('nroContratoInterventoria', {
-                required: 'Nro Contrato Interventoria es obligatorio',
-                minLength: { value: 2, message: 'La longitud minima es de 2 caracteres' },
-                maxLength: { value: 20, message: 'La longitud maxima es de 20 caracteres' },
+                required: 'Nro contrato  interventoría es obligatorio',
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 20, message: 'La longitud máxima es de 20 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
-                  message: 'No es Nro Contrato Interventoria válido'
+                  message: 'No es Nro contrato  interventoría  válido'
                 }
               })}
             />
@@ -961,11 +961,11 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. LAGO LUNS' {...register('nombreInterventoria', {
                 required: 'Nombre Interventoria es obligatorio',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
                 pattern: {
                   value: /(^[0-9a-zA-ZÑñ/ ]*[0-9a-zA-Z-_Ññ/ ]*[0-9a-zA-ZÑñ/ ]$)/,
-                  message: 'No es un Nombre Interventoria válido'
+                  message: 'No es un nombre interventoría válido'
                 }
               })}
             />
@@ -980,10 +980,10 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Id Interventoria</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 988888777' {...register('idInterventoria', {
-                required: 'Id Interventoria es obligatorio',
+                required: 'Id  interventoría es obligatorio',
                 pattern: {
                   value: /^([0-9]{1,13})$/,
-                  message: 'No es un valor valido'
+                  message: 'No es un valor válido'
                 }
               })}
             />
@@ -1000,8 +1000,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Dia Corte</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 1' {...register('diaCorte', {
-                required: 'Dia Corte es obligatorio',
-                min: { value: 1, message: 'Dia minimo es 1' },
+                required: 'Da Corte es obligatorio',
+                min: { value: 1, message: 'Dia mínimo es 1' },
                 max: { value: 31, message: 'Dia Maximo es 31' }
 
               })}
@@ -1018,8 +1018,8 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <Form.Control
               style={{ height: 38 }} type='number' placeholder='eje. 10' {...register('mesCorte', {
                 required: 'Mes Corte es obligatorio',
-                min: { value: 1, message: 'Mes minimo 1' },
-                max: { value: 12, message: 'Mes Maximo es 12' }
+                min: { value: 1, message: 'Mes mínimo 1' },
+                max: { value: 12, message: 'Mes máximo es 12' }
               })}
             />
             {errors.mesCorte && (
@@ -1033,9 +1033,9 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Anio Corte</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='number' placeholder='eje. 2022' {...register('anioCorte', {
-                required: 'Anio Corte es obligatorio',
-                min: { value: 2000, message: 'Anio minimo es de 2000' },
-                max: { value: 2050, message: 'Anio maximo permitido 2050' }
+                required: 'Anio corte es obligatorio',
+                min: { value: 2000, message: 'Anio mínima es de 2000' },
+                max: { value: 2050, message: 'Anio máximo permitido 2050' }
 
               })}
             />

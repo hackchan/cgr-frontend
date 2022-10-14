@@ -3,14 +3,15 @@ import React, { useMemo, useState, useContext, useEffect } from 'react'
 import MaterialReactTable from 'material-react-table'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { ContainerBox } from '../../styles/box'
-import { Box, createTheme, ThemeProvider } from '@mui/material'
+import { Box, createTheme, ThemeProvider, Tooltip } from '@mui/material'
 import { esES } from '@mui/material/locale'
 import { ButtonStyled } from '../../styles/button'
 import { obrasSchema } from './Schema'
+import config from '../../config'
 // import { object, string, number, array, date } from 'yup'
 import { ColumnsTable } from './Columns'
 
-export const MatrizObraError = ({ data }) => {
+export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada }) => {
   const [tableData, setTableData] = useState(() => data)
   const [columnsWithError, setColumnsWithError] = useState([])
   const [messagesError, setmessagesError] = useState({})
@@ -36,10 +37,25 @@ export const MatrizObraError = ({ data }) => {
 
   const columnsData = useMemo(() => ColumnsTable, [])
 
-  const handleUploadData = (rows) => {
-    console.log(tableData)
+  const handleUploadData = async (rows) => {
+    try {
+      setUpload(true)
+      console.log('datos a subir:', tableData)
+      await MatrizCargada(tableData)
+      setModalCsv(false)
+      setReload(true)
+      console.log(tableData)
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.error.message)
+      } else {
+        setError(error.message)
+      }
+    } finally {
+      setUpload(false)
+    }
   }
-  const handleValidateData = () => {
+  const handleValidateData = async () => {
     try {
       setTotalError(0)
       setError('')
@@ -49,6 +65,7 @@ export const MatrizObraError = ({ data }) => {
       setUpload(false)
     } catch (error) {
       setUpload(true)
+      console.log(error.inner)
       setErrorDetail(error.inner)
       setTotalError(error.inner.length)
       if (error.response) {
@@ -77,16 +94,17 @@ export const MatrizObraError = ({ data }) => {
       tableData[cell.row.index][cell.column.id] = value
       setTableData([...tableData])
       setProgress(false)
-      handleValidateData()
-    }, 200)
+    }, 50)
   }
 
   useEffect(() => {
     const relationError = {}
     const res = errorDetail.map((detail, idx) => {
-      relationError[detail.path.split('.')[0].charAt(1) + '_' + detail.path.split('.')[1]] = detail.message
-      return detail.path.split('.')[0].charAt(1) + '_' + detail.path.split('.')[1]
+      relationError[detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]] = detail.message
+      return detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]
     })
+    console.log(res)
+    console.log(relationError)
     setColumnsWithError(res)
     setmessagesError(relationError)
   }, [errorDetail, tableData])
@@ -108,15 +126,16 @@ export const MatrizObraError = ({ data }) => {
                 title: columnsWithError.includes(cell.id) ? messagesError[cell.id] : '',
                 sx: {
                   border: 'none',
-                  background: columnsWithError.includes(cell.id) ? '#ff22AA' : '',
-                  fontWeight: columnsWithError.includes(cell.id) ? 'bold' : '',
-                  fontSize: columnsWithError.includes(cell.id) ? '14px' : ''
+                  background: columnsWithError.includes(cell.id) ? '#ff22aa5e' : ''
+                  // fontWeight: columnsWithError.includes(cell.id) ? 'bold' : '',
+                  // fontSize: columnsWithError.includes(cell.id) ? '14px' : ''
                 }
                 // access the row data to determine if the checkbox should be disabled
               })
           }}
           columns={columnsData}
           data={tableData}
+          localization={config.localization}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
@@ -124,9 +143,18 @@ export const MatrizObraError = ({ data }) => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
+          muiTablePaginationProps={{
+            labelRowsPerPage: 'filas por página',
+            showFirstButton: true,
+            showLastButton: true,
+            SelectProps: { native: true },
+            rowsPerPageOptions: [10, 20, 30]
+          }}
+          enableRowVirtualization
+          virtualizerProps={{ overscan: 30 }}
           enableColumnActions={false}
           enableColumnFilters={false}
-          enablePagination={false}
+          enablePagination
           enableSorting={false}
           enableBottomToolbar
           enableTopToolbar
@@ -150,14 +178,17 @@ export const MatrizObraError = ({ data }) => {
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
-                <ButtonStyled
-                  className='export'
-                  onClick={() => { handleValidateData() }}
+                <Tooltip title='Valida el Csv cargado' placement='top'>
+                  <ButtonStyled
+                    className='export'
+                    onClick={() => { handleValidateData() }}
                   // startIcon={<FileDownloadIcon />}
-                  variant='contained'
-                >
-                  Validar Data
-                </ButtonStyled>
+                    variant='contained'
+                  >
+                    Validar Data
+                  </ButtonStyled>
+
+                </Tooltip>
 
                 <ButtonStyled
                   disabled={upload}
@@ -173,6 +204,10 @@ export const MatrizObraError = ({ data }) => {
             )
           }}
         />
+
+        <div>
+          {error && <p><span className='errors'>{error}</span></p>}
+        </div>
       </ThemeProvider>
 
     </ContainerBox>
