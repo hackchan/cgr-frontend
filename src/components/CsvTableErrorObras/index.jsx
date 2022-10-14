@@ -68,11 +68,11 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
       console.log(error.inner)
       setErrorDetail(error.inner)
       setTotalError(error.inner.length)
-      if (error.response) {
-        setError(error.response.data.error.message)
-      } else {
-        setError(error.message)
-      }
+      // if (error.response) {
+      //   setError(error.response.data.error.message)
+      // } else {
+      //   setError(error.message)
+      // }
     } finally {
       setProgress(false)
     }
@@ -112,7 +112,7 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
   return (
     <ContainerBox>
       <ThemeProvider theme={theme}>
-        {error && <p><span className='errors'>{`total de errores ${totalError}`}</span></p>}
+        {totalError > 0 && <p><span className='errors'>{`total de errores ${totalError}`}</span></p>}
         <MaterialReactTable
           muiTableBodyRowProps={({ row }) => ({
             hover: true,
