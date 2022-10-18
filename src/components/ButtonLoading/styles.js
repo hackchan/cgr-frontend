@@ -26,7 +26,8 @@ export const Button = styled.button`
     box-shadow: inset 0px -35px 2px rgba(2, 2, 2, 0.1);
   }
   &:active {
-    transform: scale(0.9);
+    transform: scale(1);
+    box-shadow: inset 0px -35px 2px rgba(255, 255, 255, 0.1);
   }
   &:disabled {
     background: gray;

@@ -102,33 +102,18 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
           } else return val
         },
 
-        // transform: async function (result) {
-        //   console.log('result:', result)
-        // },
         complete: async function (result) {
           try {
-            // const obrasSchema = array().of(object(
-            //   {
-            //     idBpin: string('debe ser un cadena').min(2, 'longitud minima de 2 caracteres').max(20, 'longitud maxima de 20 caracteres').matches(/(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/, 'no coincide con el patrón requerido alfanumerico'),
-            //     municipioObra: number().integer().min(1).typeError('debe ser un numero entero')
-            //   }))
+            const headerValid = ['idBpin', 'idContrato', 'sector', 'municipioObra', 'nombreProyecto', 'objetoProyecto', 'unidadFuncional', 'fechaSuscripcion', 'fechaInicio', 'fechaProgramadaTermina', 'fechaTermina', 'valorContratoInicial', 'valorContratoFinal', 'avanceFisicoProgramado', 'avanceFisicoEjecutado', 'avanceFinancieroEjecutado', 'nroContrato', 'cantidadSuspenciones', 'cantidadProrrogas', 'tiempoSuspenciones', 'tiempoProrrogas', 'cantidadAdiciones', 'valorTotalAdiciones', 'origen', 'valorComprometido', 'valorObligado', 'valorPagado', 'valorAnticipo', 'estado', 'razonSocialContratista', 'idContratista', 'razonSocialNuevoContratista', 'idNuevoContratista', 'observaciones', 'linkSecop', 'nroContratoInterventoria', 'nombreInterventoria', 'idInterventoria', 'diaCorte', 'mesCorte', 'anioCorte']
+
+            // headerValid.map((campo)==>{})
+            // console.log('result:', result.meta.fields)
 
             const csvArray = result.data.map((row) => {
               return { ...row, entidad: entidadId }
             })
             setData(csvArray)
-            // console.log(result.data)
-            // const user = obrasSchema.validateSync(JSON.stringify(result.data), { abortEarly: false })
-            // console.log('validate===>', user)
-
-            // console.log('resul data:', JSON.stringify(csvArray))
-            // await MatrizCargada(JSON.stringify(csvArray))
-            // setModalCsv(false)
-            // setReload(true)
           } catch (error) {
-            console.log('el error es:', error.inner)
-            // console.log('detail:', error.inner.ValidationError[0])
-            // setErrorDetail(error.inner)
             if (error.response) {
               setError(error.response.data.error.message)
             } else {
@@ -138,11 +123,6 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
             setDisableBtn(false)
           }
         }
-        // error: (error) => window.alert(error),
-        // beforeFirstChunk: () => {
-        //   // Start loader
-        //   console.log('loading...')
-        // }
 
       })
     }
@@ -158,6 +138,7 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
   }
   const handleChange = (e) => {
     try {
+      setError('')
       const { target: { files } } = e
       const file = files[0]
       setFile(true)
@@ -168,10 +149,13 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
       if (type !== 'text/csv') {
         throw new Error('Solo se permite archivos de tipo text/csv')
       }
+      if (size / 1000 >= 4000) {
+        throw new Error('Solo se permite archivos de maximo 4MB')
+      }
       console.log(file)
     } catch (error) {
       setFile(false)
-      console.log(error)
+      setError(error.message)
     }
   }
   const onSubmit = async (dataForm) => {
@@ -250,7 +234,10 @@ export const CsvParser = ({ setModalCsv, setReload, preData, MatrizCargada, GetE
             {data.length > 0 && (<MatrizObraError data={data} setModalCsv={setModalCsv} setReload={setReload} MatrizCargada={MatrizCargada} />)}
           </div>
           <br />
-          <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Cargar CSV' disabled={disableBtn} loading={disableBtn} /></div>
+          <div className='d-flex p-2 justify-content-center'>
+            {data.length === 0 && error.length === 0 && (<Button modedark={modedark} value='Cargar CSV' disabled={disableBtn} loading={disableBtn} />)}
+
+          </div>
         </Form>
       </BoxForm>
 

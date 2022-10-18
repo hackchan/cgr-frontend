@@ -1243,7 +1243,7 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'X-Test-header': 'Test', accepts: 'application/json' }
       })
 
       const { body } = response.data

@@ -13,7 +13,7 @@ export const ModalB = ({ closeModal, children, ...props }) => {
           {props.title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className='show-grid'>
+      <Modal.Body>
         <Container>
           {children}
         </Container>

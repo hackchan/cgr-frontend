@@ -3,11 +3,13 @@ import React, { useMemo, useState, useContext, useEffect } from 'react'
 import MaterialReactTable from 'material-react-table'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { ContainerBox } from '../../styles/box'
-import { Box, createTheme, ThemeProvider, Tooltip } from '@mui/material'
+import { Box, createTheme, ThemeProvider } from '@mui/material'
+import { CloudSyncRounded, RuleRounded } from '@mui/icons-material'
 import { esES } from '@mui/material/locale'
 import { ButtonStyled } from '../../styles/button'
 import { obrasSchema } from './Schema'
 import config from '../../config'
+import { ButtonLoading } from '../ButtonLoading'
 // import { object, string, number, array, date } from 'yup'
 import { ColumnsTable } from './Columns'
 
@@ -20,7 +22,9 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
   const [upload, setUpload] = useState(true)
   const [totalError, setTotalError] = useState(0)
   const [progress, setProgress] = useState(false)
-
+  const [btnValidate, setBtnValidate] = useState(false)
+  const [btnLoading, setBtnLoading] = useState(false)
+  const [btnLoadingBlock, setBtnLoadingBlock] = useState(true)
   const { state } = useContext(AppContext)
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
@@ -39,6 +43,8 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
 
   const handleUploadData = async (rows) => {
     try {
+      setBtnLoadingBlock(true)
+      setBtnLoading(true)
       setUpload(true)
       console.log('datos a subir:', tableData)
       await MatrizCargada(tableData)
@@ -53,10 +59,14 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
       }
     } finally {
       setUpload(false)
+      setBtnLoading(false)
+      setBtnLoadingBlock(false)
+      setBtnValidate(true)
     }
   }
   const handleValidateData = async () => {
     try {
+      setBtnLoadingBlock(false)
       setTotalError(0)
       setError('')
       setProgress(true)
@@ -65,7 +75,7 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
       setUpload(false)
     } catch (error) {
       setUpload(true)
-      console.log(error.inner)
+      setBtnLoadingBlock(true)
       setErrorDetail(error.inner)
       setTotalError(error.inner.length)
       // if (error.response) {
@@ -75,10 +85,12 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
       // }
     } finally {
       setProgress(false)
+      setBtnValidate(true)
     }
   }
 
   const handleSaveCell = (cell, value) => {
+    setBtnLoadingBlock(true)
     setProgress(true)
     setUpload(true)
     if (cell.column.id === 'municipioObra' || cell.column.id === 'entidad' || cell.column.id === 'estado' || cell.column.id === 'origen' || cell.column.id === 'sector' || cell.column.id === 'anioCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'diaCorte' || cell.column.id === 'cantidadAdiciones' || cell.column.id === 'tiempoProrrogas' || cell.column.id === 'tiempoSuspenciones' || cell.column.id === 'cantidadProrrogas' || cell.column.id === 'cantidadSuspenciones') {
@@ -94,6 +106,7 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
       tableData[cell.row.index][cell.column.id] = value
       setTableData([...tableData])
       setProgress(false)
+      setBtnValidate(false)
     }, 50)
   }
 
@@ -178,27 +191,34 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
-                <Tooltip title='Valida el Csv cargado' placement='top'>
-                  <ButtonStyled
-                    className='export'
-                    onClick={() => { handleValidateData() }}
-                  // startIcon={<FileDownloadIcon />}
-                    variant='contained'
-                  >
-                    Validar Data
-                  </ButtonStyled>
-
-                </Tooltip>
 
                 <ButtonStyled
-                  disabled={upload}
-                  className='csv'
-                  onClick={() => { handleUploadData(table.getPrePaginationRowModel().rows) }}
+                  disabled={btnValidate}
+                  // className={upload ? 'export' : 'color:gray'}
+                  onClick={() => { handleValidateData() }}
+                  startIcon={<RuleRounded />}
                   // startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >
+                  Validar Data
+                </ButtonStyled>
+                {/*
+                <Tooltip title='carga csv a la base de datos' placement='top'> */}
+                <ButtonStyled
+                    // loading={btnLoading}
+                  disabled={
+                      btnLoadingBlock
+                    }
+                  // className={!upload ? 'csv' : 'color:gray'}
+                  onClick={() => { handleUploadData(table.getPrePaginationRowModel().rows) }}
+                  startIcon={<CloudSyncRounded />}
+                    // startIcon={<FileDownloadIcon />}
+                  variant='contained'
+                  color='error'
+                >
                   Subir datos
                 </ButtonStyled>
+                {/* </Tooltip> */}
 
               </Box>
             )

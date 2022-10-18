@@ -19,6 +19,7 @@ import { Delete } from './Delete'
 import { Update } from './Update'
 import { CsvParser } from '../CsvParse'
 import config from '../../config'
+
 export const MatrizObra = () => {
   const {
     state,
@@ -98,14 +99,9 @@ export const MatrizObra = () => {
     pagination.pageIndex,
     pagination.pageSize,
     globalFilter,
-    columnFilters,
+    columnFilters.length > 0,
     sorting,
     reload])
-
-  const handleSaveRow = ({ row }) => {
-    // employeeData[+row.index] = row._valuesCache
-    // setEmployeeData([...employeeData])
-  }
 
   const handleExportData = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
@@ -148,64 +144,19 @@ export const MatrizObra = () => {
           columns={columns}
           data={data}
           localization={config.localization}
-          initialState={preData.initialState}
-          enableMultiSort
-          enableGlobalFilter
-          positionGlobalFilter='right'
+          getRowId={(row) => row.id}
+          initialState={{ showColumnFilters: false, density: 'compact', pagination: { pageSize: 20, pageIndex: 0 } }}
+          muiTableBodyRowProps={({ row }) => ({
+            sx: {
+
+              backgroundColor: row.index % 2 === 0 ? 'rgba(52, 54, 245, 0.08)' : ''
+            }
+          })}
+          muiTableBodyCellProps={{ sx: { border: 'none' } }}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
-          muiTableContainerProps={{ className: 'tableContainer' }}
-          muiTableHeadProps={{
-            className: 'tableHeader'
-          }}
-          // muiTableHeadCellFilterTextFieldProps={{
-          //   sx: { m: '0.5rem 0', width: '100%' },
-          //   variant: 'outlined'
-          // }}
-        // enableRowSelection
-          enableClickToCopy
-          enableColumnOrdering
-          enableColumnDragging
-          enableColumnResizing
-          enablePinning
-        // enableRowOrdering
-          onRowDrop={({ draggedRow, targetRow }) => {
-            if (targetRow) {
-              data.splice(targetRow.index, 0, data.splice(draggedRow.index, 1)[0])
-              setData([...data])
-            }
-          }}
-        // enablePagination
-          muiTablePaginationProps={{
-            labelRowsPerPage: 'filas por página',
-            rowsPerPageOptions: [12, 20, 50, 100],
-            showFirstButton: true,
-            showLastButton: true,
-            SelectProps: { native: true }
-          }}
-          enableRowActions
-          positionActionsColumn='last'
-          positionPagination='bottom'
-          manualPagination
-          manualSorting
-          onColumnFiltersChange={setColumnFilters}
-          onGlobalFilterChange={setGlobalFilter}
-          onPaginationChange={setPagination}
-          onSortingChange={setSorting}
-          editingMode='cell'
-        // enableEditing
-        // paginateExpandedRows
-        // onPaginationChange
-          muiSearchTextFieldProps={{
-
-            variant: 'outlined',
-            placeholder: 'Busqueda global',
-            label: 'Buscar',
-            InputLabelProps: { shrink: true }
-
-          }}
-          muiTableToolbarAlertBannerProps={
+          muiToolbarAlertBannerProps={
         isError
           ? {
               color: 'error',
@@ -213,6 +164,11 @@ export const MatrizObra = () => {
             }
           : undefined
       }
+          onColumnFiltersChange={setColumnFilters}
+          onGlobalFilterChange={setGlobalFilter}
+          onPaginationChange={setPagination}
+          onSortingChange={setSorting}
+          rowCount={rowCount}
           state={{
             columnFilters,
             globalFilter,
@@ -222,24 +178,27 @@ export const MatrizObra = () => {
             showProgressBars: isRefetching,
             sorting
           }}
-        // state={{ isLoading, showProgressBars: isRefetching, showAlertBanner: isError, density: 'compact', pagination }}
-        // enableRowSelection // enable some features
-        // enableClickToCopy
-        // enableColumnResizing
-        // enableColumnOrdering
-        // enableGlobalFilter
-        // enablePinning
-        // enableRowActions
-        // autoResetPagination
-        // enableEditing
-        // enableRowNumbers
-        //  enableRowVirtualization
-        //  virtualizerProps={{ overscan: 50 }}
-          enableBottomToolbar
-          rowCount={rowCount}
-          positionToolbarAlertBanner='bottom'
-        // onEditRowSubmit={handleSaveRow}
-          onCellEditBlur={handleSaveRow}
+          muiTablePaginationProps={{
+            labelRowsPerPage: 'filas por página',
+            showFirstButton: true,
+            showLastButton: true,
+            rowsPerPageOptions: [20],
+            SelectProps: { native: true }
+          }}
+          muiTableContainerProps={{ className: 'tableContainer' }}
+          muiTableHeadProps={{
+            className: 'tableHeader'
+          }}
+          manualFiltering
+          manualPagination
+          manualSorting
+          enableRowActions
+          positionActionsColumn='last'
+          positionPagination='bottom'
+          enableColumnResizing
+          // enableStickyHeader
+          enableRowVirtualization
+          // virtualizerProps={{ overscan: 25 }}
           renderTopToolbarCustomActions={({ table }) => {
             return (
               <Box
@@ -316,7 +275,6 @@ export const MatrizObra = () => {
           )}
         />
       </ThemeProvider>
-
     </ContainerBox>
 
   )

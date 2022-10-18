@@ -1,7 +1,7 @@
 const table = 'Contrato de Obra'
 export const Config = {
   pageIndex: 0,
-  pageSize: 50,
+  pageSize: 20,
   table,
   relationTable: null,
   register: `Registrar ${table}`,

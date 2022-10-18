@@ -4,24 +4,20 @@ import { format, parse } from 'date-fns'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
-    header: 'Id',
-    size: 100
+    header: 'Id'
   },
-
   {
     accessorKey: 'idBpin',
-    header: 'Bpin',
-    size: 100
+    header: 'Bpin'
   },
   {
     accessorKey: 'idContrato',
-    header: 'ID Contrato',
-    size: 150
+    header: 'ID Contrato'
   },
   {
     accessorFn: (row) =>
       `${row.nombreProyecto ? row.nombreProyecto : 'NO ASIGNADO'}`,
-    size: 250,
+    size: 350,
     id: 'nombreProyecto',
     header: 'Proyecto',
     Cell: ({ cell }) => (
@@ -34,6 +30,7 @@ export const ColumnsTable = [
       </Box>
     )
   },
+
   {
     accessorFn: (row) =>
       `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
@@ -59,8 +56,9 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
-    filterFn: 'lessThanOrEqualTo',
-    sortingFn: 'datetime',
+    filterVariant: 'range',
+    filterFn: 'betweenInclusive',
+    sortingFn: 'date',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
   },
@@ -72,7 +70,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
-    filterVariant: 'lessThanOrEqualTo',
+    filterVariant: 'range',
     sortingFn: 'datetime',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
@@ -87,7 +85,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
-    filterVariant: 'lessThanOrEqualTo',
+    filterVariant: 'range',
     sortingFn: 'datetime',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
@@ -101,7 +99,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
-    filterVariant: 'lessThanOrEqualTo',
+    filterVariant: 'range',
     sortingFn: 'datetime',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
@@ -159,6 +157,7 @@ export const ColumnsTable = [
       </Box>
     )
   },
+
   {
     accessorKey: 'avanceFisicoProgramado',
     header: 'Fisico Programado',
@@ -519,26 +518,15 @@ export const ColumnsTable = [
     id: 'linkSecop',
     header: 'Link Secop',
     size: 650,
-    Cell: ({ cell, row }) => (
+    Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
           color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
         })}
       >
-        <a href={cell.getValue()} target='_blank' rel='noreferrer'>
-          {row.original?.linkSecop}
-        </a>
+        {cell.getValue()}
       </Box>
     )
-    // Cell: ({ cell }) => (
-    // <Box
-    //   sx={(theme) => ({
-    //     color: cell.getValue() === 'NO ASIGNADO' ? '#ff22AA' : ''
-    //   })}
-    // >
-    //   {cell.getValue()}
-    // </Box>
-    // )
   },
   {
     accessorFn: (row) =>

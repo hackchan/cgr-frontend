@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import config from '../../config'
 export const CrudMunicipios = () => {
   const {
     state, getMunicipios, AddMunicipio, DeleteMunicipio, UpdateMunicipio, getDepartments, getTipoMunicipios
@@ -121,7 +122,7 @@ export const CrudMunicipios = () => {
         <MaterialReactTable
           columns={columns}
           data={data}
-          localization={preData.localization}
+          localization={config.localization}
           getRowId={(row) => row.id}
           initialState={{ showColumnFilters: false, density: 'compact' }}
           muiTableHeadCellProps={{
