@@ -65,7 +65,7 @@ export const MatrizObra = () => {
   const [reload, setReload] = useState(false)
   const [preData] = useState(Config)
   const [globalFilter, setGlobalFilter] = useState('')
-  // const [columnFilters, setColumnFilters] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
   const [sorting, setSorting] = useState([])
   const [pagination, setPagination] = useState({
     pageIndex: preData.pageIndex,
@@ -75,21 +75,21 @@ export const MatrizObra = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setReload(false)
         if (!data.length) {
           setIsLoading(true)
         } else {
           setIsRefetching(true)
         }
 
-        const response = await GetMatrizObras(pagination, globalFilter, null, sorting)
+        const response = await GetMatrizObras(pagination, globalFilter, columnFilters, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
-        setIsError(false)
       } catch (error) {
         setIsError(true)
         setError(error.message)
       } finally {
+        setReload(false)
+        setIsError(false)
         setIsLoading(false)
         setIsRefetching(false)
       }
@@ -98,9 +98,9 @@ export const MatrizObra = () => {
   }, [
     pagination.pageIndex,
     pagination.pageSize,
+    columnFilters,
     globalFilter,
-    sorting,
-    reload])
+    sorting])
 
   const handleExportData = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
@@ -144,7 +144,7 @@ export const MatrizObra = () => {
           data={data}
           localization={config.localization}
           getRowId={(row) => row.id}
-          initialState={{ showColumnFilters: false, density: 'compact', pagination: { pageSize: 20, pageIndex: 0 } }}
+          initialState={{ showColumnFilters: true, density: 'compact', pagination: { pageSize: 20, pageIndex: 0 } }}
           muiTableBodyRowProps={({ row }) => ({
             sx: {
 
@@ -163,13 +163,14 @@ export const MatrizObra = () => {
             }
           : undefined
       }
-          // onColumnFiltersChange={setColumnFilters}
+          onColumnFiltersChange={setColumnFilters}
           onGlobalFilterChange={setGlobalFilter}
           onPaginationChange={setPagination}
           onSortingChange={setSorting}
           rowCount={rowCount}
           state={{
             globalFilter,
+            columnFilters,
             isLoading,
             pagination,
             showAlertBanner: isError,
@@ -187,7 +188,7 @@ export const MatrizObra = () => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
-          // manualFiltering
+          manualFiltering
           manualPagination
           manualSorting
           enableRowActions
