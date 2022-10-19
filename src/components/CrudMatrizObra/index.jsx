@@ -85,11 +85,16 @@ export const MatrizObra = () => {
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {
+        console.log('homer erro:', error)
         setIsError(true)
-        setError(error.message)
+        if (error.response) {
+          setError(error.response.data.error.message)
+          console.log('homer error msn:', error.response.data.error.message)
+        } else {
+          setError(error.message)
+        }
       } finally {
         setReload(false)
-        setIsError(false)
         setIsLoading(false)
         setIsRefetching(false)
       }
@@ -100,7 +105,8 @@ export const MatrizObra = () => {
     pagination.pageSize,
     columnFilters,
     globalFilter,
-    sorting])
+    sorting,
+    reload])
 
   const handleExportData = (rows) => {
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
