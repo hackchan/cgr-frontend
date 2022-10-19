@@ -16,6 +16,8 @@ export const ColumnsTable = [
   {
     accessorKey: 'idContrato',
     header: 'ID Contrato',
+    enableColumnFilterModes: false, // disable changing filter mode for this column
+    filterVariant: 'range',
     size: 150
   },
   {

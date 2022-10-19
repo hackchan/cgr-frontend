@@ -65,7 +65,7 @@ export const MatrizObra = () => {
   const [reload, setReload] = useState(false)
   const [preData] = useState(Config)
   const [globalFilter, setGlobalFilter] = useState('')
-  const [columnFilters, setColumnFilters] = useState([])
+  // const [columnFilters, setColumnFilters] = useState([])
   const [sorting, setSorting] = useState([])
   const [pagination, setPagination] = useState({
     pageIndex: preData.pageIndex,
@@ -82,7 +82,7 @@ export const MatrizObra = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetMatrizObras(pagination, globalFilter, columnFilters, sorting)
+        const response = await GetMatrizObras(pagination, globalFilter, null, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
@@ -99,7 +99,6 @@ export const MatrizObra = () => {
     pagination.pageIndex,
     pagination.pageSize,
     globalFilter,
-    columnFilters.length > 0,
     sorting,
     reload])
 
@@ -164,13 +163,12 @@ export const MatrizObra = () => {
             }
           : undefined
       }
-          onColumnFiltersChange={setColumnFilters}
+          // onColumnFiltersChange={setColumnFilters}
           onGlobalFilterChange={setGlobalFilter}
           onPaginationChange={setPagination}
           onSortingChange={setSorting}
           rowCount={rowCount}
           state={{
-            columnFilters,
             globalFilter,
             isLoading,
             pagination,
@@ -189,7 +187,7 @@ export const MatrizObra = () => {
           muiTableHeadProps={{
             className: 'tableHeader'
           }}
-          manualFiltering
+          // manualFiltering
           manualPagination
           manualSorting
           enableRowActions

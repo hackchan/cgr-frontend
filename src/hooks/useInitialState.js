@@ -1235,7 +1235,7 @@ export const useInitialState = () => {
       }
 
       url.searchParams.set('globalFilter', globalFilter ?? '')
-      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      // url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
       url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
 
       const response = await axios({
