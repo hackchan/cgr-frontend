@@ -13,7 +13,7 @@ import { ButtonLoading } from '../ButtonLoading'
 // import { object, string, number, array, date } from 'yup'
 import { ColumnsTable } from './Columns'
 
-export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada }) => {
+export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada, onCloseFile }) => {
   const [tableData, setTableData] = useState(() => data)
   const [columnsWithError, setColumnsWithError] = useState([])
   const [messagesError, setmessagesError] = useState({})
@@ -217,6 +217,14 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada })
                   color='error'
                 >
                   Subir datos
+                </ButtonStyled>
+
+                <ButtonStyled
+                  onClick={() => { onCloseFile() }}
+                  variant='contained'
+                  color='info'
+                >
+                  Cambiar Csv
                 </ButtonStyled>
                 {/* </Tooltip> */}
 
