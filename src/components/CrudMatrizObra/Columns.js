@@ -4,7 +4,7 @@ import { format, parse } from 'date-fns'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
-    header: 'IdS',
+    header: 'Id',
     size: 100
   },
 
