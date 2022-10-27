@@ -62,8 +62,6 @@ module.exports = {
     compress: true,
     port: 3005,
     open: true,
-    historyApiFallback: {
-      index: '/dist/index.html'
-    }
+    historyApiFallback: true
   }
 }

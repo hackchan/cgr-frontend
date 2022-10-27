@@ -8,12 +8,14 @@ import { Information } from '../containers/Information'
 import { Login } from '../containers/Login'
 import { Logout } from '../containers/Logout'
 import { Recovery } from '../components/Recovery'
+import { VerifyEmail } from '../components/VerifyEmail'
 import { Payment } from '../containers/Payment'
 import { Succes } from '../containers/Succes'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 import { Table } from '../components/Table'
 import { ResetPassword } from '../components/ResetPassword'
 import { NewPassword } from '../components/NewPassword'
+import { NewUserEntidad } from '../components/NewUserEntidad'
 import { NotFound } from '../components/NotFound'
 import { DragArea } from '../components/DragArea'
 import { Csv } from '../components/Csv'
@@ -60,6 +62,7 @@ export const App = () => {
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />
+        <Route path='verify-email' element={<VerifyEmail />} />
         <Route path='login' element={<Login />} />
         <Route path='logout' element={<Logout />} />
         <Route path='payment' element={<Payment />} />
@@ -69,6 +72,7 @@ export const App = () => {
         <Route path='roles' element={<Roles />} />
         <Route path='reset' element={<ResetPassword />} />
         <Route path='newpass' element={<NewPassword />} />
+        <Route path='newuser-entidad' element={<NewUserEntidad />} />
 
       </Route>
       {/* <Route path='/search-page' element={<SearchPage />} />

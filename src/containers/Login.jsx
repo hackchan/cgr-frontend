@@ -69,7 +69,8 @@ export const Login = () => {
         {errorMessage && clearMessage(3000, setErrorMessage) && <p><span className='errors'>{errorMessage}</span></p>}
         <div>
           <Link to='/recovery'>Olvidó la contraseña?</Link> <br />
-          <a href='#'>Crear una cuenta</a>
+          <Link to='/verify-email'>Crear Cuenta?</Link> <br />
+
         </div>
 
       </form>

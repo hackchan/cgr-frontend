@@ -48,6 +48,25 @@ export const useInitialState = () => {
       throw error
     }
   }
+  const validateEmail = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/login/validate-email-entidad`,
+        data: {
+          email: payload.email
+        },
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
   const login = async (payload) => {
     try {
       const response = await axios({
@@ -1448,6 +1467,7 @@ export const useInitialState = () => {
   return {
     login,
     recovery,
+    validateEmail,
     logout,
     checkSession,
     chgDarkMode,
