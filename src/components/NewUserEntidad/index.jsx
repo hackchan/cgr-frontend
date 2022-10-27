@@ -1,17 +1,19 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import { clearMessage } from '../../utils/time'
 import { useForm } from 'react-hook-form'
-import { Logo } from '../Logo'
-import { FormLabelStyle } from '../../styles/box'
+import { FormLabelStyle, BoxForm } from '../../styles/box'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import { AppContext } from '../../contex/AppProvidercContext'
+import { ModalB } from '../ModalB'
+import { Spinner } from '../Spinner'
 
 export const NewUserEntidad = () => {
+  const emailImput = useRef(null)
   const formSchema = Yup.object().shape({
     // tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
     // role: Yup.object().shape().required('Role obligatorio'),
@@ -29,6 +31,10 @@ export const NewUserEntidad = () => {
       .required('Confirmacion de password es obligatorio')
       .oneOf([Yup.ref('password')], 'Passwords no coinciden')
   })
+
+  const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [modalShow, setModalShow] = useState(true)
   const [disableForm, setDisableForm] = useState(true)
   const [disableBtn, setDisableBtn] = useState(true)
   const [error, setError] = useState('')
@@ -38,9 +44,10 @@ export const NewUserEntidad = () => {
     resolver: yupResolver(formSchema)
   })
   const {
-    state
+    state,
+    validateEmail
   } = useContext(AppContext)
-
+  const dopEmail = register('email')
   const modedark = state.darkMode ? 'dark' : 'light'
   // const theme = createTheme({
   //   palette: {
@@ -54,7 +61,32 @@ export const NewUserEntidad = () => {
   //   }
   // }, esES)
   const onValidateEmail = async (e) => {
-    console.log('validar email')
+    try {
+      console.log('on validate ...')
+      console.log('ref:', emailImput)
+      clearMessage(0, setMessage)
+      setLoading(true)
+
+      // await validateEmail(dataForm)
+      // setMessage(data.msn)
+      // navigate('/newuser-entidad', { replace: true, state: { msn: data.msn } })
+    } catch (error) {
+      try {
+        if (error.response.data) {
+          setMessage(error.response.data.error.message)
+        } else if (error.request.data) {
+          console.log('error request :(')
+          setMessage(error.request.data.error.message)
+        } else {
+          console.log('homero error:', error.message)
+          setMessage(error.message)
+        }
+      } catch (error) {
+        setMessage(error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
   }
   const onSubmit = async (dataForm) => {
     try {
@@ -102,125 +134,141 @@ export const NewUserEntidad = () => {
     }
   }
   return (
-    <div className='box'>
-      <div className='avatar'><Logo big /></div>
-      <h2>Registrar Usuario</h2>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row>
-          <Form.Group as={Col} controlId='formGridEmail'>
-            <FormLabelStyle modedark={modedark.toString()}>Email</FormLabelStyle>
-            <Form.Control
-              type='text' placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
-            />
-            {errors.email && (
-              <Form.Text className='errors' onClick={() => clearErrors('email')}>
-                {errors.email.message}
-              </Form.Text>
-            )}
-          </Form.Group>
+    <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title='Registrar Usuario'>
+      <BoxForm modedark={modedark}>
+        {/* <div className='box'>
+        <div className='avatar'><Logo big /></div>
+        <h2>Registrar Usuario</h2> */}
 
-        </Row>
-        <Row>
-          <Form.Group as={Col} controlId='formGridEmail'>
-            <Button value='Verificar Email' onClick={onValidateEmail} type='button' className='danger' />
-          </Form.Group>
-        </Row>
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridNombre'>
-            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' disabled={disableForm} {...register('username')}
-            />
-            {errors.username && (
-              <Form.Text className='errors' onClick={() => clearErrors('username')}>
-                {errors.username.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-        </Row>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Row>
+            <Form.Group as={Col} controlId='formGridEmail'>
+              <FormLabelStyle modedark={modedark.toString()}>Email</FormLabelStyle>
+              <Form.Control
+                type='text' placeholder='Eje. fabio.rojas@contraloria.gov.co' {...dopEmail} ref={(e) => {
+                  dopEmail.ref(e)
+                  emailImput.current = e
+                }} {...register('email')}
+              />
+              {errors.email && (
+                <Form.Text className='errors' onClick={() => clearErrors('email')}>
+                  {errors.email.message}
+                </Form.Text>
+              )}
+            </Form.Group>
 
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridNombre'>
-            <FormLabelStyle modedark={modedark.toString()}>Nombres</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' disabled={disableForm} {...register('name')}
-            />
-            {errors.name && (
-              <Form.Text className='errors' onClick={() => clearErrors('name')}>
-                {errors.name.message}
-              </Form.Text>
-            )}
-          </Form.Group>
+          </Row>
+          <Row>
+            <Form.Group as={Col} controlId='formGridEmail'>
+              <Button
+                value='Verificar Email'
+                onClick={onValidateEmail}
+                type='button'
+                className='danger'
+                disabled={loading}
+                loading={loading}
+              />
+            </Form.Group>
+          </Row>
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridNombre'>
+              <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
+              <Form.Control
+                style={{ height: 38 }} type='text' placeholder='Eje. hackchan' disabled={disableForm} {...register('username')}
+              />
+              {errors.username && (
+                <Form.Text className='errors' onClick={() => clearErrors('username')}>
+                  {errors.username.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Row>
 
-          <Form.Group as={Col} controlId='formGridApellido'>
-            <FormLabelStyle modedark={modedark.toString()}>Apellidos</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Rojas Martha' disabled={disableForm} {...register('lastName', {
-                required: 'apellidos son obligatorios',
-                minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
-                pattern: {
-                  value: /(^[a-zA-ZÑñ ]{3,64}$)/,
-                  message: 'apellidos no válido'
-                }
-              })}
-            />
-            {errors.lastName && (
-              <Form.Text className='errors' onClick={() => clearErrors('lastName')}>
-                {errors.lastName.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-        </Row>
-        <Row className='mb-3'>
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridNombre'>
+              <FormLabelStyle modedark={modedark.toString()}>Nombres</FormLabelStyle>
+              <Form.Control
+                style={{ height: 38 }} type='text' placeholder='Eje. Fabio Antonio' disabled={disableForm} {...register('name')}
+              />
+              {errors.name && (
+                <Form.Text className='errors' onClick={() => clearErrors('name')}>
+                  {errors.name.message}
+                </Form.Text>
+              )}
+            </Form.Group>
 
-          <Form.Group as={Col} controlId='formGridPhone'>
-            <FormLabelStyle modedark={modedark.toString()}>Celular</FormLabelStyle>
-            <Form.Control
-              type='text' placeholder='Eje. 3183895020' disabled={disableForm} {...register('phone')}
-            />
+            <Form.Group as={Col} controlId='formGridApellido'>
+              <FormLabelStyle modedark={modedark.toString()}>Apellidos</FormLabelStyle>
+              <Form.Control
+                style={{ height: 38 }} type='text' placeholder='Eje. Rojas Martha' disabled={disableForm} {...register('lastName', {
+                  required: 'apellidos son obligatorios',
+                  minLength: { value: 3, message: 'La longitud minima es de 3 caracteres' },
+                  maxLength: { value: 64, message: 'La longitud maxima es de 64 caracteres' },
+                  pattern: {
+                    value: /(^[a-zA-ZÑñ ]{3,64}$)/,
+                    message: 'apellidos no válido'
+                  }
+                })}
+              />
+              {errors.lastName && (
+                <Form.Text className='errors' onClick={() => clearErrors('lastName')}>
+                  {errors.lastName.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Row>
+          <Row className='mb-3'>
 
-            {errors.phone && (
-              <Form.Text className='errors' onClick={() => clearErrors('phone')}>
-                {errors.phone.message}
-              </Form.Text>
-            )}
-          </Form.Group>
+            <Form.Group as={Col} controlId='formGridPhone'>
+              <FormLabelStyle modedark={modedark.toString()}>Celular</FormLabelStyle>
+              <Form.Control
+                type='text' placeholder='Eje. 3183895020' disabled={disableForm} {...register('phone')}
+              />
 
-        </Row>
+              {errors.phone && (
+                <Form.Text className='errors' onClick={() => clearErrors('phone')}>
+                  {errors.phone.message}
+                </Form.Text>
+              )}
+            </Form.Group>
 
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridpassword'>
-            <FormLabelStyle modedark={modedark.toString()}>password</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='password' placeholder='' disabled={disableForm} {...register('password')}
-            />
-            {errors.password && (
-              <Form.Text className='errors' onClick={() => clearErrors('password')}>
-                {errors.password.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-          <Form.Group as={Col} controlId='formGridrepassword'>
-            <FormLabelStyle modedark={modedark.toString()}>confirmacion password</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='password' placeholder='' disabled={disableForm} {...register('confirmPwd')}
-            />
-            {errors.confirmPwd && (
-              <Form.Text className='errors' onClick={() => clearErrors('confirmPwd')}>
-                {errors.confirmPwd.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-        </Row>
+          </Row>
 
-        <div>
-          {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
-        </div>
-        <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Registar Usuario' disabled={disableBtn} loading={false} /></div>
-      </Form>
-    </div>
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridpassword'>
+              <FormLabelStyle modedark={modedark.toString()}>password</FormLabelStyle>
+              <Form.Control
+                style={{ height: 38 }} type='password' placeholder='' disabled={disableForm} {...register('password')}
+              />
+              {errors.password && (
+                <Form.Text className='errors' onClick={() => clearErrors('password')}>
+                  {errors.password.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+            <Form.Group as={Col} controlId='formGridrepassword'>
+              <FormLabelStyle modedark={modedark.toString()}>confirmacion password</FormLabelStyle>
+              <Form.Control
+                style={{ height: 38 }} type='password' placeholder='' disabled={disableForm} {...register('confirmPwd')}
+              />
+              {errors.confirmPwd && (
+                <Form.Text className='errors' onClick={() => clearErrors('confirmPwd')}>
+                  {errors.confirmPwd.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+          </Row>
 
+          <div>
+            {loading && <Spinner />}
+            {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>}
+            {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
+          </div>
+          <br />
+          <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Registar Usuario' disabled={disableBtn} loading={false} /></div>
+        </Form>
+      </BoxForm>
+      {/* </div> */}
+    </ModalB>
   )
 }
