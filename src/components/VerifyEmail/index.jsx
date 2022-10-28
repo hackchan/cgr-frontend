@@ -31,21 +31,26 @@ export const VerifyEmail = () => {
       clearMessage(0, setMessage)
       setLoading(true)
       const data = await validateEmail(dataForm)
+      console.log('la data:', data)
       // setMessage(data.msn)
-      navigate('/newuser-entidad', { replace: true, state: { emial: data.email } })
+      navigate('/newuser-entidad', { replace: true, state: { email: data.email, entidadId: data.entidad.id, name: data.entidad.name, nit: data.entidad.nit } })
     } catch (error) {
       try {
-        if (error.response.data) {
+        if (error.message) {
+          setMessage(error.message)
+        } else if (error.response.data) {
+          console.log('UNO')
           setMessage(error.response.data.error.message)
         } else if (error.request.data) {
-          console.log('error request :(')
+          console.log('DOS')
           setMessage(error.request.data.error.message)
         } else {
-          console.log('homero error:', error.message)
+          console.log('TRES')
           setMessage(error.message)
         }
-      } catch (error) {
-        setMessage(error.message)
+      } catch (err) {
+        console.log('CUATRO')
+        setMessage(err.message)
       }
     } finally {
       setLoading(false)
