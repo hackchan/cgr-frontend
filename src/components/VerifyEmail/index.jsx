@@ -32,7 +32,7 @@ export const VerifyEmail = () => {
       setLoading(true)
       const data = await validateEmail(dataForm)
       // setMessage(data.msn)
-      navigate('/newuser-entidad', { replace: true, state: { msn: data.msn } })
+      navigate('/newuser-entidad', { replace: true, state: { emial: data.email } })
     } catch (error) {
       try {
         if (error.response.data) {
