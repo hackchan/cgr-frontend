@@ -36,7 +36,7 @@ export const VerifyEmail = () => {
       navigate('/newuser-entidad', { replace: true, state: { email: data.email, entidadId: data.entidad.id, name: data.entidad.name, nit: data.entidad.nit } })
     } catch (error) {
       try {
-        if (error.message) {
+        if (error.message && !error.response.data.error.message) {
           setMessage(error.message)
         } else if (error.response.data) {
           console.log('UNO')

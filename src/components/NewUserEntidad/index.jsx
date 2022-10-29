@@ -51,8 +51,7 @@ export const NewUserEntidad = () => {
       const entidadId = location.state.entidadId
       const auth = {
         username: dataForm.username,
-        password: dataForm.password,
-        role: ['entidad']
+        password: dataForm.password
       }
       dataForm = {
         name: dataForm.name,
@@ -64,6 +63,7 @@ export const NewUserEntidad = () => {
         auth
 
       }
+      console.log('dataform:', dataForm)
       await AddUser(dataForm)
       setModalShow(false)
     } catch (error) {
