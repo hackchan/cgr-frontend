@@ -70,7 +70,7 @@ export const Register = ({ setModal, setReload, preData, AddSubSector, getSector
         </Form.Group>
 
         <Form.Group as={Col} controlId='sector'>
-          <FormLabelStyle modedark={modedark.toString()}>Tipo</FormLabelStyle>
+          <FormLabelStyle modedark={modedark.toString()}>Sector</FormLabelStyle>
           <Controller
             name='sector'
             control={control}
@@ -79,7 +79,7 @@ export const Register = ({ setModal, setReload, preData, AddSubSector, getSector
               <StyledSelect
                 {...field}
                 innerRef={ref}
-                {...register('sector', { required: `${preData.table} es obligatorio` })}
+                {...register('sector', { required: 'Sector es obligatorio' })}
                 isClearable
                 classNamePrefix='Select'
                 placeholder='Selecciona...'

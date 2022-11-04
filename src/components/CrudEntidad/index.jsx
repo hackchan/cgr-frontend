@@ -22,7 +22,11 @@ export const CrudEntidad = () => {
     GetEntidad,
     AddEntidad,
     DeleteEntidad,
-    UpdateEntidad
+    UpdateEntidad,
+    getSubSector,
+    getMunicipios,
+    getCategorias
+
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -124,12 +128,15 @@ export const CrudEntidad = () => {
 
       {modalUpdate &&
         <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateEntidad={UpdateEntidad} modedark={state.darkMode} />
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateEntidad={UpdateEntidad} getSubSector={getSubSector} getCategorias={getCategorias} getMunicipios={getMunicipios} modedark={state.darkMode} />
         </Modal>}
 
       {modal &&
         <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} AddEntidad={AddEntidad} modedark={state.darkMode} />
+          <Register
+            setModal={setModal} setReload={setReload} preData={preData} AddEntidad={AddEntidad} getSubSector={getSubSector}
+            getMunicipios={getMunicipios} getCategorias={getCategorias} modedark={state.darkMode}
+          />
         </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable
@@ -286,7 +293,7 @@ export const CrudEntidad = () => {
                   variant='contained'
                   onClick={() => {
                     setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
+                    setDataEliminar(row.original)
                   }}
                 />
               </Tooltip>

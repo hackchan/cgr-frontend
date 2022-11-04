@@ -30,22 +30,22 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
     return options
   }
 
-  const loadOptionsCgr = async (inputValue) => {
-    const options = []
-    const response = await GetUserCGR()
-    console.log('los users:', response)
-    const filter = response.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
+  // const loadOptionsCgr = async (inputValue) => {
+  //   const options = []
+  //   const response = await GetUserCGR()
+  //   console.log('los users:', response)
+  //   const filter = response.filter((option) => {
+  //     return option.name.toLowerCase().includes(inputValue.toLowerCase())
+  //   })
 
-    filter.forEach((user) => {
-      options.push({
-        label: `${user.name} ${user.lastName}`,
-        value: user.id
-      })
-    })
-    return options
-  }
+  //   filter.forEach((user) => {
+  //     options.push({
+  //       label: `${user.name} ${user.lastName}`,
+  //       value: user.id
+  //     })
+  //   })
+  //   return options
+  // }
   const onSubmit = async (dataForm) => {
     try {
       dataForm = { ...dataForm, satelital: dataForm?.satelital?.value ?? null }
@@ -198,7 +198,7 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
 
         </LabelBox>
 
-        <LabelBox htmlFor='responsable' modedark={modedark}>
+        {/* <LabelBox htmlFor='responsable' modedark={modedark}>
           Seleccione una {preData.relationTable2}
           <Controller
               // id='department'
@@ -230,7 +230,7 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
             </div>
           )}
 
-        </LabelBox>
+        </LabelBox> */}
 
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}

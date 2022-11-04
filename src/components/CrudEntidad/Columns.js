@@ -110,27 +110,5 @@ export const ColumnsTable = [
         {cell.getValue()?.toUpperCase()}
       </Box>
     )
-  },
-  {
-    accessorFn: (row) =>
-      `${
-        row.municipio?.department?.responsable
-          ? row.municipio?.department?.responsable.name + ' ' + row.municipio?.department?.responsable.lastName
-          : 'NO ASIGNADO'
-      }`,
-    enableEditing: false,
-    // filterVariant: 'range',
-    id: 'responsable',
-    header: 'Responsable',
-    // size: 300,
-    Cell: ({ cell }) => (
-      <Box
-        sx={(theme) => ({
-          color: cell.getValue() === 'NO ASIGNADO' ? 'white' : '#94c53c'
-        })}
-      >
-        {cell.getValue()?.toUpperCase()}
-      </Box>
-    )
   }
 ]

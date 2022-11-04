@@ -1,56 +1,92 @@
 import React, { useState } from 'react'
-import { StyledSelect } from '../../styles/select'
-import { LabelBox, Input, BoxForm } from '../../styles/box'
-import { useForm, Controller } from 'react-hook-form'
+// import Button from 'react-bootstrap/Button'
 import { ButtonLoading as Button } from '../ButtonLoading'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
 import { clearMessage } from '../../utils/time'
-// import { clearMessage } from '../../utils/time'
+import { FormCheckStyle, ContainerSwitch } from '../../styles/Check'
+import { StyledSelect } from '../../styles/select'
+
+import { useForm, Controller } from 'react-hook-form'
+import { BoxForm, FormLabelStyle } from '../../styles/box'
+
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepartment, GetUserCGR, modedark }) => {
+export const Register = ({ setModal, setReload, preData, AddEntidad, getSubSector, getMunicipios, getCategorias, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  // eslint-disable-next-line no-unused-vars
+  // const [currentDepartment, setcurrentDepartment] = useState('')
+  const [activo, setActivo] = useState(true)
+  const [docTec, setDocTec] = useState(false)
+  const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange'
+  })
+  const handleInputActivoChange = () => {
+    setActivo(!activo)
+  }
+  const handleInputDocTecChange = () => {
+    setDocTec(!docTec)
+  }
 
-  const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm()
-
-  const loadOptions = async (inputValue) => {
+  const loadSubSector = async (inputValue) => {
     const options = []
-    const response = await getSatelitales()
-    const filter = response.filter((option) => {
+    const response = await getSubSector(null)
+    const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((satelital) => {
+    filter.forEach((SubSector) => {
       options.push({
-        label: satelital.name,
-        value: satelital.id
+        label: SubSector.name,
+        value: SubSector.id
       })
     })
     return options
   }
 
-  const loadOptionsCgr = async (inputValue) => {
+  const loadCategorias = async (inputValue) => {
     const options = []
-    const response = await GetUserCGR()
-    console.log('los users:', response)
+    const response = await getCategorias(null)
+    console.log('response:', response)
     const filter = response.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((user) => {
+    filter.forEach((categoria) => {
       options.push({
-        label: `${user.name} ${user.lastName}`,
-        value: user.id
+        label: categoria.name,
+        value: categoria.id
       })
     })
     return options
   }
+
+  const loadMunicipios = async (inputValue) => {
+    const options = []
+    const response = await getMunicipios(null)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((muni) => {
+      options.push({
+        label: muni.name,
+        value: muni.id
+      })
+    })
+    return options
+  }
+
   const onSubmit = async (dataForm) => {
     try {
-      dataForm = { ...dataForm, satelital: dataForm?.satelital?.value ?? null }
+      console.log('dataForm:', dataForm)
+      dataForm = { ...dataForm, categoria: dataForm.categoria.value, municipio: dataForm.municipio.value, subsector: dataForm.subsector.value, active: activo, doctec: docTec }
+      console.log('dataForm:', dataForm)
+      // dataForm = { ...dataForm, department: dataForm.department.value, tipo: dataForm.tipo.value, divipola: currentDepartment.value.toString().padStart(2, '0') + dataForm.divipola, isCapital: capital, active: activo }
       setDisableBtn(true)
-      await AddDepartment(dataForm)
+      await AddEntidad(dataForm)
       setModal(false)
       setReload(true)
     } catch (error) {
@@ -68,178 +104,217 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
     <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
       <h2>{preData.register}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <LabelBox htmlFor='name' modedark={modedark}>
-          Ingrese el nombre del {preData.table}
-          <Input
-            type='text' placeholder='Nombre del departamento' id='name' name='name' {...register('name', {
-              required: {
-                value: true,
-                message: `El nombre del ${preData.table} es requerido `
-              }
-              // pattern: {
-              //   value: /^[A-Z0-9]$/i,
-              //   message: 'No es un nombre válido'
-              // }
-            })}
-          />
-          {errors.name
-            ? (
-              <>
-                {errors.name.type === 'required' && (
-                  <div className='errors' onClick={() => clearErrors('name')}>
-                    {errors.name.message}
-                  </div>
-                )}
-                {errors.name.type === 'pattern' && (
-                  <div className='errors' onClick={() => clearErrors('name')}>
-                    {errors.name.message}
-                  </div>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-
-        <LabelBox htmlFor='latitude' modedark={modedark}>
-          Ingrese la latitud del {preData.table}
-          <Input
-            type='text' placeholder='Eje. 4.60971' id='latitude' name='latitude' {...register('latitude', {
-              required: {
-                value: true,
-                message: 'La latitud es requerida'
-              },
-              pattern: {
-                value: /^[-+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$/i,
-                message: 'No es un latitud válida'
-              }
-            })}
-          />
-          {errors.latitude
-            ? (
-              <>
-                {errors.latitude.type === 'required' && (
-                  <div className='errors' onClick={() => clearErrors('latitude')}>
-                    {errors.latitude.message}
-                  </div>
-                )}
-                {errors.latitude.type === 'pattern' && (
-                  <div className='errors' onClick={() => clearErrors('latitude')}>
-                    {errors.latitude.message}
-                  </div>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-        <LabelBox htmlFor='longitude' modedark={modedark}>
-          Ingrese la longitud del {preData.table}
-          <Input
-            type='text' placeholder='Eje. -74.08175' id='longitude' name='longitude' {...register('longitude', {
-              required: {
-                value: true,
-                message: 'La longitud es requerida'
-              },
-              pattern: {
-                value: /^[-+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$/i,
-                message: 'No es un longitud válida'
-              }
-            })}
-          />
-          {errors.longitude
-            ? (
-              <>
-                {errors.longitude.type === 'required' && (
-                  <div className='errors' onClick={() => clearErrors('longitude')}>
-                    {errors.longitude.message}
-                  </div>
-                )}
-                {errors.longitude.type === 'pattern' && (
-                  <div className='errors' onClick={() => clearErrors('longitude')}>
-                    {errors.longitude.message}
-                  </div>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-
-        <LabelBox htmlFor='satelital' modedark={modedark}>
-          Seleccione una {preData.relationTable}
-          <Controller
-              // id='department'
-            name='satelital'
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, ref, ...field } }) => (
-              <StyledSelect
-                {...field}
-                innerRef={ref}
-                {...register('satelital', { required: 'Satelital es obligatorio' })}
-                isClearable
-                classNamePrefix='Select'
-                // autoload={false}
-                placeholder='Selecciona...'
-                defaultOptions
-                // getOptionLabel={e => e.value + ' ' + e.label}
-                // getOptionValue={e => e.value}
-                loadOptions={loadOptions}
-                  // value={currentDepartment}
-                onChange={(e) => { onChange(e) }}
-                onBlur={onBlur}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row className='mb-3'>
+          <ContainerSwitch>
+            <Form.Group as={Col} controlId='formGridCapital'>
+              <FormCheckStyle
+                checked={docTec}
+                id='switch-1'
+                type='switch'
+                label='documento técnico'
+                onChange={handleInputDocTecChange}
+                modedark={modedark.toString()}
               />
-            )}
-          />
-          {errors.satelital && (
-            <div className='errors' onClick={() => clearErrors('satelital')}>
-              {errors.satelital.message}
-            </div>
-          )}
-
-        </LabelBox>
-
-        <LabelBox htmlFor='responsable' modedark={modedark}>
-          Seleccione una {preData.relationTable2}
-          <Controller
-              // id='department'
-            name='responsable'
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, ref, ...field } }) => (
-              <StyledSelect
-                {...field}
-                innerRef={ref}
-                {...register('responsable', { required: 'Responsable es obligatorio' })}
-                isClearable
-                classNamePrefix='Select'
-                // autoload={false}
-                placeholder='Selecciona...'
-                defaultOptions
-                // getOptionLabel={e => e.value + ' ' + e.label}
-                // getOptionValue={e => e.value}
-                loadOptions={loadOptionsCgr}
-                  // value={currentDepartment}
-                onChange={(e) => { onChange(e) }}
-                onBlur={onBlur}
+            </Form.Group>
+            <Form.Group as={Col} controlId='formGridActivo'>
+              <FormCheckStyle
+                checked={activo}
+                id='switch-2'
+                type='switch'
+                label='Activo'
+                onChange={handleInputActivoChange}
+                modedark={modedark.toString()}
               />
+            </Form.Group>
+          </ContainerSwitch>
+
+        </Row>
+        <div className='divider' />
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridNit'>
+            <FormLabelStyle modedark={modedark.toString()}>Nit</FormLabelStyle>
+
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 899999067' {...register('nit', {
+                required: {
+                  value: true,
+                  message: 'El nit es requerido'
+                },
+                pattern: {
+                  value: /^([0-9A-Z]{1,30})$/,
+                  message: 'No es un Nit válido'
+                }
+
+              })}
+            />
+            {errors.nit && (
+              <Form.Text className='errors' onClick={() => clearErrors('nit')}>
+                {errors.nit.message}
+              </Form.Text>
             )}
-          />
-          {errors.responsable && (
-            <div className='errors' onClick={() => clearErrors('responsable')}>
-              {errors.responsable.message}
-            </div>
-          )}
 
-        </LabelBox>
+          </Form.Group>
 
+          <Form.Group as={Col} controlId='formGridCGN'>
+            <FormLabelStyle modedark={modedark.toString()}>CGN</FormLabelStyle>
+
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 210205002' {...register('cgn', {
+                required: {
+                  value: true,
+                  message: 'El cgn es requerido'
+                },
+                pattern: {
+                  value: /^([0-9]{1,9})$/,
+                  message: 'No es un CGN válido'
+                }
+
+              })}
+            />
+            {errors.cgn && (
+              <Form.Text className='errors' onClick={() => clearErrors('nit')}>
+                {errors.cgn.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridName'>
+            <FormLabelStyle modedark={modedark.toString()}>Nombre</FormLabelStyle>
+            <Form.Control style={{ height: 38 }} type='text' placeholder='Nombre de la entidad' {...register('name', { required: 'Nombre de la entidad es obligatorio' })} />
+
+            {errors.name && (
+              <Form.Text className='errors' onClick={() => clearErrors('name')}>
+                {errors.name.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+
+        <Row>
+
+          <Form.Group as={Col} controlId='formGridMunicipoios'>
+            <FormLabelStyle modedark={modedark.toString()}>municipio</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='municipio'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('municipio', { required: 'Municipio es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadMunicipios}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.municipio && (
+              <Form.Text className='errors' onClick={() => clearErrors('municipio')}>
+                {errors.municipio.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+        </Row>
+
+        <Row className='mb-3'>
+
+          <Form.Group as={Col} controlId='formGridCategoria'>
+            <FormLabelStyle modedark={modedark.toString()}>Categoria</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='categoria'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('categoria', { required: 'categoria es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadCategorias}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                  // onChange={e => setSelected(e)}
+                  // onInputChange={handleInputChange}
+                  // closeMenuOnSelect
+
+                />
+              )}
+            />
+            {errors.categoria && (
+              <Form.Text className='errors' onClick={() => clearErrors('categoria')}>
+                {errors.categoria.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridTipo'>
+            <FormLabelStyle modedark={modedark.toString()}>Subsector</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='subsector'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('subsector', { required: 'subsector obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadSubSector}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.subsector && (
+              <Form.Text className='errors' onClick={() => clearErrors('subsector')}>
+                {errors.subsector.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <Button modedark={modedark} value='Crear Departamento' disabled={disableBtn} loading={disableBtn} />
-
-      </form>
-
+        <Button modedark={modedark} value='Crear Municipio' disabled={disableBtn} loading={disableBtn} />
+        {/* <Button variant='primary' type='submit'>
+          Submit
+        </Button> */}
+      </Form>
     </BoxForm>
   )
 }

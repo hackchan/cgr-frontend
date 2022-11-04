@@ -35,12 +35,12 @@ export const Update = ({ setModal, setReload, preData, data, UpdateCategoria, mo
       <h2>{preData.update}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <LabelBox htmlFor='tipo' modedark={modedark}>
-          Edite el nombre del tipo departamento
+          Edite el nombre de la categoría
           <Input
-            type='text' placeholder='Nombre del tipo departamento' id='name' name='name' {...register('name', {
+            type='text' placeholder='Nombre de la categoría' id='name' name='name' {...register('name', {
               required: {
                 value: true,
-                message: 'El nombre del tipo departamento es requerido '
+                message: 'Nombre de la categoría es requerido '
               }
 
             })}

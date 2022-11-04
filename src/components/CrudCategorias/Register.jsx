@@ -35,10 +35,10 @@ export const Register = ({ setModal, setReload, preData, AddCategorias, modedark
         <LabelBox htmlFor='tipo' modedark={modedark}>
           Ingrese el nombre del {preData.table}
           <Input
-            type='text' placeholder='Nombre del tipo departamento' id='name' name='name' {...register('name', {
+            type='text' placeholder='Nombre de la categoría' id='name' name='name' {...register('name', {
               required: {
                 value: true,
-                message: 'El nombre del tipo de departamento es requerido '
+                message: 'Nombre de la categoría es requerido '
               }
 
             })}

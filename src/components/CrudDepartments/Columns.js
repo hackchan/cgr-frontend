@@ -58,24 +58,5 @@ export const ColumnsTable = [
           })} */}
       </Box>
     )
-  },
-  {
-    accessorFn: (row) =>
-      `${
-        row.responsable
-          ? `${row.responsable.name} ${row.responsable.lastName}`
-          : 'NO ASIGNADO'
-      } `, // accessorFn used
-    id: 'responsable',
-    header: 'Responsable',
-    Cell: ({ cell }) => (
-      <Box
-        sx={(theme) => ({
-          color: cell.getValue() === 'FABIO ROJAS ' ? '#AA22AA' : ''
-        })}
-      >
-        {cell.getValue()?.toUpperCase()}
-      </Box>
-    )
   }
 ]

@@ -1,49 +1,93 @@
 import React, { useState } from 'react'
-import ReactSelect from 'react-select/async'
-import { useForm, Controller } from 'react-hook-form'
-import { LabelBox, Input, BoxForm } from '../../styles/box'
-import { ButtonLoading as Button } from '../ButtonLoading'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
 import { clearMessage } from '../../utils/time'
-// import { clearMessage } from '../../utils/time'
+import { FormCheckStyle, ContainerSwitch } from '../../styles/Check'
+import { StyledSelect } from '../../styles/select'
+import { useForm, Controller } from 'react-hook-form'
+import { BoxForm, FormLabelStyle } from '../../styles/box'
+import { ButtonLoading as Button } from '../ButtonLoading'
 import { Logo } from '../Logo'
 
-export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark }) => {
+export const Update = ({ setModal, setReload, preData, data, UpdateEntidad, getSubSector, getCategorias, getMunicipios, modedark }) => {
+  console.log('LA DATA JEJE:', data)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  // eslint-disable-next-line no-unused-vars
-  const [inputValue, setValue] = useState('')
-  const [selectedValue, setSelectedValue] = useState(null)
-  const { register, handleSubmit, control, formState: { errors } } = useForm({ mode: 'onBlur', defaultValues: { name: data.name, latitude: data.latitude, longitude: data.longitude } })
+  const [activo, setActivo] = useState(data.active)
+  const [docTec, setDocTec] = useState(data.doctec)
+  const [municipio, setMunicipio] = useState({ label: data.municipio.name, value: data.municipio.id })
+  const [categoria, setCategoria] = useState({ label: data.categoria.name, value: data.categoria.id })
+  const [subsector, setSubsector] = useState({ label: data.subsector.name, value: data.subsector.id })
+  const { register, handleSubmit, control, clearErrors, formState: { errors } } = useForm({
+    mode: 'onBlur',
+    defaultValues: { nit: data.nit, cgn: data.cgn, name: data.name }
+  })
 
-  const handleInputChange = value => {
-    setValue(value)
+  const handleInputActivoChange = () => {
+    setActivo(!activo)
   }
-  const handleChange = value => {
-    setSelectedValue(value)
+  const handleInputDocTecChange = () => {
+    setDocTec(!docTec)
   }
 
-  const loadOptions = async (inputValue) => {
+  const loadSubSector = async (inputValue) => {
     const options = []
-    const response = await getSatelitales()
-    const filter = response.filter((option) => {
+    const response = await getSubSector(null)
+    const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((satelital) => {
+    filter.forEach((SubSector) => {
       options.push({
-        label: satelital.name,
-        value: satelital.id
+        label: SubSector.name,
+        value: SubSector.id
       })
     })
     return options
   }
+
+  const loadCategorias = async (inputValue) => {
+    const options = []
+    const response = await getCategorias(null)
+    console.log('response:', response)
+    const filter = response.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((categoria) => {
+      options.push({
+        label: categoria.name,
+        value: categoria.id
+      })
+    })
+    return options
+  }
+
+  const loadMunicipios = async (inputValue) => {
+    const options = []
+    const response = await getMunicipios(null)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((muni) => {
+      options.push({
+        label: muni.name,
+        value: muni.id
+      })
+    })
+    return options
+  }
+
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
-      console.log('satelitalSel:', selectedValue)
+      console.log('DATAFORM:', dataForm)
       dataForm.id = data.id
+      dataForm = { ...dataForm, categoria: dataForm.categoria.value, municipio: dataForm.municipio.value, subsector: dataForm.subsector.value, active: activo, doctec: docTec }
       console.log('dataForm:', dataForm)
-      await UpdateDepartment(dataForm)
+      await UpdateEntidad(dataForm, data.id)
       setModal(false)
       setReload(true)
     } catch (error) {
@@ -61,146 +105,216 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
     <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
       <h2>{preData.update}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <LabelBox htmlFor='name' modedark={modedark}>
-          Ingrese el nombre del {preData.table}
-          <Input
-            type='text' placeholder='Nombre del departamento' id='name' name='name' {...register('name', {
-              required: {
-                value: true,
-                message: 'El nombre del departamento es requerido '
-              }
-              // pattern: {
-              //   value: /^[A-Z0-9]$/i,
-              //   message: 'No es un nombre válido'
-              // }
-            })}
-          />
-          {errors.name
-            ? (
-              <>
-                {errors.name.type === 'required' && (
-                  <p className='errors'>
-                    {errors.name.message}
-                  </p>
-                )}
-                {errors.name.type === 'pattern' && (
-                  <p className='errors alert'>
-                    {errors.name.message}
-                  </p>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-
-        <LabelBox htmlFor='latitude' modedark={modedark}>
-          Ingrese la latitud del {preData.table}
-          <Input
-            type='text' placeholder='Eje. 4.60971' id='latitude' name='latitude' {...register('latitude', {
-              required: {
-                value: true,
-                message: 'La latitud es requerida'
-              },
-              pattern: {
-                value: /^[-+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$/i,
-                message: 'No es un latitud válida'
-              }
-            })}
-          />
-          {errors.latitude
-            ? (
-              <>
-                {errors.latitude.type === 'required' && (
-                  <p className='errors'>
-                    {errors.latitude.message}
-                  </p>
-                )}
-                {errors.latitude.type === 'pattern' && (
-                  <p className='errors alert'>
-                    {errors.latitude.message}
-                  </p>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-        <LabelBox htmlFor='longitude' modedark={modedark}>
-          Ingrese la longitud del {preData.table}
-          <Input
-            type='text' placeholder='Eje. -74.08175' id='longitude' name='longitude' {...register('longitude', {
-              required: {
-                value: true,
-                message: 'La longitud es requerida'
-              },
-              pattern: {
-                value: /^[-+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$/i,
-                message: 'No es un longitud válida'
-              }
-            })}
-          />
-          {errors.longitude
-            ? (
-              <>
-                {errors.longitude.type === 'required' && (
-                  <p className='errors'>
-                    {errors.longitude.message}
-                  </p>
-                )}
-                {errors.longitude.type === 'pattern' && (
-                  <p className='errors alert'>
-                    {errors.longitude.message}
-                  </p>
-                )}
-              </>
-              )
-            : null}
-        </LabelBox>
-
-        <LabelBox htmlFor='satelital' modedark={modedark}>
-          Seleccione una {preData.relationTable}
-          <Controller
-            defaultValue={data?.satelital?.id}
-            name='satelital'
-            id='satelital'
-            control={control}
-            render={({ field: { value, onChange, onBlur, name, ref } }) => (
-              <ReactSelect
-                autoload={false}
-                placeholder='Selecciona...'
-                cacheOptions
-                defaultOptions
-                value={selectedValue}
-                getOptionLabel={e => e.value + ' ' + e.label}
-                getOptionValue={e => e.value}
-                loadOptions={loadOptions}
-                onInputChange={handleInputChange}
-                onChange={val => { onChange(val.value); handleChange() }}
-                defaultInputValue={data?.satelital?.name}
-                // onChange={val => onChange(val.value)}
-
-                // {...field}
-                // options={[
-                //   { value: 'chocolate', label: 'Chocolate' },
-                //   { value: 'strawberry', label: 'Strawberry' },
-                //   { value: 'vanilla', label: 'Vanilla' }
-                // ]}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row className='mb-3'>
+          <ContainerSwitch>
+            <Form.Group as={Col} controlId='formGridCapital'>
+              <FormCheckStyle
+                checked={docTec}
+                id='switch-1'
+                type='switch'
+                label='documento técnico'
+                onChange={handleInputDocTecChange}
+                modedark={modedark.toString()}
               />
+            </Form.Group>
+            <Form.Group as={Col} controlId='formGridActivo'>
+              <FormCheckStyle
+                checked={activo}
+                id='switch-2'
+                type='switch'
+                label='Activo'
+                onChange={handleInputActivoChange}
+                modedark={modedark.toString()}
+              />
+            </Form.Group>
+          </ContainerSwitch>
+
+        </Row>
+        <div className='divider' />
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridNit'>
+            <FormLabelStyle modedark={modedark.toString()}>Nit</FormLabelStyle>
+
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 899999067' {...register('nit', {
+                required: {
+                  value: true,
+                  message: 'El nit es requerido'
+                },
+                pattern: {
+                  value: /^([0-9A-Z]{1,30})$/,
+                  message: 'No es un Nit válido'
+                }
+
+              })}
+            />
+            {errors.nit && (
+              <Form.Text className='errors' onClick={() => clearErrors('nit')}>
+                {errors.nit.message}
+              </Form.Text>
             )}
-          />
 
-        </LabelBox>
+          </Form.Group>
 
-        {/* {loading && <Spinner />}
-        {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>} */}
-        {/* {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>} */}
+          <Form.Group as={Col} controlId='formGridCGN'>
+            <FormLabelStyle modedark={modedark.toString()}>CGN</FormLabelStyle>
+
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 210205002' {...register('cgn', {
+                required: {
+                  value: true,
+                  message: 'El cgn es requerido'
+                },
+                pattern: {
+                  value: /^([0-9]{1,9})$/,
+                  message: 'No es un CGN válido'
+                }
+
+              })}
+            />
+            {errors.cgn && (
+              <Form.Text className='errors' onClick={() => clearErrors('nit')}>
+                {errors.cgn.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridName'>
+            <FormLabelStyle modedark={modedark.toString()}>Nombre</FormLabelStyle>
+            <Form.Control style={{ height: 38 }} type='text' placeholder='Nombre de la entidad' {...register('name', { required: 'Nombre de la entidad es obligatorio' })} />
+
+            {errors.name && (
+              <Form.Text className='errors' onClick={() => clearErrors('name')}>
+                {errors.name.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+
+        <Row>
+
+          <Form.Group as={Col} controlId='formGridMunicipoios'>
+            <FormLabelStyle modedark={modedark.toString()}>municipio</FormLabelStyle>
+            <Controller
+              // id='department'
+              defaultValue={municipio}
+              name='municipio'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('municipio', { required: 'Municipio es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadMunicipios}
+                  value={municipio}
+                  onChange={(e) => { onChange(e); setMunicipio(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.municipio && (
+              <Form.Text className='errors' onClick={() => clearErrors('municipio')}>
+                {errors.municipio.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+        </Row>
+
+        <Row className='mb-3'>
+
+          <Form.Group as={Col} controlId='formGridCategoria'>
+            <FormLabelStyle modedark={modedark.toString()}>Categoria</FormLabelStyle>
+            <Controller
+              // id='department'
+              defaultValue={categoria}
+              name='categoria'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('categoria', { required: 'categoria es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadCategorias}
+                  value={categoria}
+                  onChange={(e) => { onChange(e); setCategoria(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.categoria && (
+              <Form.Text className='errors' onClick={() => clearErrors('categoria')}>
+                {errors.categoria.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridTipo'>
+            <FormLabelStyle modedark={modedark.toString()}>Subsector</FormLabelStyle>
+            <Controller
+              // id='department'
+              defaultValue={subsector}
+              name='subsector'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('subsector', { required: 'subsector obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={loadSubSector}
+                  value={subsector}
+                  onChange={(e) => { onChange(e); setSubsector(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.subsector && (
+              <Form.Text className='errors' onClick={() => clearErrors('subsector')}>
+                {errors.subsector.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <Button modedark={modedark} value={preData.update} disabled={disableBtn} loading={disableBtn} />
-
-      </form>
+        <Button modedark={modedark} value='Actualizar Entidad' disabled={disableBtn} loading={disableBtn} />
+        {/* <Button variant='primary' type='submit'>
+          Submit
+        </Button> */}
+      </Form>
 
     </BoxForm>
   )

@@ -221,7 +221,7 @@ export const CrudDepartmets = () => {
           enableColumnOrdering
           enableColumnDragging
           enableColumnResizing
-          enablePinning
+          // enablePinning
         // enableRowOrdering
           onRowDrop={({ draggedRow, targetRow }) => {
             if (targetRow) {
@@ -249,14 +249,12 @@ export const CrudDepartmets = () => {
         // enableEditing
         // paginateExpandedRows
         // onPaginationChange
-          muiSearchTextFieldProps={{
-
-            variant: 'outlined',
-            placeholder: 'Busqueda global',
-            label: 'Buscar',
-            InputLabelProps: { shrink: true }
-
-          }}
+          // muiSearchTextFieldProps={{
+          //   variant: 'outlined',
+          //   placeholder: 'Busqueda global',
+          //   label: 'Buscar',
+          //   InputLabelProps: { shrink: true }
+          // }}
           muiTableToolbarAlertBannerProps={
         isError
           ? {
@@ -274,36 +272,12 @@ export const CrudDepartmets = () => {
             showProgressBars: isRefetching,
             sorting
           }}
-        // state={{ isLoading, showProgressBars: isRefetching, showAlertBanner: isError, density: 'compact', pagination }}
-        // enableRowSelection // enable some features
-        // enableClickToCopy
-        // enableColumnResizing
-        // enableColumnOrdering
-        // enableGlobalFilter
-        // enablePinning
-        // enableRowActions
-        // autoResetPagination
-        // enableEditing
-        // enableRowNumbers
-        // enableRowVirtualization
-        // virtualizerProps={{ overscan: 50 }}
           enableBottomToolbar
           rowCount={rowCount}
           positionToolbarAlertBanner='bottom'
         // onEditRowSubmit={handleSaveRow}
           onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {
-            // const handleDeactivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     console.log(row._valuesCache)
-            //     window.alert('deactivating ', row._valuesCache)
-            //   })
-            // }
-            // const handleActivate = () => {
-            //   table.getSelectedRowModel().flatRows.map((row) => {
-            //     window.alert('activating ' + row.getValue('name'))
-            //   })
-            // }
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
@@ -328,34 +302,17 @@ export const CrudDepartmets = () => {
                   Nuevo
                 </ButtonStyled>
 
-                {/* <Button
-                color='error'
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                onClick={handleDeactivate}
-                variant='contained'
-              >
-                Deactivate
-              </Button>
-              <Button
-                color='success'
-                disabled={table.getSelectedRowModel().flatRows.length === 0}
-                // onClick={handleActivate}
-                variant='contained'
-              >
-                Activate
-              </Button> */}
-
               </Box>
             )
           }}
-          renderRowActionMenuItems={({ row }) => (
+          renderRowActions={({ row }) => (
             <div>
               <Tooltip title={preData.delete} placement='top'>
                 <DeleteIconStyle
                   variant='contained'
                   onClick={() => {
                     setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
+                    setDataEliminar(row.original)
                   }}
                 />
               </Tooltip>
@@ -372,6 +329,30 @@ export const CrudDepartmets = () => {
               </Tooltip>
             </div>
           )}
+          // renderRowActionMenuItems={({ row }) => (
+          //   <div>
+          //     <Tooltip title={preData.delete} placement='top'>
+          //       <DeleteIconStyle
+          //         variant='contained'
+          //         onClick={() => {
+          //           setModalEliminar(true)
+          //           setDataEliminar(row.original)
+          //         }}
+          //       />
+          //     </Tooltip>
+          //     <Tooltip title={preData.update} placement='top'>
+          //       <EditIconStyle
+          //         variant='contained'
+          //         onClick={() => {
+          //           setModalUpdate(true)
+          //           setDataUpdate(row.original)
+
+          //           //       closeMenu()
+          //         }}
+          //       />
+          //     </Tooltip>
+          //   </div>
+          // )}
         />
       </ThemeProvider>
 

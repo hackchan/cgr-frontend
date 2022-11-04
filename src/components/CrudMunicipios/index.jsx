@@ -203,7 +203,7 @@ export const CrudMunicipios = () => {
                   variant='contained'
                   onClick={() => {
                     setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
+                    setDataEliminar(row.original)
                   }}
                 />
               </Tooltip>

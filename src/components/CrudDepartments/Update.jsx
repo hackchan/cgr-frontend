@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ReactSelect from 'react-select/async'
+import { StyledSelect } from '../../styles/select'
 import { useForm, Controller } from 'react-hook-form'
 import { LabelBox, Input, BoxForm } from '../../styles/box'
 import { ButtonLoading as Button } from '../ButtonLoading'
@@ -8,19 +8,21 @@ import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
 export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark }) => {
+  // console.log('LA DATA:', data)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [inputValue, setValue] = useState('')
-  const [selectedValue, setSelectedValue] = useState(null)
-  const { register, handleSubmit, control, formState: { errors } } = useForm({ mode: 'onBlur', defaultValues: { name: data.name, latitude: data.latitude, longitude: data.longitude } })
+  const [satelital, setSatelital] = useState({ label: data.satelital.name, value: data.satelital.id })
+  // const [selectedValue, setSelectedValue] = useState(null)
+  const { register, handleSubmit, control, formState: { errors } } = useForm({ mode: 'onTouched', reValidateMode: 'onChange', defaultValues: { name: data.name, latitude: data.latitude, longitude: data.longitude } })
 
-  const handleInputChange = value => {
-    setValue(value)
-  }
-  const handleChange = value => {
-    setSelectedValue(value)
-  }
+  // const handleInputChange = value => {
+  //   setValue(value)
+  // }
+  // const handleChange = value => {
+  //   setSelectedValue(value)
+  // }
 
   const loadOptions = async (inputValue) => {
     const options = []
@@ -39,15 +41,16 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
   }
   const onSubmit = async (dataForm) => {
     try {
+      console.log('homero:', dataForm)
       setDisableBtn(true)
-      console.log('satelitalSel:', selectedValue)
       dataForm.id = data.id
-      console.log('dataForm:', dataForm)
+      dataForm = { ...dataForm, satelital: dataForm.satelital.value }
+      console.log('la data a enviar:', dataForm)
       await UpdateDepartment(dataForm)
       setModal(false)
       setReload(true)
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         setError(error.response.data.error.message)
       } else {
         setError(error.message)
@@ -160,34 +163,33 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
         <LabelBox htmlFor='satelital' modedark={modedark}>
           Seleccione una {preData.relationTable}
           <Controller
-            defaultValue={data?.satelital?.id}
+              // id='department'
+            defaultValue={satelital}
             name='satelital'
-            id='satelital'
             control={control}
-            render={({ field: { value, onChange, onBlur, name, ref } }) => (
-              <ReactSelect
-                autoload={false}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              <StyledSelect
+                {...field}
+                innerRef={ref}
+                {...register('satelital', { required: 'satelital es obligatorio' })}
+                isClearable
+                classNamePrefix='Select'
+                // autoload={false}
                 placeholder='Selecciona...'
-                cacheOptions
                 defaultOptions
-                value={selectedValue}
-                getOptionLabel={e => e.value + ' ' + e.label}
-                getOptionValue={e => e.value}
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
                 loadOptions={loadOptions}
-                onInputChange={handleInputChange}
-                onChange={val => { onChange(val.value); handleChange() }}
-                defaultInputValue={data?.satelital?.name}
-                // onChange={val => onChange(val.value)}
-
-                // {...field}
-                // options={[
-                //   { value: 'chocolate', label: 'Chocolate' },
-                //   { value: 'strawberry', label: 'Strawberry' },
-                //   { value: 'vanilla', label: 'Vanilla' }
-                // ]}
+                value={satelital}
+                onChange={(e) => { onChange(e); setSatelital(e) }}
+                onBlur={onBlur}
               />
             )}
           />
+          {errors.satelital && (
+            <p><span className='errors'>{errors.satelital.message}</span></p>
+          )}
 
         </LabelBox>
 
@@ -195,7 +197,7 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
         {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>} */}
         {/* {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>} */}
         <div>
-          {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
+          {error && clearMessage(5000, setError) && <div className='errors'>{error}</div>}
         </div>
         <br />
         <Button modedark={modedark} value={preData.update} disabled={disableBtn} loading={disableBtn} />
