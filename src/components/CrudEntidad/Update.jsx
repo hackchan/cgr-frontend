@@ -83,10 +83,7 @@ export const Update = ({ setModal, setReload, preData, data, UpdateEntidad, getS
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
-      console.log('DATAFORM:', dataForm)
-      dataForm.id = data.id
       dataForm = { ...dataForm, categoria: dataForm.categoria.value, municipio: dataForm.municipio.value, subsector: dataForm.subsector.value, active: activo, doctec: docTec }
-      console.log('dataForm:', dataForm)
       await UpdateEntidad(dataForm, data.id)
       setModal(false)
       setReload(true)

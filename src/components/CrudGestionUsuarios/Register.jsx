@@ -15,6 +15,7 @@ import { UploadAvatar } from '../UploadAvatar'
 export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, modedark, GetTypeUsers }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
+  const [inputValueRole, setValueRole] = useState([])
 
   const formSchema = Yup.object().shape({
     tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
@@ -38,6 +39,11 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
     reValidateMode: 'onChange',
     resolver: yupResolver(formSchema)
   })
+
+  const handleInputChangeRole = (value) => {
+    console.log('handleInputChange', value)
+    setValueRole(value)
+  }
 
   const getListTypeUsers = async (inputValue) => {
     const options = []
@@ -239,22 +245,27 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
               name='role'
               control={control}
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              render={({ field }) => (
                 <StyledSelect
                   {...field}
-                  innerRef={ref}
                   {...register('role')}
+                  isMulti
                   isClearable
+                  defaultOptions
+                  placeholder='Selecciona...'
+                  loadOptions={getRolesList}
+                  onChange={handleInputChangeRole}
                   classNamePrefix='Select'
       // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
+
+                  // defaultOptions={[]}
+                  // cacheOptions
                   // getOptionLabel={e => e.value + ' ' + e.label}
                   // getOptionValue={e => e.value}
-                  loadOptions={getRolesList}
+
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
+                  // onChange={(e) => { onChange(e) }}
+                  // onBlur={onBlur}
                 />
               )}
             />
