@@ -12,14 +12,14 @@ import * as Yup from 'yup'
 
 import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, modedark, GetTypeUsers }) => {
+export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [inputValueRole, setValueRole] = useState([])
-
+  const [imgBase64, setImgBase64] = useState('')
   const formSchema = Yup.object().shape({
     tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
-    role: Yup.object().shape().required('Role obligatorio'),
+    roles: Yup.array().min(1, 'Debe seleccionar al menos un rol').required('Roles es obligatorio').of(Yup.object().shape()),
+    entidades: Yup.array().min(1, 'Debe seleccionar al menos una entidad').required('Entidades es obligatorio').of(Yup.object().shape()),
     image: Yup.string(),
     username: Yup.string().min(3, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-Z]+[0-9a-zA-Z_]{3,24}$)/, 'Username no valido, el primer caracter debe ser una letra'),
     name: Yup.string().min(4, 'Longitud minima es de 3 caracteres').max(64, 'Longitud maxima es de 64 caracteres').matches(/(^[a-zA-ZñÑ]+[a-zA-ZñÑ ]{4,64}$)/, 'Nombres no valido'),
@@ -39,11 +39,6 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
     reValidateMode: 'onChange',
     resolver: yupResolver(formSchema)
   })
-
-  const handleInputChangeRole = (value) => {
-    console.log('handleInputChange', value)
-    setValueRole(value)
-  }
 
   const getListTypeUsers = async (inputValue) => {
     const options = []
@@ -77,14 +72,37 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
     return options
   }
 
+  const getListEntidades = async (inputValue) => {
+    const options = []
+    const response = await GetEntidad()
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((entidad) => {
+      options.push({
+        label: entidad.name,
+        value: entidad.id
+      })
+    })
+    return options
+  }
+
   const onSubmit = async (dataForm) => {
     try {
-      console.log('dataForm:', dataForm)
+      const roles = dataForm.roles.map((role) => {
+        return { name: role.label, id: role.value }
+      })
       dataForm = {
         ...dataForm,
-        tipo: dataForm.tipo.value,
-        auth: { username: dataForm.username, password: dataForm.password, role: [dataForm.role.label] }
-
+        image: imgBase64,
+        tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
+        auth: { username: dataForm.username, password: dataForm.password },
+        roles
+      }
+      console.log('dataForm:', dataForm)
+      if (dataForm.image === null) {
+        delete dataForm.image
       }
       delete dataForm.role
       delete dataForm.confirmPwd
@@ -92,7 +110,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       delete dataForm.password
       console.log('dataForm2-->>>:', dataForm)
       setDisableBtn(true)
-      await AddUser(dataForm)
+      // await AddUser(dataForm)
       setModalShow(false)
       setReload(true)
     } catch (error) {
@@ -110,17 +128,6 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridNombre'>
-            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
-            />
-            {errors.username && (
-              <Form.Text className='errors' onClick={() => clearErrors('username')}>
-                {errors.username.message}
-              </Form.Text>
-            )}
-          </Form.Group>
           <Form.Group as={Col} controlId='formImage'>
             <FormLabelStyle modedark={modedark.toString()}>Avatar</FormLabelStyle>
             <Controller
@@ -129,7 +136,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <UploadAvatar />
+                <UploadAvatar setImgBase64={setImgBase64} />
               )}
             />
             {errors.image && (
@@ -241,43 +248,77 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           <Form.Group as={Col} controlId='formGridListRoles'>
             <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
             <Controller
-    // id='department'
-              name='role'
+              name='roles'
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
                   {...field}
-                  {...register('role')}
+                  innerRef={ref}
+                  {...register('roles')}
                   isMulti
                   isClearable
                   defaultOptions
                   placeholder='Selecciona...'
                   loadOptions={getRolesList}
-                  onChange={handleInputChangeRole}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
                   classNamePrefix='Select'
-      // autoload={false}
-
-                  // defaultOptions={[]}
-                  // cacheOptions
-                  // getOptionLabel={e => e.value + ' ' + e.label}
-                  // getOptionValue={e => e.value}
-
-        // value={currentDepartment}
-                  // onChange={(e) => { onChange(e) }}
-                  // onBlur={onBlur}
                 />
               )}
             />
-            {errors.role && (
-              <Form.Text className='errors' onClick={() => clearErrors('role')}>
-                {errors.role.message}
+            {errors.roles && (
+              <Form.Text className='errors' onClick={() => clearErrors('roles')}>
+                {errors.roles.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListEntidades'>
+            <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
+            <Controller
+              name='entidades'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  innerRef={ref}
+                  {...register('entidades')}
+                  isMulti
+                  isClearable
+                  defaultOptions
+                  placeholder='Selecciona...'
+                  loadOptions={getListEntidades}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                  classNamePrefix='Select'
+                />
+              )}
+            />
+            {errors.entidades && (
+              <Form.Text className='errors' onClick={() => clearErrors('entidades')}>
+                {errors.entidades.message}
               </Form.Text>
             )}
 
           </Form.Group>
         </Row>
         <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridNombre'>
+            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
+            />
+            {errors.username && (
+              <Form.Text className='errors' onClick={() => clearErrors('username')}>
+                {errors.username.message}
+              </Form.Text>
+            )}
+          </Form.Group>
           <Form.Group as={Col} controlId='formGridpassword'>
             <FormLabelStyle modedark={modedark.toString()}>password</FormLabelStyle>
             <Form.Control

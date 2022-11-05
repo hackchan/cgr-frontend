@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Avatar from 'react-avatar-edit'
 import { ContainerAvatar, PreviewImage } from './styles'
-export const UploadAvatar = () => {
+export const UploadAvatar = ({ setImgBase64 }) => {
   const [src, setSrc] = useState(null)
   const [preview, setPreview] = useState(null)
 
@@ -13,7 +13,7 @@ export const UploadAvatar = () => {
     setPreview(view)
   }
   useEffect(() => {
-    console.log('img 64::', preview)
+    setImgBase64(preview)
   }, [preview])
   return (
     <ContainerAvatar>

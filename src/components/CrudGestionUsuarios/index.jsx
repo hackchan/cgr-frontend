@@ -25,7 +25,8 @@ export const GestionUsurios = () => {
     DeleteUser,
     GetUsers,
     GetTypeUsers,
-    GetRoles
+    GetRoles,
+    GetEntidad
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -126,7 +127,7 @@ export const GestionUsurios = () => {
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddUser={AddUser} GetTypeUsers={GetTypeUsers} GetRoles={GetRoles} modedark={state.darkMode} />
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddUser={AddUser} GetTypeUsers={GetTypeUsers} GetRoles={GetRoles} GetEntidad={GetEntidad} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
