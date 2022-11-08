@@ -29,6 +29,26 @@ export const useInitialState = () => {
     }
   }
 
+  const activeUser = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/login/verify-user`,
+        data: {
+          token: payload.token
+        },
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const recovery = async (payload) => {
     try {
       const response = await axios({
@@ -36,6 +56,26 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/login/recovery`,
         data: {
           email: payload.email
+        },
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const emailActive = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/login/email-active`,
+        data: {
+          email: payload
         },
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
@@ -1467,6 +1507,7 @@ export const useInitialState = () => {
   return {
     login,
     recovery,
+    emailActive,
     validateEmail,
     logout,
     checkSession,
@@ -1538,6 +1579,7 @@ export const useInitialState = () => {
     GetRoles,
     AddRole,
     DeleteRole,
-    UpdateRole
+    UpdateRole,
+    activeUser
   }
 }

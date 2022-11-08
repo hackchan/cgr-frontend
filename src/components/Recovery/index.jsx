@@ -2,10 +2,9 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { LabelBox, InputEmail } from './styles'
-import { Button } from '../Button'
+import { ButtonLoading as Button } from '../ButtonLoading'
 import { useForm } from 'react-hook-form'
 import { clearMessage } from '../../utils/time'
-import { Spinner } from '../Spinner'
 import { Logo } from '../Logo'
 export const Recovery = () => {
   /**
@@ -25,10 +24,12 @@ export const Recovery = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [blockBtn, SetBlockBtn] = useState(false)
   const onSubmit = async (dataForm) => {
     try {
       clearMessage(0, setMessage)
       setLoading(true)
+      SetBlockBtn(true)
       const data = await recovery(dataForm)
       // setMessage(data.msn)
       navigate('/reset', { replace: true, state: { msn: data.msn } })
@@ -48,6 +49,7 @@ export const Recovery = () => {
       }
     } finally {
       setLoading(false)
+      SetBlockBtn(false)
     }
   }
   return (
@@ -70,7 +72,6 @@ export const Recovery = () => {
             })}
           />
         </LabelBox>
-        {loading && <Spinner />}
         {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>}
         {/* {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>} */}
         {errors.email
@@ -90,7 +91,7 @@ export const Recovery = () => {
             )
           : null}
         <div className='btncenter'>
-          <Button value='Enviar link al Correo' />
+          <Button value={loading ? '⏳ espera...' : 'Enviar link al Correo'} loading={loading} disabled={blockBtn} />
         </div>
 
       </form>

@@ -2,24 +2,46 @@ import React, { useState, useContext } from 'react'
 import { useSearchParams, useNavigate, Navigate } from 'react-router-dom'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { useForm } from 'react-hook-form'
-import { Button } from '../Button'
-import { PassBox, EyeInvisible, EyeVisible, InputPass } from './styles'
+import { ButtonLoading as Button } from '../ButtonLoading'
+// import { EyeInvisible, EyeVisible } from './styles'
 import { clearMessage, navegateTime } from '../../utils/time'
-import { Spinner } from '../Spinner'
+import { Logo } from '../Logo'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { FormLabelStyle } from '../../styles/box'
 export const NewPassword = () => {
+  const formSchema = Yup.object().shape({
+    password: Yup.string()
+      .required('Password es obligatorio')
+      .min(8, 'longitud minima es de 8 caracteres')
+      .matches(/^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{8,16}$/, 'La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula, al menos una mayúscula y al menos un caracter no alfanumérico.'),
+    repassword: Yup.string()
+      .required('Confirmacion de password es obligatorio')
+      .oneOf([Yup.ref('password')], 'Passwords no coinciden')
+  })
   const { changePass } = useContext(AppContext)
   const [messageChange, setmessageChange] = useState('')
   const [message, setMessage] = useState('')
-  const [visible, setVisible] = useState(false)
-  const [visibleConfirm, setVisibleConfirm] = useState(false)
+  // const [visible, setVisible] = useState(false)
+  // const [visibleConfirm, setVisibleConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { watch, register, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched' })
+  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm(
+    {
+      mode: 'onTouched',
+      reValidateMode: 'onChange',
+      resolver: yupResolver(formSchema)
+
+    })
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
-  const IconEyePass = visible ? EyeVisible : EyeInvisible
-  const IconEyePassConfirm = visibleConfirm ? EyeVisible : EyeInvisible
-  const password = watch('password')
+  // const IconEyePass = visible ? EyeVisible : EyeInvisible
+  // const IconEyePassConfirm = visibleConfirm ? EyeVisible : EyeInvisible
+  // const password = watch('password')
+
   const onSubmit = async (dataForm) => {
     try {
       clearMessage(0, setMessage)
@@ -44,65 +66,45 @@ export const NewPassword = () => {
     return <Navigate to='/' />
   }
   return (
-    <div className='box'>
-      <img className='avatar' src='https://i.ibb.co/fvZ0bL9/logo-cgr.png' alt='cgr' />
+    <div className='box loginbox'>
+      <div className='avatar'><Logo big /></div>
       <h2>Crear una nueva contraseña</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <PassBox>
-          <label htmlFor='password'>
-            contraseña
-            <InputPass
-              type={visible ? 'text' : 'password'} placeholder='digite contraseña' name='password' id='password' {...register('password', {
-                // pattern: {
-                //   value: /^(\S)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[~`!@#$%^&*()--+={}[\]|\\:;"'<>,.?/_₹])[a-zA-Z0-9~`!@#$%^&*()--+={}[\]|\\:;"'<>,.?/_₹]{10,16}$/,
-                //   message: 'Password should include at least one uppercase, one numeric value and one special character'
-                // },
-                required: {
-                  value: true,
-                  message: 'El campo contraseña es requerido '
-                },
-                minLength: {
-                  value: 8,
-                  message: 'La constrasena debe ser de almenos 8 caracteres'
-                }
-              })}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Row className='mb-3'>
 
+          <Form.Group as={Col} controlId='formGridpassword'>
+            <FormLabelStyle>password</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='password' placeholder='' {...register('password')}
             />
-            <IconEyePass onClick={() => { setVisible(!visible) }} />
-          </label>
 
-          {errors.password && <p style={{ color: 'red' }}>{errors.password.message}</p>}
+            {errors.password && (
+              <Form.Text className='errors' onClick={() => clearErrors('password')}>
+                {errors.password.message}
+              </Form.Text>
+            )}
 
-        </PassBox>
-        <PassBox>
-          <label htmlFor='repassword'>
-            confirmar contraseña
-            <InputPass
-              type={visibleConfirm ? 'text' : 'password'} placeholder='digite confirmar contraseña' name='repassword' id='repassword' {...register('repassword', {
-                required: {
-                  value: true,
-                  message: 'El campo confirmacion es requerido '
-                },
-                minLength: {
-                  value: 8,
-                  message: 'La confirmacion debe ser de almenos 8 caracteres'
-                },
-                validate: (value) =>
-                  value === password || 'La contraseña y la confirmacion no coinciden'
-              })}
+          </Form.Group>
+
+          <Form.Group as={Col} controlId='formGridrepassword'>
+            <FormLabelStyle>confirmacion password</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='password' placeholder='' {...register('repassword')}
             />
-            <IconEyePassConfirm onClick={() => { setVisibleConfirm(!visibleConfirm) }} />
-          </label>
-          {errors.repassword && <p style={{ color: 'red' }}>{errors.repassword.message}</p>}
-        </PassBox>
-        {loading && <Spinner />}
+            {errors.repassword && (
+              <Form.Text className='errors' onClick={() => clearErrors('repassword')}>
+                {errors.repassword.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
         {message && clearMessage(3000, setMessage) && <p><span className='errors'>{message}</span></p>}
         {messageChange && <p><span className='ok'>{messageChange}</span> </p>}
         <div className='btncenter'>
-          <Button className={loading && 'btnoff'} value='Cambiar contraseña' />
+          <Button value='Cambiar contraseña' loading={loading} />
         </div>
 
-      </form>
+      </Form>
     </div>
   )
 }

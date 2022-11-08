@@ -4,7 +4,7 @@ import { AppContext } from '../../contex/AppProvidercContext'
 import { ColumnsTable } from './Columns'
 import { Config } from './Config'
 import MaterialReactTable from 'material-react-table'
-import { Box, Tooltip, createTheme, ThemeProvider } from '@mui/material'
+import { Box, Tooltip, createTheme, ThemeProvider, Typography } from '@mui/material'
 import { esES } from '@mui/material/locale'
 // import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import { ExportToCsv } from 'export-to-csv'
@@ -123,7 +123,7 @@ export const GestionUsurios = () => {
         </Modal>}
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} modedark={state.darkMode} />
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} modedark={state.darkMode} />
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
@@ -133,11 +133,47 @@ export const GestionUsurios = () => {
         <MaterialReactTable
           columns={columns}
           data={data}
+          enableExpanding
           localization={preData.localization}
           initialState={preData.initialState}
           enableMultiSort
           enableGlobalFilter
           positionGlobalFilter='right'
+          renderDetailPanel={({ row }) => (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center'
+              }}
+            >
+              {/* <img
+                alt='avatar'
+                height={200}
+                src={row.original.roles}
+                loading='lazy'
+                style={{ borderRadius: '50%' }}
+              /> */}
+              <Box sx={{ textAlign: 'center' }}>
+                {/* <Typography variant='h6'>Roles:</Typography> */}
+                <Typography>
+                  roles:
+                  {row.original.roles.map((role) => {
+                    return role.name + ' '
+                  })}
+
+                </Typography>
+                <Typography>
+                  entidades:
+                  {row.original.entidades.map((entidad) => {
+                    return entidad.name + ' '
+                  })}
+
+                </Typography>
+
+              </Box>
+            </Box>
+          )}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}

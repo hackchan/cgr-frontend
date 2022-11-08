@@ -25,7 +25,8 @@ export const Title = styled.h2`
 export const ReturnButton = styled(Link)`
   text-decoration: none;
   padding: 10px 15px;
-  background: #94c53c;
+  color: white;
+  background: #451093;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,10 +34,13 @@ export const ReturnButton = styled(Link)`
   border-radius: 10px;
   color: white;
   box-shadow: inset 0 -5px 2px rgba(2, 2, 2, 0.3);
-  transition: .3s;
+  transition: 0.3s;
   margin: 10px auto;
   &:active {
     box-shadow: inset 0 0 2px rgba(2, 2, 2, 0.3);
-    transform: scale(.9);
+    transform: scale(0.9);
+  }
+  &:hover{
+    color:white
   }
 `

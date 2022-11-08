@@ -3,7 +3,7 @@ import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
-import { clearMessage, delay } from '../../utils/time'
+import { clearMessage } from '../../utils/time'
 import { useForm } from 'react-hook-form'
 import { FormLabelStyle, BoxForm } from '../../styles/box'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -27,7 +27,9 @@ export const NewUserEntidad = () => {
   })
   const {
     state,
-    AddUser
+    AddUser,
+    emailActive
+
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -42,6 +44,11 @@ export const NewUserEntidad = () => {
   //     }
   //   }
   // }, esES)
+
+  const handleLogin = () => {
+    setModalShow(false)
+    navigate('/login', { replace: true })
+  }
 
   const onSubmit = async (dataForm) => {
     try {
@@ -58,32 +65,37 @@ export const NewUserEntidad = () => {
         lastName: dataForm.lastName,
         phone: dataForm.phone,
         email,
-        tipo: 2,
-        entidadId,
-        auth
+        tipo: { id: 2 },
+        entidades: [{ id: entidadId }],
+        auth,
+        roles: [{ id: 2 }]
 
       }
       console.log('dataform:', dataForm)
       await AddUser(dataForm)
-      setModalShow(false)
+      const response = await emailActive(email)
+      console.log('Response:', response)
+      setMessage(response.msn)
+      // setModalShow(false)
+      // navigate('/login', { replace: true })
     } catch (error) {
+      setDisableBtn(false)
       if (error.response) {
         setError(error.response.data.error.message)
       } else {
         setError(error.message)
       }
     } finally {
-      setDisableBtn(false)
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    console.log('location:', location.state)
-    if (location.state == null) {
-      navigate('/login', { replace: true })
-    }
-  }, [])
+  // useEffect(() => {
+  //   console.log('location:', location.state)
+  //   if (location.state == null) {
+  //     navigate('/login', { replace: true })
+  //   }
+  // }, [])
 
   return (
     <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={`${location.state.nit} ${location.state.name}`}>
@@ -177,11 +189,20 @@ export const NewUserEntidad = () => {
           </Row>
 
           <div>
-            {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>}
+            {message && clearMessage(300000, setMessage) && <p><span className='ok'>{message}</span></p>}
             {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
           </div>
           <br />
-          <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value={loading ? 'Espere... ⏳' : 'Registar Usuario'} disabled={disableBtn} loading={loading} /></div>
+          {!message && (
+            <div className='d-flex p-2 justify-content-center'>
+              <Button modedark={modedark} value={loading ? 'Espere... ⏳' : 'Registar Usuario'} disabled={disableBtn} loading={loading} />
+            </div>)}
+
+          {message && (
+            <div className='d-flex p-2 justify-content-center'>
+              <Button modedark={modedark} value={loading ? 'Espere... ⏳' : 'Login'} onClick={handleLogin} />
+            </div>)}
+
         </Form>
       </BoxForm>
       {/* </div> */}

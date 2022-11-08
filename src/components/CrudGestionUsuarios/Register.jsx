@@ -93,12 +93,16 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       const roles = dataForm.roles.map((role) => {
         return { name: role.label, id: role.value }
       })
+      const entidades = dataForm.entidades.map((entidad) => {
+        return { name: entidad.label, id: entidad.value }
+      })
       dataForm = {
         ...dataForm,
         image: imgBase64,
         tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
         auth: { username: dataForm.username, password: dataForm.password },
-        roles
+        roles,
+        entidades
       }
       console.log('dataForm:', dataForm)
       if (dataForm.image === null) {
@@ -110,7 +114,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       delete dataForm.password
       console.log('dataForm2-->>>:', dataForm)
       setDisableBtn(true)
-      // await AddUser(dataForm)
+      await AddUser(dataForm)
       setModalShow(false)
       setReload(true)
     } catch (error) {

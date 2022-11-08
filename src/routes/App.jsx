@@ -38,6 +38,8 @@ import { CrudMatrizObraSoporte } from '../components/CrudMatrizObraSoportes'
 import { GestionUsurios } from '../components/CrudGestionUsuarios'
 import { TypeUser } from '../components/CrudTypeUser'
 import { Roles } from '../components/CrudRoles'
+import { ActiveUser } from '../components/ActiveUser'
+
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -72,6 +74,7 @@ export const App = () => {
         <Route path='roles' element={<Roles />} />
         <Route path='reset' element={<ResetPassword />} />
         <Route path='newpass' element={<NewPassword />} />
+        <Route path='active' element={<ActiveUser />} />
         <Route path='newuser-entidad' element={<NewUserEntidad />} />
 
       </Route>

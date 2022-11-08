@@ -159,12 +159,19 @@ export const GlobalStyle = createGlobalStyle`
     .ok {
         display:flex;
         justify-content:center;
-        background: rgba(2,2,2,.3);
+        align-items: center;
+        text-align: center;
+        background: #94c53c ;
         color:white;
         padding:5px;
         border-radius:5px;
         font-size: 18px;
-        border: 2px solid #94c53c;
+        border: 2px solid rgba(2,2,2,.3);
+    }
+    .ok::before {
+        transition: .3s;
+        font-size: 18px;
+        content: '✔';
     }
 
     .starts {
