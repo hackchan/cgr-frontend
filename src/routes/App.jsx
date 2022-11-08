@@ -40,6 +40,8 @@ import { TypeUser } from '../components/CrudTypeUser'
 import { Roles } from '../components/CrudRoles'
 import { ActiveUser } from '../components/ActiveUser'
 
+import { MatrizIES } from '../components/CrudMatrizIES'
+
 export const App = () => {
   const { state } = useContext(AppContext)
   return (
@@ -61,6 +63,7 @@ export const App = () => {
         <Route path='origen-recurso' element={<CrudOrigenRecurso />} />
         <Route path='matriz-obra' element={<MatrizObra />} />
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />
+        <Route path='matriz-ies' element={<MatrizIES />} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

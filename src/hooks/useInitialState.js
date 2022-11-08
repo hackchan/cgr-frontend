@@ -221,7 +221,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/department', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/department',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -309,7 +312,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/municipio', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/municipio',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -571,7 +577,10 @@ export const useInitialState = () => {
   // Crud sector
   const getSector = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      const url = new URL('/api/v2/sector', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/sector',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -659,7 +668,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/subsector', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/subsector',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -748,7 +760,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/tipouser', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/tipouser',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -888,7 +903,10 @@ export const useInitialState = () => {
 
   const GetUsers = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      const url = new URL('/api/v2/users', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/users',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -934,7 +952,10 @@ export const useInitialState = () => {
   // Crud Entidad
   const GetEntidad = async (payload, globalFilter, columnFilters, sorting) => {
     try {
-      const url = new URL('/api/v2/entidad', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/entidad',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1021,7 +1042,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/estado-obra', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/estado-obra',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1110,7 +1134,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/sector-obra', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/sector-obra',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1199,7 +1226,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/origen-recurso', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/origen-recurso',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1287,7 +1317,10 @@ export const useInitialState = () => {
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/obra', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/obra',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1367,15 +1400,104 @@ export const useInitialState = () => {
     }
   }
 
-  // Crud Roles
-  const GetRoles = async (
+  // Crud Matriz IES
+  const GetMatrizIes = async (
     payload,
     globalFilter,
     columnFilters,
     sorting
   ) => {
     try {
-      const url = new URL('/api/v2/role', `http://${config.dominio}:${config.port}`)
+      const url = new URL(
+        '/api/v2/ies',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'X-Test-header': 'Test', accepts: 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddMatrizIes = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/ies`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteMatrizIes = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/ies/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateMatrizIes = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/ies/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Roles
+  const GetRoles = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      const url = new URL(
+        '/api/v2/role',
+        `http://${config.dominio}:${config.port}`
+      )
       if (payload) {
         url.searchParams.set('take', `${payload.pageSize}`)
         url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
@@ -1443,6 +1565,277 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/role/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Semestres
+  const GetSemestres = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/semestre',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddSemestre = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/semestre`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteSemestre = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/semestre/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateSemestre = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/semestre/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud tipoDoc
+  const GetTipodDocs = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/tipodoc',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddTipoDOc = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/tipodoc`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteTipoDoc = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/tipodoc/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateTipoDoc = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/tipodoc/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Estratos
+  const GetEstratos = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      const url = new URL(
+        '/api/v2/estrato',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddEstrato = async (payload) => {
+    try {
+      console.log('payload:', payload)
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/estrato`,
+        data: payload,
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteEstrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/estrato/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateEstrato = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/estrato/${id}`,
         data: payload,
         withCredentials: false,
         headers: { 'Content-Type': 'application/json' }
@@ -1580,6 +1973,22 @@ export const useInitialState = () => {
     AddRole,
     DeleteRole,
     UpdateRole,
-    activeUser
+    activeUser,
+    GetMatrizIes,
+    AddMatrizIes,
+    DeleteMatrizIes,
+    UpdateMatrizIes,
+    GetSemestres,
+    AddSemestre,
+    DeleteSemestre,
+    UpdateSemestre,
+    GetTipodDocs,
+    AddTipoDOc,
+    DeleteTipoDoc,
+    UpdateTipoDoc,
+    GetEstratos,
+    AddEstrato,
+    DeleteEstrato,
+    UpdateEstrato
   }
 }
