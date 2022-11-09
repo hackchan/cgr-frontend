@@ -14,8 +14,8 @@ import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle, CloudUploadIconSt
 import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
 import { ModalB } from '../ModalB'
-// import { Register } from './Register'
-// import { Delete } from './Delete'
+import { Register } from './Register'
+import { Delete } from './Delete'
 // import { Update } from './Update'
 import { CsvParser } from '../CsvParse'
 import config from '../../config'
@@ -29,7 +29,11 @@ export const MatrizIES = () => {
     UpdateMatrizIes,
     GetEntidad,
     getDepartments,
-    getMunicipios
+    GetMunicipiosByDepartment,
+    getMunicipios,
+    GetTipodDocs,
+    GetSemestres,
+    GetEstratos
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -124,7 +128,7 @@ export const MatrizIES = () => {
     <ContainerBox>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          {/* <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} /> */}
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} />
         </Modal>}
 
       <ModalB
@@ -138,7 +142,7 @@ export const MatrizIES = () => {
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        {/* <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddMatrizObra={AddMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} modedark={state.darkMode} /> */}
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddMatrizIes={AddMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable

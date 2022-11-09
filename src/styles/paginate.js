@@ -5,8 +5,11 @@ export const AsyncPaginateStyled = styled(AsyncPaginate)`
   text-align: left;
   display: flex;
   align-items: center;
+  font-size: 12px;
+  color: #3e0e84;
+  font-weight: bold;
   .Select__control {
-    max-height: 10px;
+    min-height: 10px;
     width: 100%;
     border: 1px solid #81980f;
     border-radius: 5px;
@@ -28,6 +31,7 @@ export const AsyncPaginateStyled = styled(AsyncPaginate)`
   }
 
   .Select__menu {
-    color: #81980f;
+    color: #3e0e84;
+    font-weight: bold;
   }
 `

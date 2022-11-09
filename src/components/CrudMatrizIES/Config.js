@@ -1,4 +1,4 @@
-const table = 'Matriculas IES'
+const table = 'Matricula IES'
 export const Config = {
   pageIndex: 0,
   pageSize: 20,

@@ -114,7 +114,7 @@ export const Register = ({ setModal, setReload, preData, getDepartments, AddMuni
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridName'>
             <FormLabelStyle modedark={modedark.toString()}>Municipio</FormLabelStyle>
-            <Form.Control style={{ height: 38 }} type='text' placeholder='Nombre del municipio' {...register('name', { required: 'Municipio es obligatorio' })} />
+            <Form.Control style={{ height: 46 }} type='text' placeholder='Nombre del municipio' {...register('name', { required: 'Municipio es obligatorio' })} />
 
             {errors.name && (
               <Form.Text className='errors' onClick={() => clearErrors('name')}>
@@ -206,7 +206,7 @@ export const Register = ({ setModal, setReload, preData, getDepartments, AddMuni
             <InputGroup>
               <InputGroup.Text id='basic-addon1'>{currentDepartment?.value?.toString().padStart(2, '0')}</InputGroup.Text>
               <Form.Control
-                style={{ height: 38 }} type='number' placeholder='eje. 05432' {...register('divipola', {
+                style={{ height: 46 }} type='number' placeholder='eje. 05432' {...register('divipola', {
                   required: 'Divipola es obligatorio',
                   pattern: {
                     value: /^([0-9]{3,5})$/,
@@ -227,7 +227,7 @@ export const Register = ({ setModal, setReload, preData, getDepartments, AddMuni
             <FormLabelStyle modedark={modedark.toString()}>Latitude</FormLabelStyle>
 
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. 4.60971' {...register('latitude', {
+              style={{ height: 46 }} type='text' placeholder='Eje. 4.60971' {...register('latitude', {
                 required: {
                   value: true,
                   message: 'La latitude es requerida'
@@ -251,7 +251,7 @@ export const Register = ({ setModal, setReload, preData, getDepartments, AddMuni
             <FormLabelStyle modedark={modedark.toString()}>Longitude</FormLabelStyle>
 
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. -74.08175' {...register('longitude', {
+              style={{ height: 46 }} type='text' placeholder='Eje. -74.08175' {...register('longitude', {
                 required: {
                   value: true,
                   message: 'La longitud es requerida'
