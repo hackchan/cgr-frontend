@@ -9,9 +9,8 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
-// const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({
-  setModalShow, setReload, preData, AddMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
+export const Update = ({
+  setModalUpdateShow, setReload, preData, data, UpdateMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
   GetEstratos, modedark
 }) => {
   const ref = useRef()
@@ -20,57 +19,51 @@ export const Register = ({
   const [errorMuniSede, setErrorMuniSede] = useState('')
   const [errorMuniResidencia, setErrorMuniResidencia] = useState('')
 
-  const [departmentSel] = useState('')
+  const [departmentSedeSel, setDepartmentSedeSel] = useState({ label: data.sede.department.name, value: data.sede.department.id })
+  const [municipioSedeSel, setMunicipioSedeSel] = useState({ label: data.sede.name, value: data.sede.id })
+  const [departmentResideSel, setDepartmentResideSel] = useState({ label: data.residencia.department.name, value: data.residencia.department.id })
+  const [municipioResideSel, setMunicipioResideSel] = useState({ label: data.residencia.name, value: data.residencia.id })
   const [muni, setMuni] = useState('')
 
-  const [departIdSede, setDepartIdSede] = useState('')
-  const [departIdReside, setDepartIdReside] = useState('')
-  const [municipioSelSede, setMunicipioSelSede] = useState('')
-  const [municipioSelReside, setMunicipioSelReside] = useState('')
+  const [entidadSel, setEntidadSel] = useState({ label: data.entidad.name, value: data.entidad.id })
+  const [tipodocSel, setTipoDocSel] = useState({ label: data.tipoDoc.name, value: data.tipoDoc.id })
+  const [estratoSel, setEstratoSel] = useState({ label: data.estrato.name, value: data.estrato.id })
+  const [semestreSel, setSemestreSel] = useState({ label: data.semestre.name, value: data.semestre.id })
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    defaultValues: {
+      semestreReportado: data.semestreReportado,
+      codigo: data.codigo,
+      name: data.name,
+      numeroDoc: data.numeroDoc,
+      programa: data.programa,
+      valorSemestre: data.valorSemestre,
+      recargo: data.recargo,
+      descuentos: data.descuentos,
+      tipoDescuento: data.tipoDescuento,
+      creditos: data.creditos,
+      diaCorte: data.diaCorte,
+      mesCorte: data.mesCorte,
+      anioCorte: data.anioCorte
+
+    }
   })
-  const handleDepartsSede = (e) => {
-    setMunicipioSelSede('')
-    if (e) {
-      setDepartIdSede(e.value)
-    }
-  }
-
-  const handleMunicipiosSede = async (e) => {
-    if (e) {
-      setMunicipioSelSede(e)
-    }
-  }
-
-  const handleDepartsReside = (e) => {
-    setMunicipioSelReside('')
-    if (e) {
-      setDepartIdReside(e.value)
-    }
-  }
-
-  const handleMunicipiosReside = async (e) => {
-    if (e) {
-      setMunicipioSelReside(e)
-    }
-  }
 
   const extendedLoadOptionsSede = useCallback(
     async (search, prevOptions) => {
-      const result = await getListMunicipios(search, prevOptions, departIdSede, muni, municipioSelSede)
+      const result = await getListMunicipios(search, prevOptions, departmentSedeSel, muni, municipioSedeSel)
       return result
     },
-    [departIdSede, muni, municipioSelSede]
+    [departmentSedeSel, muni, municipioSedeSel]
   )
 
   const extendedLoadOptionsReside = useCallback(
     async (search, prevOptions) => {
-      const result = await getListMunicipios(search, prevOptions, departIdReside, muni, municipioSelReside)
+      const result = await getListMunicipios(search, prevOptions, departmentResideSel, muni, municipioResideSel)
       return result
     },
-    [departIdReside, muni, municipioSelReside]
+    [departmentResideSel, muni, municipioResideSel]
   )
 
   const getListSemestres = async (inputValue) => {
@@ -137,10 +130,10 @@ export const Register = ({
     return options
   }
 
-  const getListMunicipios = async (search, prevOptions, departId, muni, municipioSel) => {
-    if (departId) {
+  const getListMunicipios = async (search, prevOptions, departmentSedeSel, muni, municipioSedeSel) => {
+    if (departmentSedeSel) {
       const options = []
-      const response = await GetMunicipiosByDepartment(departId)
+      const response = await GetMunicipiosByDepartment(departmentSedeSel.value)
       const filter = response.data.filter((option) => {
         return option.name.toLowerCase().includes(muni.toLowerCase())
       })
@@ -172,12 +165,12 @@ export const Register = ({
 
   const onSubmit = async (dataForm) => {
     try {
-      if (!municipioSelReside) {
+      if (!municipioResideSel) {
         setErrorMuniResidencia('Debe seleccionar un municipio de Residencia')
         throw new Error('')
       }
 
-      if (!municipioSelSede) {
+      if (!municipioSedeSel) {
         setErrorMuniSede('Debe seleccionar un municipio de Sede')
         throw new Error('')
       }
@@ -194,8 +187,8 @@ export const Register = ({
         anioCorte: Number(dataForm.anioCorte),
         creditos: Number(dataForm.creditos),
         entidad: dataForm.entidad.value,
-        residencia: municipioSelReside.value,
-        sede: municipioSelSede.value,
+        residencia: municipioResideSel.value,
+        sede: municipioSedeSel.value,
         name: dataForm.name,
         programa: dataForm.programa,
         valorSemestre: Number(dataForm.valorSemestre),
@@ -203,14 +196,12 @@ export const Register = ({
         descuentos: Number(dataForm.descuentos),
         tipoDescuento: dataForm.tipoDescuento
 
-        // municipioObra: municipioSel.value
-
       }
       delete dataForm.departamentoReside
       delete dataForm.departamentoSede
       setDisableBtn(true)
-      await AddMatrizIes([dataForm])
-      setModalShow(false)
+      await UpdateMatrizIes(dataForm, data.id)
+      setModalUpdateShow(false)
       setReload(true)
     } catch (error) {
       if (error.response) {
@@ -231,11 +222,13 @@ export const Register = ({
             <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
             <Controller
     // id='department'
+              defaultValue={entidadSel}
               name='entidad'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={entidadSel}
                   {...field}
                   innerRef={ref}
                   {...register('entidad', { required: 'Entidad es obligatorio' })}
@@ -248,7 +241,7 @@ export const Register = ({
                   getOptionValue={e => e.value}
                   loadOptions={getListEntidades}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setEntidadSel(e) }}
                   onBlur={onBlur}
                 />
               )}
@@ -347,11 +340,13 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridTipodoc'>
             <FormLabelStyle modedark={modedark.toString()}>Tipo Documento</FormLabelStyle>
             <Controller
+              defaultValue={tipodocSel}
               name='tipoDoc'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={tipodocSel}
                   {...field}
                   innerRef={ref}
                   {...register('tipoDoc', { required: 'Tipo Documento es obligatorio' })}
@@ -359,9 +354,7 @@ export const Register = ({
                   defaultOptions
                   placeholder='Selecciona...'
                   loadOptions={getListTipoDoc}
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setTipoDocSel(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
@@ -381,7 +374,7 @@ export const Register = ({
               style={{ height: 46 }} type='text' placeholder='eje. 985478512' {...register('numeroDoc', {
                 required: 'Documento es obligatorio',
                 pattern: {
-                  value: /^([0-9A-Za-z]{1,30})$/,
+                  value: /^([0-9A-Z]{1,30})$/,
                   message: 'No es un documento válido'
                 }
               })}
@@ -399,8 +392,10 @@ export const Register = ({
               name='estrato'
               control={control}
               rules={{ required: true }}
+              defaultValue={estratoSel}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={estratoSel}
                   {...field}
                   innerRef={ref}
                   {...register('estrato', { required: 'Estrato es obligatorio' })}
@@ -410,7 +405,7 @@ export const Register = ({
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
                   loadOptions={getListEstratos}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setEstratoSel(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
@@ -450,13 +445,13 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridListdepartamentoSede'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Sede</FormLabelStyle>
             <Controller
-              defaultValue={departmentSel}
+              defaultValue={departmentSedeSel}
               name='departamentoSede'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
-                  value={departmentSel}
+                  value={departmentSedeSel}
                   {...field}
                   innerRef={ref}
                   {...register('departamentoSede', { required: 'departamento Sede es requerido' })}
@@ -467,7 +462,7 @@ export const Register = ({
                   getOptionValue={e => e.value}
                   classNamePrefix='Select'
                   loadOptions={getListDepartamentos}
-                  onChange={(e) => { onChange(e); handleDepartsSede(e) }}
+                  onChange={(e) => { onChange(e); setDepartmentSedeSel(e); setMunicipioSedeSel('') }}
                   onBlur={onBlur}
                 />
               )}
@@ -483,7 +478,7 @@ export const Register = ({
             <FormLabelStyle modedark={modedark.toString()}>Municipio Sede</FormLabelStyle>
             <AsyncPaginateStyled
               required
-              value={municipioSelSede}
+              value={municipioSedeSel}
               selectRef={ref}
               classNamePrefix='Select'
               defaultOptions
@@ -491,15 +486,16 @@ export const Register = ({
               getOptionLabel={e => e.value + ' ' + e.label}
               getOptionValue={e => e.value}
               loadOptions={extendedLoadOptionsSede}
-              cacheUniqs={[departIdSede, muni, municipioSelSede]}
+              cacheUniqs={[departmentSedeSel, municipioSedeSel]}
               shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
                 return scrollHeight - scrollTop < 1000
               }}
               onChange={(e) => {
-                handleMunicipiosSede(e)
+                setMunicipioSedeSel(e)
               }}
               onInputChange={(e) => { setMuni(e) }}
             />
+
             {errorMuniSede && clearMessage(5000, setErrorMuniSede) && <p><span className='errors'>{errorMuniSede}</span></p>}
 
           </Form.Group>
@@ -509,13 +505,13 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridListdepartamentoObra'>
             <FormLabelStyle modedark={modedark.toString()}>Departamento Reside</FormLabelStyle>
             <Controller
-              defaultValue={departmentSel}
+              defaultValue={departmentResideSel}
               name='departamentoReside'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
-                  value={departmentSel}
+                  value={departmentResideSel}
                   {...field}
                   innerRef={ref}
                   {...register('departamentoReside', { required: 'departamento en que reside es requerido' })}
@@ -526,7 +522,7 @@ export const Register = ({
                   getOptionValue={e => e.value}
                   classNamePrefix='Select'
                   loadOptions={getListDepartamentos}
-                  onChange={(e) => { onChange(e); handleDepartsReside(e) }}
+                  onChange={(e) => { onChange(e); setDepartmentResideSel(e); setMunicipioResideSel('') }}
                   onBlur={onBlur}
                 />
               )}
@@ -542,7 +538,7 @@ export const Register = ({
             <FormLabelStyle modedark={modedark.toString()}>Municipio Reside</FormLabelStyle>
             <AsyncPaginateStyled
               required
-              value={municipioSelReside}
+              value={municipioResideSel}
               selectRef={ref}
               classNamePrefix='Select'
               defaultOptions
@@ -550,12 +546,12 @@ export const Register = ({
               getOptionLabel={e => e.value + ' ' + e.label}
               getOptionValue={e => e.value}
               loadOptions={extendedLoadOptionsReside}
-              cacheUniqs={[departIdReside, muni, municipioSelReside]}
+              cacheUniqs={[departmentResideSel, municipioResideSel]}
               shouldLoadMore={(scrollHeight, clientHeight, scrollTop) => {
                 return scrollHeight - scrollTop < 1000
               }}
               onChange={(e) => {
-                handleMunicipiosReside(e)
+                setMunicipioResideSel(e)
               }}
               onInputChange={(e) => { setMuni(e) }}
             />
@@ -567,21 +563,21 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridSemestre'>
             <FormLabelStyle modedark={modedark.toString()}>Semestre</FormLabelStyle>
             <Controller
+              defaultValue={semestreSel}
               name='semestre'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={semestreSel}
                   {...field}
                   innerRef={ref}
                   {...register('semestre', { required: 'semestre es obligatorio' })}
                   isClearable
                   defaultOptions
                   placeholder='Selecciona...'
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
                   loadOptions={getListSemestres}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setSemestreSel(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
@@ -665,7 +661,7 @@ export const Register = ({
                 minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
                 maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
                 pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.$,\r\n ]$)/,
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.,\r\n ]$)/,
                   message: 'No es un Tipo Descuento válido'
                 }
               })}
@@ -736,7 +732,7 @@ export const Register = ({
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Adicionar Matricula' disabled={disableBtn} loading={disableBtn} /></div>
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Actualizar Matricula' disabled={disableBtn} loading={disableBtn} /></div>
       </Form>
     </BoxForm>
   )

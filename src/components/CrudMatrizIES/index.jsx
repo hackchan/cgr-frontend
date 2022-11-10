@@ -16,8 +16,8 @@ import { Modal } from '../Modal'
 import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
-// import { Update } from './Update'
-import { CsvParser } from '../CsvParse'
+import { Update } from './Update'
+import { CsvParserIES } from '../CsvParserIES'
 import config from '../../config'
 
 export const MatrizIES = () => {
@@ -30,7 +30,6 @@ export const MatrizIES = () => {
     GetEntidad,
     getDepartments,
     GetMunicipiosByDepartment,
-    getMunicipios,
     GetTipodDocs,
     GetSemestres,
     GetEstratos
@@ -81,15 +80,12 @@ export const MatrizIES = () => {
         }
 
         const response = await GetMatrizIes(pagination, globalFilter, columnFilters, sorting)
-        console.log('response:', response)
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {
-        console.log('homer erro:', error)
         setIsError(true)
         if (error.response) {
           setError(error.response.data.error.message)
-          console.log('homer error msn:', error.response.data.error.message)
         } else {
           setError(error.message)
         }
@@ -134,11 +130,11 @@ export const MatrizIES = () => {
       <ModalB
         show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
       >
-        <CsvParser setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} modedark={state.darkMode} />
+        <CsvParserIES setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} modedark={state.darkMode} />
       </ModalB>
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        {/* <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizObra={UpdateMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} getMunicipios={getMunicipios} modedark={state.darkMode} /> */}
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizIes={UpdateMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} modedark={state.darkMode} />
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
@@ -198,7 +194,7 @@ export const MatrizIES = () => {
           manualPagination
           manualSorting
           enableRowActions
-          positionActionsColumn='last'
+          positionActionsColumn='first'
           positionPagination='bottom'
           enableColumnResizing
           // enableStickyHeader
