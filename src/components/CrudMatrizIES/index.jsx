@@ -19,7 +19,7 @@ import { Delete } from './Delete'
 import { Update } from './Update'
 import { CsvParserIES } from '../CsvParserIES'
 import config from '../../config'
-
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 export const MatrizIES = () => {
   const {
     state,
@@ -34,7 +34,8 @@ export const MatrizIES = () => {
     GetSemestres,
     GetEstratos
   } = useContext(AppContext)
-
+  const [user] = useLocalStorage('user', false)
+  console.log('User:', user)
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {
@@ -79,7 +80,7 @@ export const MatrizIES = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetMatrizIes(pagination, globalFilter, columnFilters, sorting)
+        const response = await GetMatrizIes(pagination, globalFilter, columnFilters, sorting, user)
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {

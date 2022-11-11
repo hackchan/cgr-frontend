@@ -63,7 +63,7 @@ export const App = () => {
         <Route path='origen-recurso' element={<CrudOrigenRecurso />} />
         <Route path='matriz-obra' element={<MatrizObra />} />
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />
-        <Route path='matriz-ies' element={<MatrizIES />} />
+        <Route path='matriz-ies' element={<ProtectedRoute><MatrizIES /></ProtectedRoute>} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

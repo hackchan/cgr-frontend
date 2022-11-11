@@ -120,12 +120,14 @@ export const useInitialState = () => {
         headers: { 'Content-Type': 'application/json' }
       })
       const { body } = response.data
-
+      console.log('LA DATA BODY:', body)
       const user = {
         id: body.user.id,
         image: body.user.image,
         username: body.user.auth.username,
-        token: body.token
+        token: body.token,
+        entidades: body.user.entidades,
+        roles: body.user.roles
       }
 
       setAuth(user)
@@ -1405,9 +1407,12 @@ export const useInitialState = () => {
     payload,
     globalFilter,
     columnFilters,
-    sorting
+    sorting,
+    users
   ) => {
     try {
+      console.log('EL TOKEN ES2:::', auth)
+
       const url = new URL(
         '/api/v2/ies',
         `http://${config.dominio}:${config.port}`
@@ -1426,7 +1431,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'X-Test-header': 'Test', accepts: 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data

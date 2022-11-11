@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppContext } from '../../contex/AppProvidercContext'
+// import { AppContext } from '../../contex/AppProvidercContext'
 import { Navigate } from 'react-router-dom'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 export const ProtectedRoute = ({ children }) => {
