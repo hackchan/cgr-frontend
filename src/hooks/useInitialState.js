@@ -117,10 +117,14 @@ export const useInitialState = () => {
           password: payload.password
         },
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
       const { body } = response.data
-      console.log('LA DATA BODY:', body)
+
       const user = {
         id: body.user.id,
         image: body.user.image,
@@ -150,7 +154,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -168,7 +176,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
         data: { name: payload.satelital },
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -186,7 +198,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/satelital/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -204,7 +220,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/satelital/${payload.id}`,
         data: { name: payload.name },
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -242,7 +262,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -260,7 +284,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/department`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -278,7 +306,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/department/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -296,7 +328,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/department/${payload.id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -332,7 +368,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -350,7 +390,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio/consulta/${id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -368,7 +412,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio/consulta/department/${id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -386,7 +434,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -404,7 +456,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -422,7 +478,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio/${payload.id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -441,7 +501,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio-types`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -458,7 +522,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio-types`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -476,7 +544,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio-types/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -494,7 +566,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/municipio-types/${payload.id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -513,7 +589,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/categoria`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -531,7 +611,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/categoria`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -549,7 +633,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/categoria/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -567,7 +655,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/categoria/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -598,7 +690,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -616,7 +712,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -634,7 +734,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -652,7 +756,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -689,7 +797,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -707,7 +819,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/subsector`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -726,7 +842,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/subsector/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -744,7 +864,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/subsector/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -781,7 +905,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -800,7 +928,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipouser`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -818,7 +950,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipouser/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -836,7 +972,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipouser/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -855,7 +995,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/users`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -874,7 +1018,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/users/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -893,7 +1041,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/users/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -924,7 +1076,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -942,7 +1098,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/users/cgr`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -973,7 +1133,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -991,7 +1155,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/entidad`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1009,7 +1177,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/entidad/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1026,7 +1198,11 @@ export const useInitialState = () => {
         url: `http://localhost:3010/api/v2/entidad/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1063,7 +1239,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1082,7 +1262,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estado-obra`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1100,7 +1284,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estado-obra/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1118,7 +1306,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estado-obra/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1155,7 +1347,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1173,7 +1369,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector-obra`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1191,7 +1391,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector-obra/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1210,7 +1414,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/sector-obra/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1247,7 +1455,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1265,7 +1477,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1283,7 +1499,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1301,7 +1521,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/origen-recurso/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1338,7 +1562,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'X-Test-header': 'Test', accepts: 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1356,7 +1584,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/obra`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1374,7 +1606,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/obra/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1392,7 +1628,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/obra/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1534,7 +1774,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1552,7 +1796,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/role`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1570,7 +1818,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/role/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1589,7 +1841,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/role/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1626,7 +1882,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1645,7 +1905,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/semestre`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1663,7 +1927,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/semestre/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1681,7 +1949,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/semestre/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1718,7 +1990,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1737,7 +2013,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipodoc`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1755,7 +2035,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipodoc/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1773,7 +2057,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/tipodoc/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1805,7 +2093,11 @@ export const useInitialState = () => {
         url: url.href,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1824,7 +2116,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estrato`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1842,7 +2138,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estrato/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1860,7 +2160,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/estrato/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data

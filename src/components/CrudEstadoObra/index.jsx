@@ -74,7 +74,11 @@ export const CrudEstadoObra = () => {
         setIsError(false)
       } catch (error) {
         setIsError(true)
-        setError(error.message)
+        if (error.response) {
+          setError(error.response.data.error.message)
+        } else {
+          setError(error.message)
+        }
       } finally {
         setIsLoading(false)
         setIsRefetching(false)
@@ -133,12 +137,19 @@ export const CrudEstadoObra = () => {
           data={data}
           localization={preData.localization}
           initialState={preData.initialState}
-          enableMultiSort
-          enableGlobalFilter
-          positionGlobalFilter='right'
+          muiTableBodyRowProps={({ row }) => ({
+            sx: {
+
+              backgroundColor: row.index % 2 === 0 ? 'rgba(52, 54, 245, 0.08)' : ''
+            }
+          })}
+          muiTableBodyCellProps={{ sx: { border: 'none' } }}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
+          enableMultiSort
+          enableGlobalFilter
+          positionGlobalFilter='right'
           muiTableContainerProps={{ className: 'tableContainer' }}
           muiTableHeadProps={{
             className: 'tableHeader'
@@ -185,7 +196,7 @@ export const CrudEstadoObra = () => {
             InputLabelProps: { shrink: true }
 
           }}
-          muiTableToolbarAlertBannerProps={
+          muiToolbarAlertBannerProps={
         isError
           ? {
               color: 'error',

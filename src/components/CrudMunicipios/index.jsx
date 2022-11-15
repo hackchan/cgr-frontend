@@ -71,7 +71,11 @@ export const CrudMunicipios = () => {
         setIsError(false)
       } catch (error) {
         setIsError(true)
-        setError(error.message)
+        if (error.response) {
+          setError(error.response.data.error.message)
+        } else {
+          setError(error.message)
+        }
       } finally {
         setIsLoading(false)
         setIsRefetching(false)
@@ -125,6 +129,13 @@ export const CrudMunicipios = () => {
           localization={config.localization}
           getRowId={(row) => row.id}
           initialState={{ showColumnFilters: false, density: 'compact' }}
+          muiTableBodyRowProps={({ row }) => ({
+            sx: {
+
+              backgroundColor: row.index % 2 === 0 ? 'rgba(52, 54, 245, 0.08)' : ''
+            }
+          })}
+          muiTableBodyCellProps={{ sx: { border: 'none' } }}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}

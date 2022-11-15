@@ -70,7 +70,11 @@ export const CrudSector = () => {
         setIsError(false)
       } catch (error) {
         setIsError(true)
-        setError(error.message)
+        if (error.response) {
+          setError(error.response.data.error.message)
+        } else {
+          setError(error.message)
+        }
       } finally {
         setIsLoading(false)
         setIsRefetching(false)
@@ -181,7 +185,7 @@ export const CrudSector = () => {
             InputLabelProps: { shrink: true }
 
           }}
-          muiTableToolbarAlertBannerProps={
+          muiToolbarAlertBannerProps={
         isError
           ? {
               color: 'error',

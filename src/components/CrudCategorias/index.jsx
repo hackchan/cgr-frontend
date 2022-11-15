@@ -15,6 +15,7 @@ import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
 import { ContainerBox } from '../../styles/box'
+import config from '../../config'
 export const CrudCategorias = () => {
   const [data, setData] = useState([])
   const {
@@ -50,7 +51,7 @@ export const CrudCategorias = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setReload(false)
+        // setReload(false)
         if (!data.length) {
           setIsLoading(true)
         } else {
@@ -61,8 +62,16 @@ export const CrudCategorias = () => {
         setData(response)
       } catch (error) {
         setIsError(true)
-        setError(error.message)
+        if (error.response) {
+          console.log('mensaje error:', error.response.data.error.message)
+          setError(error.response.data.error.message)
+        } else {
+          setError(error.message)
+        }
+        // setIsError(true)
+        // setError(error.message)
       } finally {
+        setReload(false)
         setIsLoading(false)
         setIsRefetching(false)
       }
@@ -109,14 +118,21 @@ export const CrudCategorias = () => {
         <MaterialReactTable
           columns={columns}
           data={data}
-          localization={preData.localization}
-          initialState={preData.initialState}
-          enableMultiSort
-          enableGlobalFilter
-          positionGlobalFilter='right'
+          localization={config.localization}
+          initialState={{ showColumnFilters: false, density: 'compact', pagination: { pageSize: 20, pageIndex: 0 } }}
+          muiTableBodyRowProps={({ row }) => ({
+            sx: {
+
+              backgroundColor: row.index % 2 === 0 ? 'rgba(52, 54, 245, 0.08)' : ''
+            }
+          })}
+          muiTableBodyCellProps={{ sx: { border: 'none' } }}
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
+          enableMultiSort
+          enableGlobalFilter
+          positionGlobalFilter='right'
           muiTableContainerProps={{ className: 'tableContainer' }}
           muiTableHeadProps={{
             className: 'tableHeader'
@@ -150,7 +166,7 @@ export const CrudCategorias = () => {
             InputLabelProps: { shrink: true }
 
           }}
-          muiTableToolbarAlertBannerProps={
+          muiToolbarAlertBannerProps={
         isError
           ? {
               color: 'error',
