@@ -127,7 +127,8 @@ export const useInitialState = () => {
         username: body.user.auth.username,
         token: body.token,
         entidades: body.user.entidades,
-        roles: body.user.roles
+        roles: body.user.roles,
+        tipo: body.user.tipo
       }
 
       setAuth(user)
@@ -1453,7 +1454,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/ies`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1471,7 +1476,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/ies/${payload.id}`,
         data: {},
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data
@@ -1489,7 +1498,11 @@ export const useInitialState = () => {
         url: `http://${config.dominio}:${config.port}/api/v2/ies/${id}`,
         data: payload,
         withCredentials: false,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
       })
 
       const { body } = response.data

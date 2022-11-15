@@ -12,13 +12,14 @@ import { AsyncPaginateStyled } from '../../styles/paginate'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({
   setModalShow, setReload, preData, AddMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
-  GetEstratos, modedark
+  GetEstratos, user, modedark
 }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [errorMuniSede, setErrorMuniSede] = useState('')
   const [errorMuniResidencia, setErrorMuniResidencia] = useState('')
+  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
 
   const [departmentSel] = useState('')
   const [muni, setMuni] = useState('')
@@ -193,7 +194,7 @@ export const Register = ({
         mesCorte: Number(dataForm.mesCorte),
         anioCorte: Number(dataForm.anioCorte),
         creditos: Number(dataForm.creditos),
-        entidad: dataForm.entidad.value,
+        entidad: isUserEntidad ? user.entidades[0].id : dataForm.entidad.value,
         residencia: municipioSelReside.value,
         sede: municipioSelSede.value,
         name: dataForm.name,
@@ -225,43 +226,45 @@ export const Register = ({
   return (
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidad'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
-            <Controller
+        {!isUserEntidad && (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridListEntidad'>
+              <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+              <Controller
     // id='department'
-              name='entidad'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('entidad', { required: 'Entidad es obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
+                isReadOnly
+                name='entidad'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    isReadOnly
+                    {...field}
+                    innerRef={ref}
+                    {...register('entidad', { required: 'Entidad es obligatorio' })}
+                    isClearable
+                    classNamePrefix='Select'
       // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={getListEntidades}
+                    placeholder='Selecciona...'
+                    defaultOptions
+                    getOptionLabel={e => e.value + ' ' + e.label}
+                    getOptionValue={e => e.value}
+                    loadOptions={getListEntidades}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
-                />
+                    onChange={(e) => { onChange(e) }}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+              {errors.entidad && (
+                <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
+                  {errors.entidad.message}
+                </Form.Text>
               )}
-            />
-            {errors.entidad && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
-                {errors.entidad.message}
-              </Form.Text>
-            )}
 
-          </Form.Group>
+            </Form.Group>
 
-        </Row>
+          </Row>)}
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGrCodigo'>

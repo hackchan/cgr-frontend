@@ -17,6 +17,7 @@ export const CsvParserIES = ({
   preData,
   MatrizCargada,
   GetEntidad,
+  user,
   modedark
 }) => {
   const inputRef = useRef()
@@ -24,6 +25,7 @@ export const CsvParserIES = ({
   const [nameFile, setNameFile] = useState('')
   const [sizeFile, setSizeFile] = useState('')
   const [error, setError] = useState('')
+  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
   // const [errorDetail, setErrorDetail] = useState([])
   const [disableBtn, setDisableBtn] = useState(false)
   const [data, setData] = useState([])
@@ -192,7 +194,7 @@ export const CsvParserIES = ({
   const onSubmit = async (dataForm) => {
     try {
       console.log(dataForm)
-      handleUploadCSV(dataForm.entidad.value)
+      handleUploadCSV(isUserEntidad ? user.entidades[0].id : dataForm.entidad.value)
     } catch (error) {
       if (error.response) {
         setError(error.response.data.error.message)
@@ -207,48 +209,50 @@ export const CsvParserIES = ({
     <>
       <BoxForm modedark={modedark}>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Row className='mb-3'>
-            <Form.Group as={Col} controlId='formGridListEntidad'>
-              <FormLabelStyle modedark={modedark.toString()}>
-                Entidad
-              </FormLabelStyle>
-              <Controller
-                name='entidad'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                  <StyledSelect
-                    styles={{
-                      position: 'relative',
-                      zIndex: 2
-                    }}
-                    {...field}
-                    innerRef={ref}
-                    {...register('entidad', {
-                      required: 'Entidad es obligatorio'
-                    })}
-                    isClearable
-                    classNamePrefix='Select'
-                    placeholder='Selecciona...'
-                    defaultOptions
-                    loadOptions={getListEntidades}
-                    onChange={(e) => {
-                      onChange(e)
-                    }}
-                    onBlur={onBlur}
-                  />
+          {!isUserEntidad && (
+            <Row className='mb-3'>
+              <Form.Group as={Col} controlId='formGridListEntidad'>
+                <FormLabelStyle modedark={modedark.toString()}>
+                  Entidad
+                </FormLabelStyle>
+                <Controller
+                  name='entidad'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                    <StyledSelect
+                      styles={{
+                        position: 'relative',
+                        zIndex: 2
+                      }}
+                      {...field}
+                      innerRef={ref}
+                      {...register('entidad', {
+                        required: 'Entidad es obligatorio'
+                      })}
+                      isClearable
+                      classNamePrefix='Select'
+                      placeholder='Selecciona...'
+                      defaultOptions
+                      loadOptions={getListEntidades}
+                      onChange={(e) => {
+                        onChange(e)
+                      }}
+                      onBlur={onBlur}
+                    />
+                  )}
+                />
+                {errors.entidad && (
+                  <Form.Text
+                    className='errors'
+                    onClick={() => clearErrors('entidad')}
+                  >
+                    {errors.entidad.message}
+                  </Form.Text>
                 )}
-              />
-              {errors.entidad && (
-                <Form.Text
-                  className='errors'
-                  onClick={() => clearErrors('entidad')}
-                >
-                  {errors.entidad.message}
-                </Form.Text>
-              )}
-            </Form.Group>
-          </Row>
+              </Form.Group>
+            </Row>)}
+
           {data.length <= 0 && (
             <Row className='mb-3'>
               <Form.Group as={Col} controlId='formGridListEntidad'>

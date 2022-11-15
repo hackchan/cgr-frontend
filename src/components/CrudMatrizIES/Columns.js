@@ -282,6 +282,8 @@ export const ColumnsTable = [
     accessorFn: (row) => `${row.entidad ? row.entidad.name : 'NO ASIGNADO'}`,
     enableEditing: false,
     // filterVariant: 'range',
+    enableColumnFilterModes: false,
+    enableFilters: false,
     id: 'entidad',
     header: 'Entidad',
     size: 450,

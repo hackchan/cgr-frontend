@@ -11,14 +11,14 @@ import { AsyncPaginateStyled } from '../../styles/paginate'
 
 export const Update = ({
   setModalUpdateShow, setReload, preData, data, UpdateMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
-  GetEstratos, modedark
+  GetEstratos, user, modedark
 }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [errorMuniSede, setErrorMuniSede] = useState('')
   const [errorMuniResidencia, setErrorMuniResidencia] = useState('')
-
+  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
   const [departmentSedeSel, setDepartmentSedeSel] = useState({ label: data.sede.department.name, value: data.sede.department.id })
   const [municipioSedeSel, setMunicipioSedeSel] = useState({ label: data.sede.name, value: data.sede.id })
   const [departmentResideSel, setDepartmentResideSel] = useState({ label: data.residencia.department.name, value: data.residencia.department.id })
@@ -186,7 +186,7 @@ export const Update = ({
         mesCorte: Number(dataForm.mesCorte),
         anioCorte: Number(dataForm.anioCorte),
         creditos: Number(dataForm.creditos),
-        entidad: dataForm.entidad.value,
+        entidad: isUserEntidad ? user.entidades[0].id : dataForm.entidad.value,
         residencia: municipioResideSel.value,
         sede: municipioSedeSel.value,
         name: dataForm.name,
@@ -216,45 +216,46 @@ export const Update = ({
   return (
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidad'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
-            <Controller
+        {!isUserEntidad &&
+        (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridListEntidad'>
+              <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+              <Controller
     // id='department'
-              defaultValue={entidadSel}
-              name='entidad'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  value={entidadSel}
-                  {...field}
-                  innerRef={ref}
-                  {...register('entidad', { required: 'Entidad es obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
+                defaultValue={entidadSel}
+                name='entidad'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    value={entidadSel}
+                    {...field}
+                    innerRef={ref}
+                    {...register('entidad', { required: 'Entidad es obligatorio' })}
+                    isClearable
+                    classNamePrefix='Select'
       // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={getListEntidades}
+                    placeholder='Selecciona...'
+                    defaultOptions
+                    getOptionLabel={e => e.value + ' ' + e.label}
+                    getOptionValue={e => e.value}
+                    loadOptions={getListEntidades}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e); setEntidadSel(e) }}
-                  onBlur={onBlur}
-                />
+                    onChange={(e) => { onChange(e); setEntidadSel(e) }}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+              {errors.entidad && (
+                <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
+                  {errors.entidad.message}
+                </Form.Text>
               )}
-            />
-            {errors.entidad && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
-                {errors.entidad.message}
-              </Form.Text>
-            )}
 
-          </Form.Group>
+            </Form.Group>
 
-        </Row>
+          </Row>)}
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGrCodigo'>
