@@ -119,8 +119,7 @@ export const useInitialState = () => {
         withCredentials: false,
         headers: {
           'X-Test-header': 'Test',
-          accepts: 'application/json',
-          Authorization: `Bearer ${auth.token}`
+          accepts: 'application/json'
         }
       })
       const { body } = response.data

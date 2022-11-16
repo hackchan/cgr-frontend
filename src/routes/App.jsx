@@ -50,18 +50,18 @@ export const App = () => {
       <Route path='/' element={<Layout />}>
         <Route path='' element={<Home />} />
         <Route path='checkout' element={<Checkout />} />
-        <Route path='satelital' element={<CrudSatelital />} />
-        <Route path='department' element={<CrudDepartmets />} />
-        <Route path='municipio' element={<CrudMunicipios />} />
-        <Route path='tipo-municipio' element={<CrudTipoMunicipios />} />
-        <Route path='categoria' element={<CrudCategorias />} />
-        <Route path='sector' element={<CrudSector />} />
-        <Route path='entidad' element={<CrudEntidad />} />
-        <Route path='subsector' element={<CrudSubSector />} />
-        <Route path='estado-obra' element={<CrudEstadoObra />} />
-        <Route path='sector-obra' element={<CrudSectorObra />} />
-        <Route path='origen-recurso' element={<CrudOrigenRecurso />} />
-        <Route path='matriz-obra' element={<MatrizObra />} />
+        <Route path='satelital' element={<ProtectedRoute><CrudSatelital /></ProtectedRoute>} />
+        <Route path='department' element={<ProtectedRoute><CrudDepartmets /></ProtectedRoute>} />
+        <Route path='municipio' element={<ProtectedRoute><CrudMunicipios /></ProtectedRoute>} />
+        <Route path='tipo-municipio' element={<ProtectedRoute><CrudTipoMunicipios /></ProtectedRoute>} />
+        <Route path='categoria' element={<ProtectedRoute><CrudCategorias /></ProtectedRoute>} />
+        <Route path='sector' element={<ProtectedRoute><CrudSector /></ProtectedRoute>} />
+        <Route path='entidad' element={<ProtectedRoute><CrudEntidad /></ProtectedRoute>} />
+        <Route path='subsector' element={<ProtectedRoute><CrudSubSector /></ProtectedRoute>} />
+        <Route path='estado-obra' element={<ProtectedRoute><CrudEstadoObra /></ProtectedRoute>} />
+        <Route path='sector-obra' element={<ProtectedRoute><CrudSectorObra /></ProtectedRoute>} />
+        <Route path='origen-recurso' element={<ProtectedRoute><CrudOrigenRecurso /></ProtectedRoute>} />
+        <Route path='matriz-obra' element={<ProtectedRoute><MatrizObra /></ProtectedRoute>} />
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />
         <Route path='matriz-ies' element={<ProtectedRoute><MatrizIES /></ProtectedRoute>} />
         <Route path='estructuracion' element={<CsvParser />} />
@@ -72,9 +72,9 @@ export const App = () => {
         <Route path='logout' element={<Logout />} />
         <Route path='payment' element={<Payment />} />
         <Route path='succes' element={<Succes />} />
-        <Route path='usuarios' element={<GestionUsurios />} />
-        <Route path='tipo-user' element={<TypeUser />} />
-        <Route path='roles' element={<Roles />} />
+        <Route path='usuarios' element={<ProtectedRoute><GestionUsurios /></ProtectedRoute>} />
+        <Route path='tipo-user' element={<ProtectedRoute><TypeUser /></ProtectedRoute>} />
+        <Route path='roles' element={<ProtectedRoute><Roles /></ProtectedRoute>} />
         <Route path='reset' element={<ResetPassword />} />
         <Route path='newpass' element={<NewPassword />} />
         <Route path='active' element={<ActiveUser />} />

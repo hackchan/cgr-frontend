@@ -130,7 +130,7 @@ export const CsvParserIES = ({
               'anioCorte'
             ]
             const headerFile = result.meta.fields
-
+            console.log('EL USER ID:', user)
             console.log('headerValid:', headerValid)
             console.log('headerFile:', headerFile)
             if (JSON.stringify(headerValid) !== JSON.stringify(headerFile)) {
@@ -140,7 +140,7 @@ export const CsvParserIES = ({
             // console.log('result:', result.meta.fields)
 
             const csvArray = result.data.map((row) => {
-              return { ...row, entidad: entidadId }
+              return { ...row, entidad: entidadId, userOper: user.id }
             })
             setData(csvArray)
           } catch (error) {

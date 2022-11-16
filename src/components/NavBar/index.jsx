@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
@@ -13,7 +13,16 @@ export const NavBar = () => {
   const { state, logout, chgDarkMode } = useContext(AppContext)
   const { user, darkMode } = state
   const [dark, setDark] = useState(darkMode)
+  // const [userStorage] = useLocalStorage('user', false)
+  const [menuAdmin, setMenuAdmin] = useState(false)
 
+  useEffect(() => {
+    const listaRolesUser = user?.roles.map((rol) => {
+      return rol.name
+    })
+    setMenuAdmin(['ADMIN', 'JEDI'].some((value) => listaRolesUser?.includes(value)))
+  })
+  console.log('menu admin:', menuAdmin)
   const handleChange = () => {
     setDark(!dark)
     chgDarkMode(!dark)
@@ -45,24 +54,36 @@ export const NavBar = () => {
           <Nav className='mr-auto'>
 
             <Nav.Link as={StyledNavLink} to='/'>Features</Nav.Link>
-            <NavDropdown
-              id='nav-dropdown-dark-example'
-              title='Gestion Usuarios'
-              menuVariant={state.darkMode ? 'dark' : 'light'}
-            >
-              <NavDropdown.Item as={StyledNavLink} to='/Usuarios'>Usuarios</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/tipo-user'>Tipo Usuario</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/roles'>Roles</NavDropdown.Item>
+            {menuAdmin && (
+              <NavDropdown
+                id='nav-dropdown-dark-example'
+                title='Gestion Usuarios'
+                menuVariant={state.darkMode ? 'dark' : 'light'}
+              >
+                <NavDropdown.Item as={StyledNavLink} to='/Usuarios'>Usuarios</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/tipo-user'>Tipo Usuario</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/roles'>Roles</NavDropdown.Item>
 
-            </NavDropdown>
+              </NavDropdown>
+            )}
+
             <NavDropdown
               id='nav-dropdown-dark-example'
               title='Gestion Matriz Obras'
               menuVariant={state.darkMode ? 'dark' : 'light'}
             >
-              <NavDropdown.Item as={StyledNavLink} to='/sector-obra'>Sector Obra</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/estado-obra'>Estado Obra</NavDropdown.Item>
+              {menuAdmin && (
+                <NavDropdown.Item as={StyledNavLink} to='/sector-obra'>Sector Obra</NavDropdown.Item>
+              )}
+
+              {menuAdmin && (
+                <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
+              )}
+
+              {menuAdmin && (
+                <NavDropdown.Item as={StyledNavLink} to='/estado-obra'>Estado Obra</NavDropdown.Item>
+              )}
+
               <NavDropdown.Item as={StyledNavLink} to='/matriz-obra'>Matriz Obra</NavDropdown.Item>
               <NavDropdown.Item as={StyledNavLink} to='/matriz-obra-soporte'>Soportes Obras</NavDropdown.Item>
 
@@ -79,34 +100,38 @@ export const NavBar = () => {
               {/* <NavDropdown.Item as={StyledNavLink} to='/matriz-obra-soporte'>Soportes Obras</NavDropdown.Item> */}
 
             </NavDropdown>
-            <NavDropdown
-              id='nav-dropdown-dark-example'
-              title='Gestion Satelital'
-              menuVariant={state.darkMode ? 'dark' : 'light'}
-            >
-              <NavDropdown.Item as={StyledNavLink} to='/satelital'>Satelital</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={StyledNavLink} to='/department'>Departamento</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/municipio'>Municipios</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/tipo-municipio'>Tipo Municipio</NavDropdown.Item>
+            {menuAdmin && (
+              <NavDropdown
+                id='nav-dropdown-dark-example'
+                title='Gestion Satelital'
+                menuVariant={state.darkMode ? 'dark' : 'light'}
+              >
+                <NavDropdown.Item as={StyledNavLink} to='/satelital'>Satelital</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={StyledNavLink} to='/department'>Departamento</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/municipio'>Municipios</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/tipo-municipio'>Tipo Municipio</NavDropdown.Item>
 
-            </NavDropdown>
+              </NavDropdown>
+            )}
 
-            <NavDropdown
-              id='nav-dropdown-dark-example'
-              title='Gestion Entidades'
-              menuVariant={state.darkMode ? 'dark' : 'light'}
-            >
-              <NavDropdown.Item as={StyledNavLink} to='/categoria'>Categoria</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={StyledNavLink} to='/sector'>Sector</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/subsector'>Subsector</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={StyledNavLink} to='/entidad'>Entidad</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/emails'>Emails</NavDropdown.Item>
-              <NavDropdown.Item as={StyledNavLink} to='/emails'>Telefonos</NavDropdown.Item>
+            {menuAdmin && (
+              <NavDropdown
+                id='nav-dropdown-dark-example'
+                title='Gestion Entidades'
+                menuVariant={state.darkMode ? 'dark' : 'light'}
+              >
+                <NavDropdown.Item as={StyledNavLink} to='/categoria'>Categoria</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={StyledNavLink} to='/sector'>Sector</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/subsector'>Subsector</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={StyledNavLink} to='/entidad'>Entidad</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/emails'>Emails</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/emails'>Telefonos</NavDropdown.Item>
 
-            </NavDropdown>
+              </NavDropdown>
+            )}
 
           </Nav>
           <Nav>

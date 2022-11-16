@@ -176,6 +176,7 @@ export const Update = ({
       }
       dataForm = {
         ...dataForm,
+        userOper: user.id,
         tipoDoc: dataForm.tipoDoc.value,
         semestre: dataForm.semestre.value,
         estrato: dataForm.estrato.value,

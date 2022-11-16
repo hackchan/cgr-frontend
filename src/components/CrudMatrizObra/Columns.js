@@ -40,7 +40,7 @@ export const ColumnsTable = [
     accessorFn: (row) =>
       `${row.objetoProyecto ? row.objetoProyecto : 'NO ASIGNADO'}`,
     id: 'objetoProyecto',
-    size: 650,
+    size: 850,
     header: 'Objeto',
     Cell: ({ cell }) => (
       <Box

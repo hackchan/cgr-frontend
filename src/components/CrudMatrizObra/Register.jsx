@@ -10,7 +10,8 @@ import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, modedark }) => {
+export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, user, modedark }) => {
+  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
@@ -149,10 +150,11 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
       }
       dataForm = {
         ...dataForm,
+        userOper: user.id,
         diaCorte: Number(dataForm.diaCorte),
         mesCorte: Number(dataForm.mesCorte),
         anioCorte: Number(dataForm.anioCorte),
-        entidad: dataForm.entidad.value,
+        entidad: isUserEntidad ? user.entidades[0].id : dataForm.entidad.value,
         estado: dataForm.estado.value,
         origen: dataForm.origen.value,
         sector: dataForm.sector.value,
@@ -193,11 +195,50 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
   return (
     <BoxForm modedark={modedark}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row>
+        {!isUserEntidad && (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridListEntidad'>
+              <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
+              <Controller
+    // id='department'
+                name='entidad'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    {...field}
+                    innerRef={ref}
+                    {...register('entidad', { required: 'Entidad es obligatorio' })}
+                    isClearable
+                    classNamePrefix='Select'
+      // autoload={false}
+                    placeholder='Selecciona...'
+                    defaultOptions
+                    getOptionLabel={e => e.value + ' ' + e.label}
+                    getOptionValue={e => e.value}
+                    loadOptions={getListEntidades}
+        // value={currentDepartment}
+                    onChange={(e) => { onChange(e) }}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+              {errors.entidad && (
+                <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
+                  {errors.entidad.message}
+                </Form.Text>
+              )}
+
+            </Form.Group>
+
+          </Row>
+        )}
+
+        <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridLinkSecop'>
             <FormLabelStyle modedark={modedark.toString()}>Link Secop</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. https://www.contratos.gov.co/consultas/detalleProceso.do?numConstanc' {...register('linkSecop', {
+              style={{ height: 46 }} type='text' placeholder='Eje. https://www.contratos.gov.co/consultas/detalleProceso.do?numConstanc' {...register('linkSecop', {
                 required: 'Link secop es obligatorio',
                 pattern: {
                   value: /^(ftp|http|https):\/\/[^ "]+$/,
@@ -212,42 +253,6 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
               </Form.Text>
             )}
           </Form.Group>
-        </Row>
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidad'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
-            <Controller
-    // id='department'
-              name='entidad'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('entidad', { required: 'Entidad es obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
-      // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
-                  getOptionLabel={e => e.value + ' ' + e.label}
-                  getOptionValue={e => e.value}
-                  loadOptions={getListEntidades}
-        // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
-                  onBlur={onBlur}
-                />
-              )}
-            />
-            {errors.entidad && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidad')}>
-                {errors.entidad.message}
-              </Form.Text>
-            )}
-
-          </Form.Group>
-
           <Form.Group as={Col} controlId='formGridListSector'>
             <FormLabelStyle modedark={modedark.toString()}>Sector Obra</FormLabelStyle>
             <Controller
