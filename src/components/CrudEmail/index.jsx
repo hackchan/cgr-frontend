@@ -10,6 +10,7 @@ import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { ColumnsTable } from './Columns'
 import { Config } from './Config'
+import { ModalB } from '../ModalB'
 import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
@@ -19,19 +20,24 @@ import config from '../../config'
 export const CrudEmails = () => {
   const [data, setData] = useState([])
   const {
-    getCategorias,
-    AddCategorias,
-    UpdateCategoria,
-    DeleteCategoria,
+    GetEntidad,
+    GetEmails,
+    AddEmails,
+    DeleteEmails,
+    UpdateEmail,
     state
   } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetching, setIsRefetching] = useState(false)
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
-  const [modal, setModal] = useState(false)
+  const [modalShow, setModalShow] = useState(false)
+  const [modalUpdateShow, setModalUpdateShow] = useState(false)
+  // const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
-  const [modalUpdate, setModalUpdate] = useState(false)
+  // const [modal, setModal] = useState(false)
+  // const [modalEliminar, setModalEliminar] = useState(false)
+  // const [modalUpdate, setModalUpdate] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
   const [dataEliminar, setDataEliminar] = useState({})
   const [reload, setReload] = useState(false)
@@ -58,12 +64,12 @@ export const CrudEmails = () => {
           setIsRefetching(true)
         }
 
-        const response = await getCategorias()
-        setData(response)
+        const response = await GetEmails()
+        console.log('respose emails:', response)
+        setData(response.data)
       } catch (error) {
         setIsError(true)
         if (error.response) {
-          console.log('mensaje error:', error.response.data.error.message)
           setError(error.response.data.error.message)
         } else {
           setError(error.message)
@@ -102,18 +108,16 @@ export const CrudEmails = () => {
     <ContainerBox>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteCategoria={DeleteCategoria} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteEmails={DeleteEmails} modedark={state.darkMode} />
         </Modal>}
 
-      {modalUpdate &&
-        <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateCategoria={UpdateCategoria} modedark={state.darkMode} />
-        </Modal>}
+      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateEmail={UpdateEmail} GetEntidad={GetEntidad} modedark={state.darkMode} />
+      </ModalB>
 
-      {modal &&
-        <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} AddCategorias={AddCategorias} modedark={state.darkMode} />
-        </Modal>}
+      <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddEmails={AddEmails} GetEntidad={GetEntidad} modedark={state.darkMode} />
+      </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
@@ -197,7 +201,7 @@ export const CrudEmails = () => {
                 </ButtonStyled>
                 <ButtonStyled
                   className='new'
-                  onClick={() => { setModal(true) }}
+                  onClick={() => { setModalShow(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
@@ -221,7 +225,7 @@ export const CrudEmails = () => {
                 <EditIconStyle
                   variant='contained'
                   onClick={() => {
-                    setModalUpdate(true)
+                    setModalUpdateShow(true)
                     setDataUpdate(row.original)
                   }}
                 />

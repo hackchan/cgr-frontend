@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import '../styles/Login.css'
 import { AppContext } from '../contex/AppProvidercContext'
 import { useNavigate, Link } from 'react-router-dom'
-import { clearMessage } from '../utils/time'
 import { Logo } from '../components/Logo'
 import { ButtonLoading as Button } from '../components/ButtonLoading'
 import { FormLabelStyle } from '../styles/box'
@@ -17,6 +16,8 @@ export const Login = () => {
   const { login, emailActive } = useContext(AppContext)
   const [loading, setLoading] = useState(false)
   const [blockBtn, setBlockBtn] = useState(false)
+  const [loadingEmail, setLoadingEmail] = useState(false)
+  const [blockBtnEmail, setBlockBtnEmail] = useState(false)
   // const clearMessage = async (time = 3000) => {
   //   const timerId = setTimeout(() => setErrorMessage(''), time)
   //   return timerId
@@ -24,6 +25,8 @@ export const Login = () => {
 
   const handleActiveUser = async () => {
     try {
+      setLoadingEmail(true)
+      setBlockBtnEmail(true)
       const username = watch('username')
       console.log('Username:', username)
       await emailActive(username)
@@ -36,13 +39,15 @@ export const Login = () => {
         setErrorMessage(error.message)
       }
     } finally {
-      setLoading(false)
-      setBlockBtn(false)
+      setLoadingEmail(false)
+      setBlockBtnEmail(false)
     }
   }
 
   const onSubmit = async (dataForm) => {
     try {
+      setLoading(true)
+      setBlockBtn(true)
       await login(dataForm)
       navigate('/', { replace: true })
     } catch (error) {
@@ -135,8 +140,11 @@ export const Login = () => {
         <div className='loginButton '>
           <Button value='Iniciar sesión' loading={loading} disabled={blockBtn} />
         </div>
-        {errorMessage === 'usuario esta inactivo' && <Button value='Enviar email de activacion' loading={loading} disabled={blockBtn} onClick={handleActiveUser} type='button' />}
-        {errorMessage && clearMessage(13000, setErrorMessage) && <p><span className='errors'>{errorMessage}</span></p>}
+        {errorMessage === 'Usuario está inactivo' &&
+          <div className='loginButton '>
+            <Button value={loadingEmail ? 'Espera ⌛...' : '📮 Email de verificación '} loading={loadingEmail} disabled={blockBtnEmail} onClick={handleActiveUser} type='button' />
+          </div>}
+        {errorMessage && <p><span className='errors'>{errorMessage}</span></p>}
         <div>
           <Link to='/recovery'>Olvidó la contraseña?</Link> <br />
           <Link to='/verify-email'>Crear Cuenta?</Link> <br />

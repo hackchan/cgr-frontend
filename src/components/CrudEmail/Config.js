@@ -1,4 +1,4 @@
-const table = 'Categoria'
+const table = 'Email'
 export const Config = {
   pageIndex: 0,
   pageSize: 50,

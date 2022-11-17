@@ -2174,6 +2174,109 @@ export const useInitialState = () => {
     }
   }
 
+  // Crud Emails
+  const GetEmails = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      const url = new URL(
+        '/api/v2/email',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddEmails = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/email`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteEmails = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/email/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateEmail = async (payload, id) => {
+    try {
+      console.log('payload update:', payload)
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/email/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const chgDarkMode = (mode = false) => {
     setDarkMode(mode)
     setState({
@@ -2314,6 +2417,10 @@ export const useInitialState = () => {
     GetEstratos,
     AddEstrato,
     DeleteEstrato,
-    UpdateEstrato
+    UpdateEstrato,
+    GetEmails,
+    AddEmails,
+    DeleteEmails,
+    UpdateEmail
   }
 }

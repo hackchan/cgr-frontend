@@ -13,7 +13,6 @@ import * as Yup from 'yup'
 import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers }) => {
-  console.log(' L O S D A T O S:', data)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [imgBase64, setImgBase64] = useState('')

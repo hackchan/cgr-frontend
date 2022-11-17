@@ -1,10 +1,9 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../contex/AppProvidercContext'
+import React from 'react'
+
 import { Route, Routes } from 'react-router-dom'
 import { Home } from '../containers'
 import { Layout } from '../components/Layout'
 import { Checkout } from '../containers/Checkout'
-import { Information } from '../containers/Information'
 import { Login } from '../containers/Login'
 import { Logout } from '../containers/Logout'
 import { Recovery } from '../components/Recovery'
@@ -12,13 +11,10 @@ import { VerifyEmail } from '../components/VerifyEmail'
 import { Payment } from '../containers/Payment'
 import { Succes } from '../containers/Succes'
 import { ProtectedRoute } from '../components/ProtectedRoute'
-import { Table } from '../components/Table'
 import { ResetPassword } from '../components/ResetPassword'
 import { NewPassword } from '../components/NewPassword'
 import { NewUserEntidad } from '../components/NewUserEntidad'
 import { NotFound } from '../components/NotFound'
-import { DragArea } from '../components/DragArea'
-import { Csv } from '../components/Csv'
 import { CsvParser } from '../components/CsvParse'
 import { LoadTable } from '../components/LoadTable'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -42,27 +38,44 @@ import { ActiveUser } from '../components/ActiveUser'
 
 import { MatrizIES } from '../components/CrudMatrizIES'
 
+import { CrudEmails } from '../components/CrudEmail'
+
 export const App = () => {
-  const { state } = useContext(AppContext)
   return (
 
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route path='' element={<Home />} />
+
         <Route path='checkout' element={<Checkout />} />
+
+        <Route path='emails' element={<ProtectedRoute><CrudEmails /></ProtectedRoute>} />
+
         <Route path='satelital' element={<ProtectedRoute><CrudSatelital /></ProtectedRoute>} />
+
         <Route path='department' element={<ProtectedRoute><CrudDepartmets /></ProtectedRoute>} />
+
         <Route path='municipio' element={<ProtectedRoute><CrudMunicipios /></ProtectedRoute>} />
+
         <Route path='tipo-municipio' element={<ProtectedRoute><CrudTipoMunicipios /></ProtectedRoute>} />
+
         <Route path='categoria' element={<ProtectedRoute><CrudCategorias /></ProtectedRoute>} />
+
         <Route path='sector' element={<ProtectedRoute><CrudSector /></ProtectedRoute>} />
+
         <Route path='entidad' element={<ProtectedRoute><CrudEntidad /></ProtectedRoute>} />
+
         <Route path='subsector' element={<ProtectedRoute><CrudSubSector /></ProtectedRoute>} />
+
         <Route path='estado-obra' element={<ProtectedRoute><CrudEstadoObra /></ProtectedRoute>} />
+
         <Route path='sector-obra' element={<ProtectedRoute><CrudSectorObra /></ProtectedRoute>} />
+
         <Route path='origen-recurso' element={<ProtectedRoute><CrudOrigenRecurso /></ProtectedRoute>} />
         <Route path='matriz-obra' element={<ProtectedRoute><MatrizObra /></ProtectedRoute>} />
+
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />
+
         <Route path='matriz-ies' element={<ProtectedRoute><MatrizIES /></ProtectedRoute>} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
