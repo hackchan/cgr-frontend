@@ -4,6 +4,10 @@ export const ColumnsTable = [
     header: 'Semestre Reportado'
   },
   {
+    accessorKey: 'semestreIngreso',
+    header: 'Semestre Ingreso'
+  },
+  {
     accessorKey: 'codigo',
     header: 'Codigo'
   },
@@ -30,11 +34,6 @@ export const ColumnsTable = [
   {
     accessorKey: 'sede',
     header: 'Sede'
-  },
-
-  {
-    accessorKey: 'semestre',
-    header: 'Semestre'
   },
 
   {

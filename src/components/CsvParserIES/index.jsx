@@ -84,7 +84,7 @@ export const CsvParserIES = ({
             col === 'anioCorte' ||
             col === 'entidad' ||
             col === 'sede' ||
-            col === 'semestre' ||
+            col === 'semestreIngreso' ||
             col === 'tipoDoc' ||
             col === 'residencia' ||
             col === 'estrato'
@@ -117,7 +117,7 @@ export const CsvParserIES = ({
               'numeroDoc',
               'programa',
               'sede',
-              'semestre',
+              'semestreIngreso',
               'valorSemestre',
               'recargo',
               'descuentos',
@@ -130,9 +130,7 @@ export const CsvParserIES = ({
               'anioCorte'
             ]
             const headerFile = result.meta.fields
-            console.log('EL USER ID:', user)
-            console.log('headerValid:', headerValid)
-            console.log('headerFile:', headerFile)
+
             if (JSON.stringify(headerValid) !== JSON.stringify(headerFile)) {
               throw new Error('No es el formato de csv solicitado.')
             }

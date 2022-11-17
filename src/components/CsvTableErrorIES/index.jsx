@@ -19,11 +19,11 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
   const [messagesError, setmessagesError] = useState({})
   const [errorDetail, setErrorDetail] = useState([])
   const [error, setError] = useState('')
-  const [upload, setUpload] = useState(true)
+  const [setUpload] = useState(true)
   const [totalError, setTotalError] = useState(0)
   const [progress, setProgress] = useState(false)
   const [btnValidate, setBtnValidate] = useState(false)
-  const [btnLoading, setBtnLoading] = useState(false)
+  const [setBtnLoading] = useState(false)
   const [btnLoadingBlock, setBtnLoadingBlock] = useState(true)
   const { state } = useContext(AppContext)
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -94,7 +94,7 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
     setProgress(true)
     setUpload(true)
 
-    if (cell.column.id === 'semestreReportado' || cell.column.id === 'creditos' || cell.column.id === 'diaCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'anioCorte' || cell.column.id === 'entidad' || cell.column.id === 'sede' || cell.column.id === 'semestre' || cell.column.id === 'tipoDoc' || cell.column.id === 'residencia' || cell.column.id === 'estrato') {
+    if (cell.column.id === 'semestreReportado' || cell.column.id === 'creditos' || cell.column.id === 'diaCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'anioCorte' || cell.column.id === 'entidad' || cell.column.id === 'sede' || cell.column.id === 'semestreIngreso' || cell.column.id === 'tipoDoc' || cell.column.id === 'residencia' || cell.column.id === 'estrato') {
       if (!isNaN(parseInt(value))) {
         value = parseInt(value)
       }
