@@ -50,7 +50,7 @@ export const obrasSchema = array().of(
       .max(64, 'longitud máxima de 64 carácteres')
       .matches(
         /(^[a-zA-ZÑñ ]*[a-zA-Z-_Ññ ]*[a-zA-ZÑñ ]$)/,
-        'No es un programa válido'
+        'No es un nombre válido'
       ),
     sede: number('debe ser un número')
       .integer()

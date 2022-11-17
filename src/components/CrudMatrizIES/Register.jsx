@@ -689,7 +689,7 @@ export const Register = ({
                 minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
                 maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
                 pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.$,\r\n ]$)/,
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
                   message: 'No es un Tipo Descuento válido'
                 }
               })}
