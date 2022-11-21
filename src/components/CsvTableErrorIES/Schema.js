@@ -48,7 +48,7 @@ export const IESSchema = array().of(
       .max(64, 'longitud máxima de 64 carácteres')
       .matches(
         /(^[a-zA-ZÑñ ]*[a-zA-Z-_Ññ ]*[a-zA-ZÑñ ]$)/,
-        'No es un programa válido'
+        'No es un nombre válido'
       ),
     sede: number('debe ser un número')
       .integer()
@@ -61,11 +61,19 @@ export const IESSchema = array().of(
       .typeError('debe ser un número entero'),
 
     semestreIngreso: string('debe ser un número')
+<<<<<<< HEAD
       // .min(6, 'La longitud mínima es de 6 digitos')
       // .max(6, 'La longitud máxima es de 6 digitos')
       .matches(
         /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
         'No es un código semestre válido'
+=======
+      .min(6, 'La longitud mínima es de 6 digitos')
+      .max(6, 'La longitud máxima es de 6 digitos')
+      .matches(
+        /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
+        'No es un código semestre ingreso válido'
+>>>>>>> bcd6514de1fbc45567bfb3c0f51f2c9a5ae6491c
       ),
 
     valorSemestre: number()

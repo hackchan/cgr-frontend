@@ -74,21 +74,21 @@ export const Register = ({
     [departIdReside, muni, municipioSelReside]
   )
 
-  const getListSemestres = async (inputValue) => {
-    const options = []
-    const response = await GetSemestres()
-    const filter = response.data.filter((option) => {
-      return option.name.toLowerCase().includes(inputValue.toLowerCase())
-    })
+  // const getListSemestres = async (inputValue) => {
+  //   const options = []
+  //   const response = await GetSemestres()
+  //   const filter = response.data.filter((option) => {
+  //     return option.name.toLowerCase().includes(inputValue.toLowerCase())
+  //   })
 
-    filter.forEach((semes) => {
-      options.push({
-        label: semes.name,
-        value: semes.id
-      })
-    })
-    return options
-  }
+  //   filter.forEach((semes) => {
+  //     options.push({
+  //       label: semes.name,
+  //       value: semes.id
+  //     })
+  //   })
+  //   return options
+  // }
 
   const getListTipoDoc = async (inputValue) => {
     const options = []
@@ -186,7 +186,7 @@ export const Register = ({
         ...dataForm,
         userOper: user.id,
         tipoDoc: dataForm.tipoDoc.value,
-        semestre: dataForm.semestre.value,
+        semestreIngreso: Number(dataForm.semestreIngreso),
         estrato: dataForm.estrato.value,
         semestreReportado: Number(dataForm.semestreReportado),
         codigo: dataForm.codigo,
@@ -569,6 +569,26 @@ export const Register = ({
         </Row>
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridSemestre'>
+            <FormLabelStyle modedark={modedark.toString()}>Semestre Ingreso</FormLabelStyle>
+            <Form.Control
+              style={{ height: 46 }} type='text' placeholder='Eje. 202201' {...register('semestreIngreso', {
+                required: 'código semestre ingreso es obligatorio',
+                minLength: { value: 6, message: 'La longitud mínima es de 6 digitos' },
+                maxLength: { value: 6, message: 'La longitud máxima es de 6 digitos' },
+                pattern: {
+                  value: /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
+                  message: 'No es un código semestre ingreso válido'
+                }
+              })}
+            />
+
+            {errors.semestreIngreso && (
+              <Form.Text className='errors' onClick={() => clearErrors('semestreIngreso')}>
+                {errors.semestreIngreso.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+          {/* <Form.Group as={Col} controlId='formGridSemestre'>
             <FormLabelStyle modedark={modedark.toString()}>Semestre</FormLabelStyle>
             <Controller
               name='semestre'
@@ -597,7 +617,7 @@ export const Register = ({
               </Form.Text>
             )}
 
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group as={Col} controlId='formGridvalorSemestre'>
             <FormLabelStyle modedark={modedark.toString()}>Valor Semestre</FormLabelStyle>
@@ -669,7 +689,7 @@ export const Register = ({
                 minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
                 maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
                 pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.$,\r\n ]$)/,
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
                   message: 'No es un Tipo Descuento válido'
                 }
               })}
