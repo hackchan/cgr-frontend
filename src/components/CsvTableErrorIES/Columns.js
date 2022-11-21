@@ -37,14 +37,6 @@ export const ColumnsTable = [
   },
 
   {
-<<<<<<< HEAD
-    accessorKey: 'semestreIngreso',
-    header: 'Semestre Ingreso'
-  },
-
-  {
-=======
->>>>>>> bcd6514de1fbc45567bfb3c0f51f2c9a5ae6491c
     accessorKey: 'valorSemestre',
     header: 'Valor Semestre'
   },
