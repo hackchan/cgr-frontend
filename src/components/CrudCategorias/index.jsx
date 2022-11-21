@@ -63,7 +63,6 @@ export const CrudCategorias = () => {
       } catch (error) {
         setIsError(true)
         if (error.response) {
-          console.log('mensaje error:', error.response.data.error.message)
           setError(error.response.data.error.message)
         } else {
           setError(error.message)
@@ -80,8 +79,7 @@ export const CrudCategorias = () => {
   }, [reload])
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
+
   }
 
   const handleExportData = () => {

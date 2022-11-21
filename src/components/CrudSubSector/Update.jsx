@@ -39,7 +39,6 @@ export const Update = ({ setModal, setReload, preData, data, UpdateSubSector, ge
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log(dataForm)
       dataForm = { ...dataForm, sector: dataForm.sector.value }
       setDisableBtn(true)
       await UpdateSubSector(dataForm, data.id)

@@ -75,8 +75,7 @@ export const CrudTipoMunicipios = () => {
   }, [reload])
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
+
   }
 
   const handleExportData = () => {

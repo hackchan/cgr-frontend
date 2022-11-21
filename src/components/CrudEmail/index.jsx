@@ -65,7 +65,6 @@ export const CrudEmails = () => {
         }
 
         const response = await GetEmails()
-        console.log('respose emails:', response)
         setData(response.data)
       } catch (error) {
         setIsError(true)
@@ -86,17 +85,20 @@ export const CrudEmails = () => {
   }, [reload])
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
+
   }
 
-  const handleExportData = () => {
-    csvExporter.generateCsv(data)
+  const handleExportData = (rows) => {
+    console.log('rows:', rows)
+    csvExporter.generateCsv(rows.map((row) => {
+      return { ...row.original, entidad: row.original.entidad.name }
+    }
+    ))
   }
   const columns = useMemo(() => ColumnsTable, [])
   const csvOptions = {
     quoteStrings: '"',
-    decimalSeparator: ',',
+    decimalSeparator: '.',
     fieldSeparator: '|',
     showLabels: true,
     useBom: true,
@@ -193,7 +195,7 @@ export const CrudEmails = () => {
               >
                 <ButtonStyled
                   className='export'
-                  onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
+                  onClick={() => { handleExportData(table.getRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}
                   variant='contained'
                 >

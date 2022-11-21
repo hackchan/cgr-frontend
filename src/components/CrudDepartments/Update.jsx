@@ -8,7 +8,6 @@ import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
 export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark }) => {
-  // console.log('LA DATA:', data)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
@@ -41,11 +40,9 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
   }
   const onSubmit = async (dataForm) => {
     try {
-      console.log('homero:', dataForm)
       setDisableBtn(true)
       dataForm.id = data.id
       dataForm = { ...dataForm, satelital: dataForm.satelital.value }
-      console.log('la data a enviar:', dataForm)
       await UpdateDepartment(dataForm)
       setModal(false)
       setReload(true)

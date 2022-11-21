@@ -128,7 +128,7 @@ export const NavBar = () => {
                 <NavDropdown.Divider />
                 <NavDropdown.Item as={StyledNavLink} to='/entidad'>Entidad</NavDropdown.Item>
                 <NavDropdown.Item as={StyledNavLink} to='/emails'>Emails</NavDropdown.Item>
-                <NavDropdown.Item as={StyledNavLink} to='/emails'>Telefonos</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/telefonos'>Telefonos</NavDropdown.Item>
 
               </NavDropdown>
             )}

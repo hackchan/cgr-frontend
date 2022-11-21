@@ -118,11 +118,9 @@ export const CrudDepartmets = () => {
         }
 
         const response = await getDepartments(pagination, globalFilter, columnFilters, sorting)
-        console.log('sorting:', sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
-        console.log('globalFiter:', globalFilter)
       } catch (error) {
         setIsError(true)
         if (error.response) {
@@ -164,14 +162,12 @@ export const CrudDepartmets = () => {
   // }
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
+
     // employeeData[+row.index] = row._valuesCache
     // setEmployeeData([...employeeData])
   }
 
   const handleExportData = (rows) => {
-    console.log('rows:', rows)
     csvExporter.generateCsv(rows.map((row) => row._valuesCache))
     // csvExporter.generateCsv(data)
   }

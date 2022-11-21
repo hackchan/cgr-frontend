@@ -1,14 +1,12 @@
 import { object, string, number, array } from 'yup'
 const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
-export const obrasSchema = array().of(
+export const IESSchema = array().of(
   object({
     codigo: string('debe ser un cadena').matches(
       /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
       'No es un código estudiante válido'
     ),
     semestreReportado: string('debe ser un número')
-      .min(6, 'La longitud mínima es de 6 digitos')
-      .max(6, 'La longitud máxima es de 6 digitos')
       .matches(
         /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
         'No es un código semestre válido'
@@ -62,11 +60,13 @@ export const obrasSchema = array().of(
       .min(1, 'debe ser un entero mayor a 0')
       .typeError('debe ser un número entero'),
 
-    semestre: number('debe ser un número')
-      .integer()
-      .min(1, 'mínimo es 1')
-      .max(10, 'maximo es 10')
-      .typeError('debe ser un número entero'),
+    semestreIngreso: string('debe ser un número')
+      // .min(6, 'La longitud mínima es de 6 digitos')
+      // .max(6, 'La longitud máxima es de 6 digitos')
+      .matches(
+        /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
+        'No es un código semestre válido'
+      ),
 
     valorSemestre: number()
       .positive()

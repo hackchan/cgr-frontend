@@ -37,7 +37,6 @@ export const CrudSatelital = () => {
 
         const response = await getSatelitales()
         setData(response)
-        console.log(data)
       } catch (error) {
         setIsError(true)
         setError(error.message)
@@ -50,8 +49,7 @@ export const CrudSatelital = () => {
   }, [reload])
 
   const handleSaveRow = ({ row }) => {
-    console.log('row:', row.index)
-    console.log('row:', row._valuesCache)
+
     // employeeData[+row.index] = row._valuesCache
     // setEmployeeData([...employeeData])
   }
@@ -125,7 +123,6 @@ export const CrudSatelital = () => {
         renderTopToolbarCustomActions={({ table }) => {
           const handleDeactivate = () => {
             table.getSelectedRowModel().flatRows.map((row) => {
-              console.log(row._valuesCache)
               window.alert('deactivating ', row._valuesCache)
             })
           }
@@ -172,8 +169,6 @@ export const CrudSatelital = () => {
             key={0}
             onClick={(table) => {
             // View profile logic...
-
-              console.log('row h', row._valuesCache)
               setModalEliminar(true)
               setDataEliminar(row._valuesCache)
               closeMenu()

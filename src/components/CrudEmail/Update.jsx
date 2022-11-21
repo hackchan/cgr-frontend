@@ -56,8 +56,7 @@ export const Update = ({ setModalUpdateShow, setReload, data, UpdateEmail, GetEn
   }
   const onSubmit = async (dataForm) => {
     try {
-      dataForm = { ...dataForm, entidad: dataForm.entidad.value }
-      console.log('dataForm2-->>>:', dataForm)
+      dataForm = { ...dataForm, entidad: entidadSel.value }
       setDisableBtn(true)
       await UpdateEmail(dataForm, data.id)
       setModalUpdateShow(false)

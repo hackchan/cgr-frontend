@@ -35,7 +35,7 @@ export const MatrizIES = () => {
     GetEstratos
   } = useContext(AppContext)
   const [user] = useLocalStorage('user', false)
-  console.log('User:', user)
+
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
     palette: {

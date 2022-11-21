@@ -177,7 +177,6 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
 
       }
       delete dataForm.departamentoObra
-      console.log('dataForm2:', dataForm)
       setDisableBtn(true)
       await AddMatrizObra([dataForm])
       setModalShow(false)
@@ -341,7 +340,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
                 handleMunicipios(e)
               }}
               // onBlur={(e) => { console.log('la ee es:', e) }}
-              onInputChange={(e) => { setMuni(e); console.log('type', e) }}
+              onInputChange={(e) => { setMuni(e) }}
             />
             {errorMuni && clearMessage(5000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>}
 

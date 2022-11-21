@@ -12,7 +12,6 @@ export const DragArea = () => {
       worker: true,
       header: false,
       step: (results) => {
-        console.log('results:', results)
         setParsedCsvData(results.data)
       }
     })

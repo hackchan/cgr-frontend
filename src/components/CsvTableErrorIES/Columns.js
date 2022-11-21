@@ -33,8 +33,8 @@ export const ColumnsTable = [
   },
 
   {
-    accessorKey: 'semestre',
-    header: 'Semestre'
+    accessorKey: 'semestreIngreso',
+    header: 'Semestre Ingreso'
   },
 
   {

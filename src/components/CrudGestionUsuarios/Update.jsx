@@ -123,7 +123,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
         roles,
         entidades
       }
-      console.log('dataForm:', dataForm)
+
       if (dataForm.image === null) {
         delete dataForm.image
       }
@@ -131,7 +131,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       delete dataForm.confirmPwd
       delete dataForm.username
       delete dataForm.password
-      console.log('dataForm2-->>>:', dataForm)
+
       setDisableBtn(true)
       await UpdateUser(dataForm, data.id)
       setModalUpdateShow(false)

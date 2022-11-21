@@ -19,7 +19,6 @@ export const Register = ({ setModal, setReload, preData, AddSubSector, getSector
   const onSubmit = async (dataForm) => {
     try {
       dataForm = { ...dataForm, sector: dataForm.sector.value }
-      console.log(dataForm)
       setDisableBtn(true)
       await AddSubSector(dataForm)
       setModal(false)

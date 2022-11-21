@@ -29,7 +29,6 @@ export const Csv = () => {
   )
   const { CSVReader } = useCSVReader()
   const uploadAccepts = (results) => {
-    console.log('la data:', results)
     setZoneHover(false)
   }
 

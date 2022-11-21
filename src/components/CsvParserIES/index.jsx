@@ -84,7 +84,7 @@ export const CsvParserIES = ({
             col === 'anioCorte' ||
             col === 'entidad' ||
             col === 'sede' ||
-            col === 'semestre' ||
+            col === 'semestreIngreso' ||
             col === 'tipoDoc' ||
             col === 'residencia' ||
             col === 'estrato'
@@ -117,7 +117,7 @@ export const CsvParserIES = ({
               'numeroDoc',
               'programa',
               'sede',
-              'semestre',
+              'semestreIngreso',
               'valorSemestre',
               'recargo',
               'descuentos',
@@ -130,9 +130,7 @@ export const CsvParserIES = ({
               'anioCorte'
             ]
             const headerFile = result.meta.fields
-            console.log('EL USER ID:', user)
-            console.log('headerValid:', headerValid)
-            console.log('headerFile:', headerFile)
+
             if (JSON.stringify(headerValid) !== JSON.stringify(headerFile)) {
               throw new Error('No es el formato de csv solicitado.')
             }
@@ -178,14 +176,13 @@ export const CsvParserIES = ({
       const { name, type, size } = file
       setNameFile(name)
       setSizeFile(size)
-      console.log('type:', size)
+
       if (type !== 'text/csv') {
         throw new Error('Solo se permite archivos de tipo text/csv')
       }
       if (size / 1000 >= 4000) {
         throw new Error('Solo se permite archivos de maximo 4MB')
       }
-      console.log(file)
     } catch (error) {
       setFile(false)
       setError(error.message)
@@ -193,7 +190,6 @@ export const CsvParserIES = ({
   }
   const onSubmit = async (dataForm) => {
     try {
-      console.log(dataForm)
       handleUploadCSV(isUserEntidad ? user.entidades[0].id : dataForm.entidad.value)
     } catch (error) {
       if (error.response) {

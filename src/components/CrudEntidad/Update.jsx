@@ -11,7 +11,6 @@ import { ButtonLoading as Button } from '../ButtonLoading'
 import { Logo } from '../Logo'
 
 export const Update = ({ setModal, setReload, preData, data, UpdateEntidad, getSubSector, getCategorias, getMunicipios, modedark }) => {
-  console.log('LA DATA JEJE:', data)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [activo, setActivo] = useState(data.active)
@@ -50,7 +49,6 @@ export const Update = ({ setModal, setReload, preData, data, UpdateEntidad, getS
   const loadCategorias = async (inputValue) => {
     const options = []
     const response = await getCategorias(null)
-    console.log('response:', response)
     const filter = response.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })

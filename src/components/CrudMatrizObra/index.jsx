@@ -85,11 +85,9 @@ export const MatrizObra = () => {
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {
-        console.log('homer erro:', error)
         setIsError(true)
         if (error.response) {
           setError(error.response.data.error.message)
-          console.log('homer error msn:', error.response.data.error.message)
         } else {
           setError(error.message)
         }

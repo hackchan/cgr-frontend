@@ -46,11 +46,10 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada, o
       setBtnLoadingBlock(true)
       setBtnLoading(true)
       setUpload(true)
-      console.log('datos a subir:', tableData)
+
       await MatrizCargada(tableData)
       setModalCsv(false)
       setReload(true)
-      console.log(tableData)
     } catch (error) {
       if (error.response) {
         setError(error.response.data.error.message)
@@ -116,8 +115,7 @@ export const MatrizObraError = ({ data, setModalCsv, setReload, MatrizCargada, o
       relationError[detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]] = detail.message
       return detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]
     })
-    console.log(res)
-    console.log(relationError)
+
     setColumnsWithError(res)
     setmessagesError(relationError)
   }, [errorDetail, tableData])

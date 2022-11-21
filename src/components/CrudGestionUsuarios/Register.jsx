@@ -104,7 +104,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
         roles,
         entidades
       }
-      console.log('dataForm:', dataForm)
+
       if (dataForm.image === null) {
         delete dataForm.image
       }
@@ -112,7 +112,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       delete dataForm.confirmPwd
       delete dataForm.username
       delete dataForm.password
-      console.log('dataForm2-->>>:', dataForm)
+
       setDisableBtn(true)
       await AddUser(dataForm)
       setModalShow(false)

@@ -8,7 +8,6 @@ export const Delete = ({ data, closeModal, preData, setReload, DeleteDepartment,
 
   const handleDelete = async () => {
     try {
-      console.log('Borrar la data:', data)
       setDisableBtn(true)
       await DeleteDepartment(data)
       closeModal(false)

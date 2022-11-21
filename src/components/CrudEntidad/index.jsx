@@ -73,11 +73,9 @@ export const CrudEntidad = () => {
         }
 
         const response = await GetEntidad(pagination, globalFilter, columnFilters, sorting)
-        console.log('sorting:', sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
-        console.log('globalFiter:', globalFilter)
       } catch (error) {
         setIsError(true)
         if (error.response) {

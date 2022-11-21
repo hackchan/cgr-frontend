@@ -44,7 +44,7 @@ export const ColumnsTable = [
     // filterVariant: 'range',
     id: 'categoria',
     header: 'Categoria',
-    // size: 300,
+    size: 400,
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({
@@ -62,7 +62,7 @@ export const ColumnsTable = [
     // filterVariant: 'range',
     id: 'subsector',
     header: 'Subsector',
-    // size: 300,
+    size: 500,
     Cell: ({ cell }) => (
       <Box
         sx={(theme) => ({

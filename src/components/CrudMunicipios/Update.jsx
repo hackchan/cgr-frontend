@@ -78,7 +78,6 @@ export const Update = ({ setModal, setReload, preData, data, getDepartments, get
       dataForm.id = data.id
       dataForm = { ...dataForm, divipola: currentDepartment.value.toString().padStart(2, '0') + dataForm.divipola, isCapital: capital, active: activo, department: dataForm.department.value, tipo: dataForm.tipo.value }
       setDisableBtn(true)
-      console.log('dataForm FINAL:', dataForm)
       await UpdateMunicipio(dataForm)
       setModal(false)
       setReload(true)

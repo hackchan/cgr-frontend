@@ -7,7 +7,7 @@ import { Box, createTheme, ThemeProvider } from '@mui/material'
 import { CloudSyncRounded, RuleRounded } from '@mui/icons-material'
 import { esES } from '@mui/material/locale'
 import { ButtonStyled } from '../../styles/button'
-import { obrasSchema } from './Schema'
+import { IESSchema } from './Schema'
 import config from '../../config'
 // import { ButtonLoading } from '../ButtonLoading'
 // import { object, string, number, array, date } from 'yup'
@@ -46,11 +46,9 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
       setBtnLoadingBlock(true)
       setBtnLoading(true)
       setUpload(true)
-      console.log('datos a subir:', tableData)
       await MatrizCargada(tableData)
       setModalCsv(false)
       setReload(true)
-      console.log(tableData)
     } catch (error) {
       if (error.response) {
         setError(error.response.data.error.message)
@@ -71,7 +69,7 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
       setError('')
       setProgress(true)
       setErrorDetail([])
-      obrasSchema.validateSync(tableData, { abortEarly: false })
+      IESSchema.validateSync(tableData, { abortEarly: false })
       setUpload(false)
     } catch (error) {
       setUpload(true)
@@ -94,7 +92,7 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
     setProgress(true)
     setUpload(true)
 
-    if (cell.column.id === 'semestreReportado' || cell.column.id === 'creditos' || cell.column.id === 'diaCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'anioCorte' || cell.column.id === 'entidad' || cell.column.id === 'sede' || cell.column.id === 'semestre' || cell.column.id === 'tipoDoc' || cell.column.id === 'residencia' || cell.column.id === 'estrato') {
+    if (cell.column.id === 'semestreReportado' || cell.column.id === 'creditos' || cell.column.id === 'diaCorte' || cell.column.id === 'mesCorte' || cell.column.id === 'anioCorte' || cell.column.id === 'entidad' || cell.column.id === 'sede' || cell.column.id === 'semestreIngreso' || cell.column.id === 'tipoDoc' || cell.column.id === 'residencia' || cell.column.id === 'estrato') {
       if (!isNaN(parseInt(value))) {
         value = parseInt(value)
       }
@@ -117,8 +115,7 @@ export const MatrizIESError = ({ data, setModalCsv, setReload, MatrizCargada, on
       relationError[detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]] = detail.message
       return detail.path.split('.')[0].substring(1, detail.path.split('.')[0].length - 1) + '_' + detail.path.split('.')[1]
     })
-    console.log(res)
-    console.log(relationError)
+
     setColumnsWithError(res)
     setmessagesError(relationError)
   }, [errorDetail, tableData])

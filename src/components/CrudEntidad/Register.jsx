@@ -49,7 +49,6 @@ export const Register = ({ setModal, setReload, preData, AddEntidad, getSubSecto
   const loadCategorias = async (inputValue) => {
     const options = []
     const response = await getCategorias(null)
-    console.log('response:', response)
     const filter = response.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
@@ -81,10 +80,7 @@ export const Register = ({ setModal, setReload, preData, AddEntidad, getSubSecto
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log('dataForm:', dataForm)
       dataForm = { ...dataForm, categoria: dataForm.categoria.value, municipio: dataForm.municipio.value, subsector: dataForm.subsector.value, active: activo, doctec: docTec }
-      console.log('dataForm:', dataForm)
-      // dataForm = { ...dataForm, department: dataForm.department.value, tipo: dataForm.tipo.value, divipola: currentDepartment.value.toString().padStart(2, '0') + dataForm.divipola, isCapital: capital, active: activo }
       setDisableBtn(true)
       await AddEntidad(dataForm)
       setModal(false)

@@ -211,7 +211,6 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMat
       }
       delete dataForm.departamentoObra
       delete dataForm.id
-      console.log('dataForm Update:', dataForm)
       await UpdateMatrizObra(dataForm, data.id)
       setModalUpdateShow(false)
       setReload(true)
@@ -377,7 +376,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMat
               onChange={(e) => {
                 setMunicipioSel(e)
               }}
-              onBlur={(e) => { console.log('la ee es:', e) }}
+              onBlur={(e) => { }}
               onInputChange={(e) => { setMuni(e) }}
             />
             {errorMuni && clearMessage(15000, setErrorMuni) && <p><span className='errors'>{errorMuni}</span></p>}

@@ -171,9 +171,6 @@ export const CsvParser = ({
             ]
             const headerFile = result.meta.fields
 
-            console.log('headerValid:', headerValid)
-            console.log('headerFile:', headerFile)
-            console.log('EL USER ID:', user)
             if (JSON.stringify(headerValid) !== JSON.stringify(headerFile)) {
               throw new Error('No es el formato de csv solicitado.')
             }
@@ -219,14 +216,13 @@ export const CsvParser = ({
       const { name, type, size } = file
       setNameFile(name)
       setSizeFile(size)
-      console.log('type:', size)
+
       if (type !== 'text/csv') {
         throw new Error('Solo se permite archivos de tipo text/csv')
       }
       if (size / 1000 >= 4000) {
         throw new Error('Solo se permite archivos de maximo 4MB')
       }
-      console.log(file)
     } catch (error) {
       setFile(false)
       setError(error.message)
@@ -234,7 +230,6 @@ export const CsvParser = ({
   }
   const onSubmit = async (dataForm) => {
     try {
-      console.log(dataForm)
       handleUploadCSV(isUserEntidad ? user.entidades[0].id : dataForm.entidad.value)
     } catch (error) {
       if (error.response) {
