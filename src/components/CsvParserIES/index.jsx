@@ -18,6 +18,7 @@ export const CsvParserIES = ({
   MatrizCargada,
   GetEntidad,
   user,
+  isBasicUsr,
   modedark
 }) => {
   const inputRef = useRef()
@@ -25,7 +26,7 @@ export const CsvParserIES = ({
   const [nameFile, setNameFile] = useState('')
   const [sizeFile, setSizeFile] = useState('')
   const [error, setError] = useState('')
-  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
+  const [isUserEntidad] = useState(isBasicUsr)
   // const [errorDetail, setErrorDetail] = useState([])
   const [disableBtn, setDisableBtn] = useState(false)
   const [data, setData] = useState([])

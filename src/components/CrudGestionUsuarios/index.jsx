@@ -17,6 +17,7 @@ import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 export const GestionUsurios = () => {
   const {
     state,
@@ -41,7 +42,7 @@ export const GestionUsurios = () => {
       }
     }
   }, esES)
-
+  const [user] = useLocalStorage('user', false)
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefetching, setIsRefetching] = useState(false)
@@ -61,6 +62,14 @@ export const GestionUsurios = () => {
   const [pagination, setPagination] = useState({
     pageIndex: preData.pageIndex,
     pageSize: preData.pageSize
+  })
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    const listaRolesUser = user?.roles.map((rol) => {
+      return rol.name
+    })
+    setIsAdmin(['ADMIN', 'JEDI'].some((value) => listaRolesUser?.includes(value)))
   })
   const [rowCount, setRowCount] = useState(0)
   useEffect(() => {
@@ -127,11 +136,11 @@ export const GestionUsurios = () => {
         </Modal>}
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} modedark={state.darkMode} />
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} user={user} isAdmin={isAdmin} modedark={state.darkMode} />
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddUser={AddUser} GetTypeUsers={GetTypeUsers} GetRoles={GetRoles} GetEntidad={GetEntidad} modedark={state.darkMode} />
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddUser={AddUser} GetTypeUsers={GetTypeUsers} GetRoles={GetRoles} GetEntidad={GetEntidad} user={user} isAdmin={isAdmin} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable

@@ -39,8 +39,10 @@ import { ActiveUser } from '../components/ActiveUser'
 import { MatrizIES } from '../components/CrudMatrizIES'
 
 import { CrudEmails } from '../components/CrudEmail'
-
+import { useLocalStorage } from '../hooks/useLocalStorage'
 export const App = () => {
+  const [user] = useLocalStorage('user', false)
+
   return (
 
     <Routes>
@@ -76,7 +78,7 @@ export const App = () => {
 
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />
 
-        <Route path='matriz-ies' element={<ProtectedRoute><MatrizIES /></ProtectedRoute>} />
+        <Route path='matriz-ies' element={<ProtectedRoute><MatrizIES user={user} /></ProtectedRoute>} />
         <Route path='estructuracion' element={<CsvParser />} />
         <Route path='load-table' element={<LoadTable />} />
         <Route path='recovery' element={<Recovery />} />

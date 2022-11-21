@@ -22,7 +22,7 @@ export const NavBar = () => {
     })
     setMenuAdmin(['ADMIN', 'JEDI'].some((value) => listaRolesUser?.includes(value)))
   })
-  console.log('menu admin:', menuAdmin)
+
   const handleChange = () => {
     setDark(!dark)
     chgDarkMode(!dark)

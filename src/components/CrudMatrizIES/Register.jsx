@@ -12,14 +12,14 @@ import { AsyncPaginateStyled } from '../../styles/paginate'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({
   setModalShow, setReload, preData, AddMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
-  GetEstratos, user, modedark
+  GetEstratos, user, isBasicUsr, modedark
 }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [errorMuniSede, setErrorMuniSede] = useState('')
   const [errorMuniResidencia, setErrorMuniResidencia] = useState('')
-  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
+  const [isUserEntidad] = useState(isBasicUsr)
 
   const [departmentSel] = useState('')
   const [muni, setMuni] = useState('')
