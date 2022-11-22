@@ -18,6 +18,7 @@ import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { isAdmin as Admin } from '../../utils/user'
 export const GestionUsurios = () => {
   const {
     state,
@@ -66,10 +67,7 @@ export const GestionUsurios = () => {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    const listaRolesUser = user?.roles.map((rol) => {
-      return rol.name
-    })
-    setIsAdmin(['ADMIN', 'JEDI'].some((value) => listaRolesUser?.includes(value)))
+    setIsAdmin(Admin(user))
   })
   const [rowCount, setRowCount] = useState(0)
   useEffect(() => {

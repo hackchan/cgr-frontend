@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -11,10 +11,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { formSchema, formSchemaAdmin } from './Schema'
 import { UploadAvatar } from '../UploadAvatar'
+import { isAdmin as GetAdmin } from '../../utils/user'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin }) => {
-  console.log('ISaDMIN:', isAdmin)
-  // const [isAdmin] = useState()
+  const [userPrivilege, setUserPrivilege] = useState()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [imgBase64, setImgBase64] = useState('')
@@ -31,6 +31,10 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       value: entidad.id
     }
   }))
+
+  useEffect(() => {
+    setUserPrivilege(GetAdmin(data))
+  })
 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
@@ -243,111 +247,110 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
             )}
           </Form.Group>
         </Row>
-        {!isAdmin && (
-          <Row className='mb-3'>
-            <Form.Group as={Col} controlId='formGridListtipo'>
-              <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
-              <Controller
+
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListtipo'>
+            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
+            <Controller
     // id='department'\
-                defaultValue={tipo}
-                name='tipo'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                  <StyledSelect
-                    value={tipo}
-                    {...field}
-                    innerRef={ref}
-                    {...register('tipo')}
-                    isClearable
-                    classNamePrefix='Select'
+              defaultValue={tipo}
+              name='tipo'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  value={tipo}
+                  {...field}
+                  innerRef={ref}
+                  {...register('tipo')}
+                  isClearable
+                  classNamePrefix='Select'
       // autoload={false}
-                    placeholder='Selecciona...'
-                    defaultOptions
-                    getOptionLabel={e => e.value + ' ' + e.label}
-                    getOptionValue={e => e.value}
-                    loadOptions={getListTypeUsers}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  getOptionLabel={e => e.value + ' ' + e.label}
+                  getOptionValue={e => e.value}
+                  loadOptions={getListTypeUsers}
         // value={currentDepartment}
-                    onChange={(e) => { onChange(e) }}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-              {errors.tipo && (
-                <Form.Text className='errors' onClick={() => clearErrors('tipo')}>
-                  {errors.tipo.message}
-                </Form.Text>
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                />
               )}
+            />
+            {errors.tipo && (
+              <Form.Text className='errors' onClick={() => clearErrors('tipo')}>
+                {errors.tipo.message}
+              </Form.Text>
+            )}
 
-            </Form.Group>
+          </Form.Group>
 
-            <Form.Group as={Col} controlId='formGridListRoles'>
-              <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
-              <Controller
-                defaultValue={roles}
-                name='roles'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                  <StyledSelect
-                    value={roles}
-                    {...field}
-                    innerRef={ref}
-                    {...register('roles')}
-                    isMulti
-                    isClearable
-                    defaultOptions
-                    placeholder='Selecciona...'
-                    loadOptions={getRolesList}
-                    onChange={(e) => { onChange(e) }}
-                    onBlur={onBlur}
-                    classNamePrefix='Select'
-                  />
-                )}
-              />
-              {errors.roles && (
-                <Form.Text className='errors' onClick={() => clearErrors('roles')}>
-                  {errors.roles.message}
-                </Form.Text>
+          <Form.Group as={Col} controlId='formGridListRoles'>
+            <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
+            <Controller
+              defaultValue={roles}
+              name='roles'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  value={roles}
+                  {...field}
+                  innerRef={ref}
+                  {...register('roles')}
+                  isMulti
+                  isClearable
+                  defaultOptions
+                  placeholder='Selecciona...'
+                  loadOptions={getRolesList}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                  classNamePrefix='Select'
+                />
               )}
+            />
+            {errors.roles && (
+              <Form.Text className='errors' onClick={() => clearErrors('roles')}>
+                {errors.roles.message}
+              </Form.Text>
+            )}
 
-            </Form.Group>
-          </Row>)}
+          </Form.Group>
+        </Row>
 
-        {!isAdmin && (
-          <Row className='mb-3'>
-            <Form.Group as={Col} controlId='formGridListEntidades'>
-              <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
-              <Controller
-                defaultValue={entidades}
-                name='entidades'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                  <StyledSelect
-                    value={entidades}
-                    {...field}
-                    innerRef={ref}
-                    {...register('entidades')}
-                    isMulti
-                    isClearable
-                    defaultOptions
-                    placeholder='Selecciona...'
-                    loadOptions={getListEntidades}
-                    onChange={(e) => { onChange(e) }}
-                    onBlur={onBlur}
-                    classNamePrefix='Select'
-                  />
-                )}
-              />
-              {errors.entidades && (
-                <Form.Text className='errors' onClick={() => clearErrors('entidades')}>
-                  {errors.entidades.message}
-                </Form.Text>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridListEntidades'>
+            <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
+            <Controller
+              defaultValue={entidades}
+              name='entidades'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  value={entidades}
+                  {...field}
+                  innerRef={ref}
+                  {...register('entidades')}
+                  isMulti
+                  isClearable
+                  defaultOptions
+                  placeholder='Selecciona...'
+                  loadOptions={getListEntidades}
+                  onChange={(e) => { onChange(e) }}
+                  onBlur={onBlur}
+                  classNamePrefix='Select'
+                />
               )}
+            />
+            {errors.entidades && (
+              <Form.Text className='errors' onClick={() => clearErrors('entidades')}>
+                {errors.entidades.message}
+              </Form.Text>
+            )}
 
-            </Form.Group>
-          </Row>)}
+          </Form.Group>
+        </Row>
 
         {/* <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombre'>

@@ -835,7 +835,6 @@ export const useInitialState = () => {
 
   const DeleteSubSector = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
         url: `http://${config.dominio}:${config.port}/api/v2/subsector/${payload.id}`,
@@ -921,7 +920,6 @@ export const useInitialState = () => {
 
   const AddTypeUsers = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/tipouser`,
@@ -1011,7 +1009,6 @@ export const useInitialState = () => {
 
   const UpdateUser = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/users/${id}`,
@@ -1034,7 +1031,6 @@ export const useInitialState = () => {
 
   const DeleteUser = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'delete',
         url: `http://${config.dominio}:${config.port}/api/v2/users/${payload.id}`,
@@ -1255,7 +1251,6 @@ export const useInitialState = () => {
 
   const AddEstadoObra = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/estado-obra`,
@@ -1407,7 +1402,6 @@ export const useInitialState = () => {
 
   const UpdateSectorObra = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/sector-obra/${id}`,
@@ -1651,8 +1645,6 @@ export const useInitialState = () => {
     users
   ) => {
     try {
-      console.log('EL TOKEN ES2:::', auth)
-
       const url = new URL(
         '/api/v2/ies',
         `http://${config.dominio}:${config.port}`
@@ -1898,7 +1890,6 @@ export const useInitialState = () => {
 
   const AddSemestre = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/semestre`,
@@ -2006,7 +1997,6 @@ export const useInitialState = () => {
 
   const AddTipoDOc = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/tipodoc`,
@@ -2109,7 +2099,6 @@ export const useInitialState = () => {
 
   const AddEstrato = async (payload) => {
     try {
-      console.log('payload:', payload)
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/estrato`,
@@ -2256,7 +2245,6 @@ export const useInitialState = () => {
 
   const UpdateEmail = async (payload, id) => {
     try {
-      console.log('payload update:', payload)
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/email/${id}`,

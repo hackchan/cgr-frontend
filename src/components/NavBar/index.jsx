@@ -8,7 +8,7 @@ import { Logo } from '../Logo'
 import { Link } from 'react-router-dom'
 import { StyledNavLink, LogoName, LogoApp, HamburgerIcon } from './styles'
 import { AppContext } from '../../contex/AppProvidercContext'
-
+import { isAdmin } from '../../utils/user'
 export const NavBar = () => {
   const { state, logout, chgDarkMode } = useContext(AppContext)
   const { user, darkMode } = state
@@ -17,10 +17,7 @@ export const NavBar = () => {
   const [menuAdmin, setMenuAdmin] = useState(false)
 
   useEffect(() => {
-    const listaRolesUser = user?.roles.map((rol) => {
-      return rol.name
-    })
-    setMenuAdmin(['ADMIN', 'JEDI'].some((value) => listaRolesUser?.includes(value)))
+    setMenuAdmin(isAdmin(user))
   })
 
   const handleChange = () => {

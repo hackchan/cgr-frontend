@@ -213,6 +213,7 @@ export const MatrizIES = () => {
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
                 <ButtonStyled
+                  disabled={table.getRowModel().rows.length === 0}
                   className='export'
                   onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}

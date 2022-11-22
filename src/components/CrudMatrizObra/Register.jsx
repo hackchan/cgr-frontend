@@ -10,8 +10,8 @@ import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, user, modedark }) => {
-  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
+export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, user, isBasicUsr, modedark }) => {
+  const [isUserEntidad] = useState(isBasicUsr)
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')

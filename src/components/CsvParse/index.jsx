@@ -18,9 +18,10 @@ export const CsvParser = ({
   MatrizCargada,
   GetEntidad,
   user,
+  isBasicUsr,
   modedark
 }) => {
-  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
+  const [isUserEntidad] = useState(isBasicUsr)
   const inputRef = useRef()
   const [file, setFile] = useState(false)
   const [nameFile, setNameFile] = useState('')

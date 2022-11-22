@@ -9,8 +9,8 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { AsyncPaginateStyled } from '../../styles/paginate'
 
-export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, user, modedark }) => {
-  const [isUserEntidad] = useState(user.tipo.name === 'ENTIDAD')
+export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateMatrizObra, GetSectorObra, GetOrigenRecursoObra, GetEstadoObra, GetEntidad, getDepartments, getMunicipios, GetMunicipiosByDepartment, GetDepartamentoByIdMunicipio, user, isBasicUsr, modedark }) => {
+  const [isUserEntidad] = useState(isBasicUsr)
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [errorMuni, setErrorMuni] = useState('')
