@@ -15,24 +15,28 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [imgBase64, setImgBase64] = useState('')
-  const [tipoUser, setTipoUser] = useState({})
-  const [rol, setRol] = useState({})
-  const handleTipoUser = (event) => {
-    console.log('event:', event)
-    if (event.label === 'ENTIDAD') {
-      setRol({ label: 'ENTIDAD', value: 2 })
-    }
-    setTipoUser(event)
-  }
 
-  const handleRol = (event) => {
-    setRol(event)
-  }
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
     resolver: yupResolver(formSchema)
   })
+
+  const validateUserEntity = (tipo, roles, entidades) => {
+    if (tipo === 'ENTIDAD') {
+      if (roles.length > 1) {
+        throw new Error('Solo se permite asignar un rol al tipo usuario entidad')
+      }
+      if (roles.length === 1) {
+        if (roles[0].name !== tipo) {
+          throw new Error('El unico rol permitido para un usuario de tipo entidad es ENTIDAD')
+        }
+      }
+      if (entidades.length > 1) {
+        throw new Error('Solo se permite asignar una ENTIDAD al tipo usuario entidad')
+      }
+    }
+  }
 
   const getListTypeUsers = async (inputValue) => {
     const options = []
@@ -90,6 +94,9 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       const entidades = dataForm.entidades.map((entidad) => {
         return { name: entidad.label, id: entidad.value }
       })
+
+      validateUserEntity(dataForm.tipo.label, roles, entidades)
+
       dataForm = {
         ...dataForm,
         image: imgBase64,
@@ -210,7 +217,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListtipo'>
-            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario {tipoUser?.label}</FormLabelStyle>
+            <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
             <Controller
     // id='department'
               name='tipo'
@@ -231,7 +238,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
                   getOptionValue={e => e.value}
                   loadOptions={getListTypeUsers}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e); handleTipoUser(e) }}
+                  onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
                 />
               )}
@@ -247,7 +254,6 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           <Form.Group as={Col} controlId='formGridListRoles'>
             <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
             <Controller
-              defaultValue={tipoUser?.label === 'ENTIDAD' ? [{ label: 'ENTIDAD', value: 2 }] : []}
               name='roles'
               control={control}
               rules={{ required: true }}
@@ -261,7 +267,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
                   defaultOptions
                   placeholder='Selecciona...'
                   loadOptions={getRolesList}
-                  onChange={(e) => { onChange(e); handleRol(e) }}
+                  onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />

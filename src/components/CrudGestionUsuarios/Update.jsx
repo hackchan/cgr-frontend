@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -9,12 +9,11 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { formSchema, formSchemaAdmin } from './Schema'
+import { formSchemaAdmin } from './Schema'
 import { UploadAvatar } from '../UploadAvatar'
-import { isAdmin as GetAdmin } from '../../utils/user'
+
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin }) => {
-  const [userPrivilege, setUserPrivilege] = useState()
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [imgBase64, setImgBase64] = useState('')
@@ -32,14 +31,10 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
     }
   }))
 
-  useEffect(() => {
-    setUserPrivilege(GetAdmin(data))
-  })
-
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
-    resolver: yupResolver(isAdmin ? formSchemaAdmin : formSchema),
+    resolver: yupResolver(formSchemaAdmin),
     defaultValues: {
       name: data.name,
       lastName: data.lastName,
@@ -102,33 +97,33 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
   const onSubmit = async (dataForm) => {
     try {
       console.log('entro al submit')
-      if (isAdmin) {
-        dataForm = {
-          ...dataForm,
-          image: imgBase64
+      // if (isAdmin) {
+      //   dataForm = {
+      //     ...dataForm,
+      //     image: imgBase64
 
-        }
-        if (dataForm.image === null) {
-          delete dataForm.image
-        }
-      } else {
-        const tipo = { id: dataForm.tipo.value, name: dataForm.tipo.label }
-        const roles = dataForm.roles.map((role) => {
-          return { name: role.label, id: role.value }
-        })
-        const entidades = dataForm.entidades.map((entidad) => {
-          return { name: entidad.label, id: entidad.value }
-        })
+      //   }
+      //   if (dataForm.image === null) {
+      //     delete dataForm.image
+      //   }
+      // } else {
+      const tipo = { id: dataForm.tipo.value, name: dataForm.tipo.label }
+      const roles = dataForm.roles.map((role) => {
+        return { name: role.label, id: role.value }
+      })
+      const entidades = dataForm.entidades.map((entidad) => {
+        return { name: entidad.label, id: entidad.value }
+      })
 
-        dataForm = {
-          ...dataForm,
-          // image: imgBase64,
-          tipo,
-          auth: { username: dataForm.username, password: dataForm.password },
-          roles,
-          entidades
-        }
+      dataForm = {
+        ...dataForm,
+        // image: imgBase64,
+        tipo,
+        auth: { username: dataForm.username, password: dataForm.password },
+        roles,
+        entidades
       }
+      // }
 
       // dataForm = {
       //   ...dataForm,
