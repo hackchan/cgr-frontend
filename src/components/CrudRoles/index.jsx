@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { TitleModule } from '../../styles/TitleModule'
 export const Roles = () => {
   const {
     state, GetRoles, AddRole, DeleteRole, UpdateRole
@@ -112,6 +113,7 @@ export const Roles = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Roles</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteRole={DeleteRole} modedark={state.darkMode} />

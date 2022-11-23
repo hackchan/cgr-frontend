@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { TitleModule } from '../../styles/TitleModule'
 export const CrudEntidad = () => {
   const {
     state,
@@ -123,6 +124,7 @@ export const CrudEntidad = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Entidades</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteEntidad={DeleteEntidad} modedark={state.darkMode} />

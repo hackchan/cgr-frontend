@@ -21,6 +21,7 @@ import { CsvParser } from '../CsvParse'
 import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { isAdmin } from '../../utils/user'
+import { TitleModule } from '../../styles/TitleModule'
 export const MatrizObra = () => {
   const {
     state,
@@ -130,6 +131,7 @@ export const MatrizObra = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Matriz de Obra</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizObra} modedark={state.darkMode} />

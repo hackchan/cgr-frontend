@@ -16,6 +16,7 @@ import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
 import { ContainerBox } from '../../styles/box'
+import { TitleModule } from '../../styles/TitleModule'
 import config from '../../config'
 export const CrudEmails = () => {
   const [data, setData] = useState([])
@@ -108,6 +109,7 @@ export const CrudEmails = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Emails</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteEmails={DeleteEmails} modedark={state.darkMode} />

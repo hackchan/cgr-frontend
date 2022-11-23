@@ -88,7 +88,7 @@ export const VerifyEmail = () => {
                 </p>
               )}
               {errors.email.type === 'pattern' && (
-                <p className='errors alert'>
+                <p className='errors'>
                   {errors.email.message}
                 </p>
               )}

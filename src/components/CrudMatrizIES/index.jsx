@@ -21,6 +21,7 @@ import { CsvParserIES } from '../CsvParserIES'
 import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { isAdmin } from '../../utils/user'
+import { TitleModule } from '../../styles/TitleModule'
 export const MatrizIES = () => {
   const {
     state,
@@ -129,6 +130,7 @@ export const MatrizIES = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Matriz IES</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} />

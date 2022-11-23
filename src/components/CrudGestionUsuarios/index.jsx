@@ -19,6 +19,7 @@ import { Delete } from './Delete'
 import { Update } from './Update'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { isAdmin as Admin } from '../../utils/user'
+import { TitleModule } from '../../styles/TitleModule'
 export const GestionUsurios = () => {
   const {
     state,
@@ -128,6 +129,7 @@ export const GestionUsurios = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Usuarios</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteUser={DeleteUser} modedark={state.darkMode} />

@@ -17,6 +17,7 @@ import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
 import config from '../../config'
+import { TitleModule } from '../../styles/TitleModule'
 export const CrudMunicipios = () => {
   const {
     state, getMunicipios, AddMunicipio, DeleteMunicipio, UpdateMunicipio, getDepartments, getTipoMunicipios
@@ -107,6 +108,7 @@ export const CrudMunicipios = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Municipios</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteDepartment={DeleteMunicipio} modedark={state.darkMode} />

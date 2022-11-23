@@ -3,9 +3,10 @@ import { tableHeight } from '../styles/animation'
 import { theme } from './theme'
 import FormLabel from 'react-bootstrap/FormLabel'
 export const ContainerBox = styled.div`
-  background: rgba(2, 2, 2, 0.7);
+  background: rgba(2, 2, 2, 1);
   font-size: 14px;
-  border-radius: 5px;
+  border-radius: 0px;
+  padding: 5px;
   box-shadow: 0px 3px 5px rgba(25, 25, 25, 0.2);
   text-align: center;
   min-height: 90%;
@@ -15,11 +16,10 @@ export const ContainerBox = styled.div`
   }
 `
 export const BoxForm = styled.div`
-
   background: ${theme.light.colors.fondoWin};
   width: 100%;
   height: 100%;
- 
+
   padding: 50px 30px;
   border-radius: 10px;
   & h2 {
@@ -40,9 +40,9 @@ export const BoxForm = styled.div`
         }
       }
     `};
-    &.size{
-      min-width:600px
-    }
+  &.size {
+    min-width: 600px;
+  }
 `
 export const LabelBox = styled.label`
   display: block;
@@ -75,7 +75,6 @@ export const Title = styled.h2`
   margin: 0 !important;
   /* color: red !important; */
   margin-bottom: 2px !important;
-
 `
 export const Message = styled.p`
   margin-bottom: 30px;

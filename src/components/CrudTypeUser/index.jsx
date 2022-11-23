@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { TitleModule } from '../../styles/TitleModule'
 export const TypeUser = () => {
   const {
     state, GetTypeUsers, AddTypeUsers, DeleteTypeUsers, UpdateTypeUsers
@@ -112,6 +113,7 @@ export const TypeUser = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Tipo Usuario</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteTypeUsers={DeleteTypeUsers} modedark={state.darkMode} />

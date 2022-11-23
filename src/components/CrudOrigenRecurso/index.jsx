@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { TitleModule } from '../../styles/TitleModule'
 export const CrudOrigenRecurso = () => {
   const {
     state,
@@ -116,6 +117,7 @@ export const CrudOrigenRecurso = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Origen Recursos</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteOrigenRecursoObra={DeleteOrigenRecursoObra} modedark={state.darkMode} />

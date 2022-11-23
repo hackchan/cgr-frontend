@@ -28,6 +28,7 @@ export const NewPassword = () => {
   // const [visible, setVisible] = useState(false)
   // const [visibleConfirm, setVisibleConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [blockBtn, setBlockBtn] = useState(false)
   const { register, handleSubmit, formState: { errors }, clearErrors } = useForm(
     {
       mode: 'onTouched',
@@ -46,6 +47,7 @@ export const NewPassword = () => {
     try {
       clearMessage(0, setMessage)
       setLoading(true)
+      setBlockBtn(true)
       dataForm.token = token
       const response = await changePass(dataForm)
       setmessageChange(response.message)
@@ -59,6 +61,7 @@ export const NewPassword = () => {
       }
     } finally {
       setLoading(false)
+      setBlockBtn(false)
     }
   }
   console.log('params:', token)
@@ -101,9 +104,8 @@ export const NewPassword = () => {
         {message && clearMessage(3000, setMessage) && <p><span className='errors'>{message}</span></p>}
         {messageChange && <p><span className='ok'>{messageChange}</span> </p>}
         <div className='btncenter'>
-          <Button value='Cambiar contraseña' loading={loading} />
+          <Button value={loading ? 'Espera ⌛...' : 'Cambiar la contraseña '} loading={loading} disabled={blockBtnEmail} />
         </div>
-
       </Form>
     </div>
   )

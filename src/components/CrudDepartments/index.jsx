@@ -16,6 +16,7 @@ import { Modal } from '../Modal'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
+import { TitleModule } from '../../styles/TitleModule'
 export const CrudDepartmets = () => {
   const { state, getDepartments, AddDepartment, DeleteDepartment, UpdateDepartment, getSatelitales, GetUserCGR } = useContext(AppContext)
 
@@ -185,6 +186,7 @@ export const CrudDepartmets = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
+      <TitleModule>Departamentos</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteDepartment={DeleteDepartment} modedark={state.darkMode} />
