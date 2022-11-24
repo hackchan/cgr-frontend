@@ -9,12 +9,12 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { formSchema } from './Schema'
-import { UploadAvatar } from '../UploadAvatar'
+// import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [imgBase64, setImgBase64] = useState('')
+  // const [imgBase64, setImgBase64] = useState('')
 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
@@ -99,7 +99,6 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
       dataForm = {
         ...dataForm,
-        image: imgBase64,
         tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
         auth: { username: dataForm.username, password: dataForm.password },
         roles,
@@ -132,7 +131,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
     <BoxForm modedark={modedark}>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row className='mb-3'>
+        {/* <Row className='mb-3'>
           <Form.Group as={Col} controlId='formImage'>
             <FormLabelStyle modedark={modedark.toString()}>Avatar</FormLabelStyle>
             <Controller
@@ -152,7 +151,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
           </Form.Group>
 
-        </Row>
+        </Row> */}
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombre'>

@@ -10,7 +10,7 @@ export const HamburgerIcon = styled(GiHamburgerMenu)`
 export const StyledNavLink = styled(NavLink)`
   height: inherit;
   &:hover {
-    color: yellow;
+    color: #b09ac7;
   }
   &.is-active {
     font-weight: bold;
@@ -47,7 +47,7 @@ export const LogoName = styled.p`
     props.darkMode &&
     css`
        {
-        color:white
+        color: white;
       }
     `}
 `
@@ -55,6 +55,5 @@ export const LogoApp = styled.span`
   color: #94c53c;
   font-weight: bold;
   font-size: 20px;
-  transition: .3s;
-
+  transition: 0.3s;
 `

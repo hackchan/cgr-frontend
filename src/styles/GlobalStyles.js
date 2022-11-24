@@ -157,6 +157,7 @@ export const GlobalStyle = createGlobalStyle`
         text-decoration:none;
     }
     .ok {
+        margin-top: 10px;
         display:flex;
         justify-content:center;
         align-items: center;
@@ -266,6 +267,19 @@ export const GlobalStyle = createGlobalStyle`
 .special_modal .modal-content {
   background-color: #000;
   color: #fff;
+}
+
+.inisesion{
+   color:white !important;
+   background:  #3e0e84;
+   border-radius: 5px;
+   cursor: pointer !important;
+   font-weight: bold;
+   transition: .3s;
+}
+.inisesion:active{
+       transform:scale(.9);
+
 }
         /* body {
                 background: #fefefe;

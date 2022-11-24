@@ -54,6 +54,7 @@ export const NewPassword = () => {
       navegateTime(3000, navigate, '/login', { msn: response.message })
       // navigate('/login', { replace: true, state: { msn: response.message } })
     } catch (error) {
+      setBlockBtn(false)
       if (error.response) {
         setMessage(error.response.data.error.message)
       } else {
@@ -61,10 +62,8 @@ export const NewPassword = () => {
       }
     } finally {
       setLoading(false)
-      setBlockBtn(false)
     }
   }
-  console.log('params:', token)
   if (!token) {
     return <Navigate to='/' />
   }
@@ -102,10 +101,11 @@ export const NewPassword = () => {
           </Form.Group>
         </Row>
         {message && clearMessage(3000, setMessage) && <p><span className='errors'>{message}</span></p>}
-        {messageChange && <p><span className='ok'>{messageChange}</span> </p>}
+
         <div className='btncenter'>
-          <Button value={loading ? 'Espera ⌛...' : 'Cambiar la contraseña '} loading={loading} disabled={blockBtnEmail} />
+          <Button value={loading ? 'Espera ⌛...' : 'Cambiar la contraseña '} loading={loading} disabled={blockBtn} />
         </div>
+        {messageChange && <p><span className='ok'>{messageChange}</span> </p>}
       </Form>
     </div>
   )

@@ -10,13 +10,13 @@ import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { formSchemaAdmin } from './Schema'
-import { UploadAvatar } from '../UploadAvatar'
+// import { UploadAvatar } from '../UploadAvatar'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [imgBase64, setImgBase64] = useState('')
+  // const [imgBase64, setImgBase64] = useState('')
   const [tipo] = useState({ label: data.tipo.name, value: data.tipo.id })
   const [roles] = useState(data.roles.map(role => {
     return {
@@ -160,7 +160,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
     <BoxForm modedark={modedark}>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row className='mb-3'>
+        {/* <Row className='mb-3'>
           <Form.Group as={Col} controlId='formImage'>
             <FormLabelStyle modedark={modedark.toString()}>Avatar</FormLabelStyle>
             <Controller
@@ -180,7 +180,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
 
           </Form.Group>
 
-        </Row>
+        </Row> */}
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombre'>

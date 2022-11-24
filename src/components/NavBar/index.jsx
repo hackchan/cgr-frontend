@@ -182,7 +182,7 @@ export const NavBar = () => {
           <Nav className='justify-content-center'>
 
             {!user
-              ? <Nav.Link as={StyledNavLink} to='/login'>Iniciar sesión</Nav.Link>
+              ? <Nav.Link as={StyledNavLink} to='/login' className='inisesion'>👥 Iniciar sesión</Nav.Link>
               : (
                 <>
                   <NavDropdown
