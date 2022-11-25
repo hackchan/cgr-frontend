@@ -131,7 +131,7 @@ export const MatrizObra = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Matriz de Obra</TitleModule>
+      <TitleModule>👷‍♂️ Matriz de Obra 👷‍♀️</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizObra} modedark={state.darkMode} />

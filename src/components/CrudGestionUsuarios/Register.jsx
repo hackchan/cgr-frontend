@@ -8,14 +8,14 @@ import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { formSchema } from './Schema'
+import { formSchemaCGR, formSchemaEntidad } from './Schema'
 // import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers, getDepartments }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [entidades, setEntidades] = useState([])
-
+  const [tipoUser, setTipoUser] = useState({})
   // const [imgBase64, setImgBase64] = useState('')
   const handleEntidades = (entidad) => {
     setEntidades(entidad)
@@ -38,7 +38,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
-    resolver: yupResolver(formSchema)
+    resolver: yupResolver(tipoUser.label === 'CGR' ? formSchemaCGR : formSchemaEntidad)
   })
 
   const validateUserEntity = (tipo, roles, entidades) => {
@@ -275,7 +275,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
                   getOptionValue={e => e.value}
                   loadOptions={getListTypeUsers}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setTipoUser(e) }}
                   onBlur={onBlur}
                 />
               )}
@@ -319,43 +319,45 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           </Form.Group>
 
         </Row>
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridDepartment'>
-            <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
-            <Controller
+        {tipoUser.label === 'CGR' && (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridDepartment'>
+              <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
+              <Controller
               // id='department'
-              name='department'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  isMulti
-                  innerRef={ref}
-                  {...register('department', { required: 'Departamento es obligatorio' })}
-                  isClearable
-                  classNamePrefix='Select'
+                name='department'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    {...field}
+                    isMulti
+                    innerRef={ref}
+                    {...register('department', { required: 'Departamento es obligatorio' })}
+                    isClearable
+                    classNamePrefix='Select'
                 // autoload={false}
-                  placeholder='Selecciona...'
-                  defaultOptions
+                    placeholder='Selecciona...'
+                    defaultOptions
                   // getOptionLabel={e => e.value + ' ' + e.label}
                   // getOptionValue={e => e.value}
-                  loadOptions={getListaDepartamentos}
+                    loadOptions={getListaDepartamentos}
                   // value={currentDepartment}
-                  onChange={(e) => { onChange(e); handleDepartamentos(e) }}
-                  onBlur={onBlur}
-                />
+                    onChange={(e) => { onChange(e); handleDepartamentos(e) }}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+              {errors.department && (
+                <Form.Text className='errors' onClick={() => clearErrors('department')}>
+                  {errors.department.message}
+                </Form.Text>
               )}
-            />
-            {errors.department && (
-              <Form.Text className='errors' onClick={() => clearErrors('department')}>
-                {errors.department.message}
-              </Form.Text>
-            )}
 
-          </Form.Group>
+            </Form.Group>
 
-        </Row>
+          </Row>)}
+
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListEntidades'>
             <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>

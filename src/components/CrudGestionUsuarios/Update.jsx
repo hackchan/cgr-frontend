@@ -13,7 +13,7 @@ import { formSchemaAdmin } from './Schema'
 // import { UploadAvatar } from '../UploadAvatar'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin }) => {
+export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin, getDepartments }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // const [imgBase64, setImgBase64] = useState('')
@@ -24,12 +24,40 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       value: role.id
     }
   }))
-  const [entidades] = useState(data.entidades.map(entidad => {
+
+  const arrayDeparts = data.entidades.map((entidad) => {
+    entidad.municipios.map((muni) => {
+      console.log('minicipios:', muni)
+      return muni
+    })
+  })
+
+  console.log('departs Homero:', arrayDeparts)
+  const [departamentos, setDepartamentos] = useState()
+  const [entidades, setEntidades] = useState(data.entidades.map(entidad => {
     return {
       label: entidad.name,
       value: entidad.id
     }
   }))
+  const handleEntidades = (entidad) => {
+    setEntidades(entidad)
+  }
+  const handleDepartamentos = (departments) => {
+    const listaEntidades = []
+    if (departments?.length > 0) {
+      for (const depart of departments) {
+        for (const muni of depart.municipios) {
+          for (const enti of muni.entidades) {
+            listaEntidades.push({ label: enti.name, value: enti.id })
+          }
+        }
+      }
+      handleEntidades(listaEntidades)
+    } else {
+      handleEntidades([])
+    }
+  }
 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
@@ -45,6 +73,23 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
     }
 
   })
+
+  const getListaDepartamentos = async (inputValue) => {
+    const options = []
+    const response = await getDepartments(null)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
+
+    filter.forEach((department) => {
+      options.push({
+        label: department.name,
+        value: department.id,
+        municipios: department.municipios
+      })
+    })
+    return options
+  }
 
   const getListTypeUsers = async (inputValue) => {
     const options = []
@@ -313,6 +358,45 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
           </Form.Group>
         </Row>
 
+        {tipo.label === 'CGR' && (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridDepartment'>
+              <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
+              <Controller
+              // id='department'
+                name='department'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    {...field}
+                    isMulti
+                    innerRef={ref}
+                    {...register('department', { required: 'Departamento es obligatorio' })}
+                    isClearable
+                    classNamePrefix='Select'
+                // autoload={false}
+                    placeholder='Selecciona...'
+                    defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                    loadOptions={getListaDepartamentos}
+                  // value={currentDepartment}
+                    onChange={(e) => { onChange(e); handleDepartamentos(e) }}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+              {errors.department && (
+                <Form.Text className='errors' onClick={() => clearErrors('department')}>
+                  {errors.department.message}
+                </Form.Text>
+              )}
+
+            </Form.Group>
+
+          </Row>)}
+
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListEntidades'>
             <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
@@ -323,16 +407,16 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
-                  value={entidades}
                   {...field}
                   innerRef={ref}
                   {...register('entidades')}
                   isMulti
-                  isClearable
+                  isClearable={false}
                   defaultOptions
+                  value={entidades}
                   placeholder='Selecciona...'
                   loadOptions={getListEntidades}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); handleEntidades(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />

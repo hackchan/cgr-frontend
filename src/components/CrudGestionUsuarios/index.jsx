@@ -130,14 +130,14 @@ export const GestionUsurios = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Usuarios</TitleModule>
+      <TitleModule>👱‍♂️ Usuarios 👱‍♀️</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteUser={DeleteUser} modedark={state.darkMode} />
         </Modal>}
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} user={user} isAdmin={isAdmin} modedark={state.darkMode} />
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} user={user} isAdmin={isAdmin} getDepartments={getDepartments} modedark={state.darkMode} />
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
