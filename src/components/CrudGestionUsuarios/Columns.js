@@ -1,4 +1,3 @@
-
 export const ColumnsTable = [
   {
     accessorKey: 'id',
@@ -21,8 +20,19 @@ export const ColumnsTable = [
     header: 'Email'
   },
   {
-    accessorKey: 'image',
-    header: 'Image'
+    accessorKey: 'tipo.name',
+    header: 'Tipo'
+  },
+  {
+    accessorFn: (row) => `${row.active ? 'SI' : 'NO'}`,
+    accessorKey: 'active',
+    header: 'Active',
+    enableGlobalFilter: false,
+    filterSelectOptions: [
+      { text: 'SI', value: 'SI' },
+      { text: 'NO', value: 'NO' }
+    ],
+    filterVariant: 'select'
   },
   {
     accessorKey: 'auth.username',

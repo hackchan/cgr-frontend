@@ -194,7 +194,7 @@ export const CrudDepartmets = () => {
 
       {modalUpdate &&
         <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} getSatelitales={getSatelitales} UpdateDepartment={UpdateDepartment} modedark={state.darkMode} />
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} getSatelitales={getSatelitales} UpdateDepartment={UpdateDepartment} GetUserCGR={GetUserCGR} modedark={state.darkMode} />
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
 

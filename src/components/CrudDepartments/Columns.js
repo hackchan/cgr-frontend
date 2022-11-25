@@ -58,5 +58,39 @@ export const ColumnsTable = [
           })} */}
       </Box>
     )
+  },
+
+  {
+    accessorFn: (row) =>
+      `${
+        row.responsable
+          ? row.responsable?.name + ' ' + row.responsable?.lastName
+          : 'NO ASIGNADO'
+      }`,
+    enableEditing: false,
+    // filterVariant: 'range',
+    id: 'responsable',
+    header: 'Responsable',
+    // size: 300,
+    Cell: ({ cell }) => (
+      <Box
+        sx={(theme) => ({
+          // backgroundColor: cell.getValue() === 'NO ASIGNADO' ? 'red' : 'white',
+          borderRadius: '0.25rem',
+          textAlign: 'center',
+          color: cell.getValue() === 'NO ASIGNADO' ? 'white' : '#94c53c',
+          // maxWidth: '9ch',
+          p: '0.15rem'
+        })}
+      >
+        {cell.getValue()?.toUpperCase()}
+        {/* {cell.getValue()?.toLocaleString?.('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          })} */}
+      </Box>
+    )
   }
 ]

@@ -7,14 +7,19 @@ import { clearMessage } from '../../utils/time'
 // import { clearMessage } from '../../utils/time'
 import { Logo } from '../Logo'
 
-export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark }) => {
+export const Update = ({ setModal, setReload, preData, data, getSatelitales, UpdateDepartment, modedark, GetUserCGR }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [inputValue, setValue] = useState('')
   const [satelital, setSatelital] = useState({ label: data.satelital.name, value: data.satelital.id })
+  const [responsable, setResponsable] = useState({ label: data?.responsable?.name, value: data?.responsable?.id })
   // const [selectedValue, setSelectedValue] = useState(null)
-  const { register, handleSubmit, control, formState: { errors } } = useForm({ mode: 'onTouched', reValidateMode: 'onChange', defaultValues: { name: data.name, latitude: data.latitude, longitude: data.longitude } })
+  const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange',
+    defaultValues: { name: data.name, latitude: data.latitude, longitude: data.longitude }
+  })
 
   // const handleInputChange = value => {
   //   setValue(value)
@@ -22,7 +27,21 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
   // const handleChange = value => {
   //   setSelectedValue(value)
   // }
+  const loadOptionsCgr = async (inputValue) => {
+    const options = []
+    const response = await GetUserCGR()
+    const filter = response.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
 
+    filter.forEach((user) => {
+      options.push({
+        label: `${user.name} ${user.lastName}`,
+        value: user.id
+      })
+    })
+    return options
+  }
   const loadOptions = async (inputValue) => {
     const options = []
     const response = await getSatelitales()
@@ -42,7 +61,7 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
     try {
       setDisableBtn(true)
       dataForm.id = data.id
-      dataForm = { ...dataForm, satelital: dataForm.satelital.value }
+      dataForm = { ...dataForm, satelital: dataForm.satelital.value, responsable: dataForm.responsable.value }
       await UpdateDepartment(dataForm)
       setModal(false)
       setReload(true)
@@ -186,6 +205,42 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
           />
           {errors.satelital && (
             <p><span className='errors'>{errors.satelital.message}</span></p>
+          )}
+
+        </LabelBox>
+
+        <LabelBox htmlFor='responsable' modedark={modedark}>
+          Seleccione una {preData.relationTable2}
+          <Controller
+              // id='department'
+            defaultValue={responsable}
+            name='responsable'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, ref, ...field } }) => (
+              <StyledSelect
+                {...field}
+                innerRef={ref}
+                {...register('responsable', { required: 'Responsable es obligatorio' })}
+                isClearable
+                classNamePrefix='Select'
+                // autoload={false}
+                placeholder='Selecciona...'
+                defaultOptions
+                // getOptionLabel={e => e.value + ' ' + e.label}
+                // getOptionValue={e => e.value}
+                loadOptions={loadOptionsCgr}
+                value={responsable}
+                  // value={currentDepartment}
+                onChange={(e) => { onChange(e); setResponsable(e) }}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          {errors.responsable && (
+            <div className='errors' onClick={() => clearErrors('responsable')}>
+              {errors.responsable.message}
+            </div>
           )}
 
         </LabelBox>
