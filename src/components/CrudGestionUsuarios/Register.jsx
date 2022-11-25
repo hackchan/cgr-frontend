@@ -11,11 +11,30 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { formSchema } from './Schema'
 // import { UploadAvatar } from '../UploadAvatar'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers }) => {
+export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers, getDepartments }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  // const [imgBase64, setImgBase64] = useState('')
+  const [entidades, setEntidades] = useState([])
 
+  // const [imgBase64, setImgBase64] = useState('')
+  const handleEntidades = (entidad) => {
+    setEntidades(entidad)
+  }
+  const handleDepartamentos = (departments) => {
+    const listaEntidades = []
+    if (departments?.length > 0) {
+      for (const depart of departments) {
+        for (const muni of depart.municipios) {
+          for (const enti of muni.entidades) {
+            listaEntidades.push({ label: enti.name, value: enti.id })
+          }
+        }
+      }
+      handleEntidades(listaEntidades)
+    } else {
+      handleEntidades([])
+    }
+  }
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -35,9 +54,28 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       if (entidades.length > 1) {
         throw new Error('Solo se permite asignar una ENTIDAD al tipo usuario entidad')
       }
+    } else {
+      if (entidades.length === 0) {
+        throw new Error('Debe seleccionar las entidades que el usuario sera responsable')
+      }
     }
   }
+  const getListaDepartamentos = async (inputValue) => {
+    const options = []
+    const response = await getDepartments(null)
+    const filter = response.data.filter((option) => {
+      return option.name.toLowerCase().includes(inputValue.toLowerCase())
+    })
 
+    filter.forEach((department) => {
+      options.push({
+        label: department.name,
+        value: department.id,
+        municipios: department.municipios
+      })
+    })
+    return options
+  }
   const getListTypeUsers = async (inputValue) => {
     const options = []
     const response = await GetTypeUsers()
@@ -88,23 +126,24 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
   const onSubmit = async (dataForm) => {
     try {
+      console.log('entidadesd:', entidades)
       const roles = dataForm.roles.map((role) => {
         return { name: role.label, id: role.value }
       })
-      const entidades = dataForm.entidades.map((entidad) => {
+      const entidadesC = entidades.map((entidad) => {
         return { name: entidad.label, id: entidad.value }
       })
 
-      validateUserEntity(dataForm.tipo.label, roles, entidades)
+      validateUserEntity(dataForm.tipo.label, roles, entidadesC)
 
       dataForm = {
         ...dataForm,
         tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
         auth: { username: dataForm.username, password: dataForm.password },
         roles,
-        entidades
+        entidades: entidadesC
       }
-
+      console.log('dataForm:', dataForm)
       if (dataForm.image === null) {
         delete dataForm.image
       }
@@ -112,7 +151,6 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       delete dataForm.confirmPwd
       delete dataForm.username
       delete dataForm.password
-
       setDisableBtn(true)
       await AddUser(dataForm)
       setModalShow(false)
@@ -282,9 +320,47 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
         </Row>
         <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridDepartment'>
+            <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
+            <Controller
+              // id='department'
+              name='department'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                <StyledSelect
+                  {...field}
+                  isMulti
+                  innerRef={ref}
+                  {...register('department', { required: 'Departamento es obligatorio' })}
+                  isClearable
+                  classNamePrefix='Select'
+                // autoload={false}
+                  placeholder='Selecciona...'
+                  defaultOptions
+                  // getOptionLabel={e => e.value + ' ' + e.label}
+                  // getOptionValue={e => e.value}
+                  loadOptions={getListaDepartamentos}
+                  // value={currentDepartment}
+                  onChange={(e) => { onChange(e); handleDepartamentos(e) }}
+                  onBlur={onBlur}
+                />
+              )}
+            />
+            {errors.department && (
+              <Form.Text className='errors' onClick={() => clearErrors('department')}>
+                {errors.department.message}
+              </Form.Text>
+            )}
+
+          </Form.Group>
+
+        </Row>
+        <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridListEntidades'>
             <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
             <Controller
+              defaultValue={entidades}
               name='entidades'
               control={control}
               rules={{ required: true }}
@@ -294,11 +370,12 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
                   innerRef={ref}
                   {...register('entidades')}
                   isMulti
-                  isClearable
+                  isClearable={false}
                   defaultOptions
+                  value={entidades}
                   placeholder='Selecciona...'
                   loadOptions={getListEntidades}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); handleEntidades(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />

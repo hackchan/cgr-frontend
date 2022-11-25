@@ -13,7 +13,7 @@ export const Update = ({ setModal, setReload, preData, data, getSatelitales, Upd
   // eslint-disable-next-line no-unused-vars
   const [inputValue, setValue] = useState('')
   const [satelital, setSatelital] = useState({ label: data.satelital.name, value: data.satelital.id })
-  const [responsable, setResponsable] = useState({ label: data?.responsable?.name, value: data?.responsable?.id })
+  const [responsable, setResponsable] = useState(data.responsable && { label: data?.responsable?.name, value: data?.responsable?.id })
   // const [selectedValue, setSelectedValue] = useState(null)
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',

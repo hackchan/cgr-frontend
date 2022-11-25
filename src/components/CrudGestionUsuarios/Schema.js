@@ -6,9 +6,12 @@ export const formSchema = Yup.object().shape({
     .min(1, 'Debe seleccionar al menos un rol')
     .required('Roles es obligatorio')
     .of(Yup.object().shape()),
+  department: Yup.array()
+    .min(1, 'Debe seleccionar al menos un departamento')
+    .of(Yup.object().shape())
+    .required('Departamento es Obligatorio'),
   entidades: Yup.array()
-    .min(1, 'Debe seleccionar al menos una entidad')
-    .required('Entidades es obligatorio')
+    .min(0, 'Debe seleccionar al menos una entidad')
     .of(Yup.object().shape()),
   image: Yup.string(),
   username: Yup.string()

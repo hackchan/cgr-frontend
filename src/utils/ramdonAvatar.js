@@ -25,7 +25,16 @@ const configs = {
     'LongHairStraight2',
     'LongHairStraightStrand',
     'ShortHairDreads01',
-    'ShortHairDreads02'
+    'ShortHairDreads02',
+    'ShortHairFrizzle',
+    'ShortHairShaggyMullet',
+    'ShortHairShortCurly',
+    'ShortHairShortFlat',
+    'ShortHairShortRound',
+    'ShortHairShortWaved',
+    'ShortHairSides',
+    'ShortHairTheCaesar',
+    'ShortHairTheCaesarSidePart'
   ],
   accessoriesType: [
     'Blank',
@@ -179,13 +188,20 @@ const configs = {
 
 const configsKeys = Object.keys(configs)
 
-export const generateRandomAvatarOptions = () => {
-  const options = {}
-  const keys = [...configsKeys]
-  keys.forEach((key) => {
-    const configArray = configs[key]
-    options[key] = configArray[Math.floor(Math.random() * configArray.length)]
-  })
+export const generateRandomAvatarOptions = async () => {
+  return new Promise((resolve, reject) => {
+    try {
+      const options = {}
+      const keys = [...configsKeys]
+      keys.forEach((key) => {
+        const configArray = configs[key]
+        options[key] =
+           configArray[Math.floor(Math.random() * configArray.length)]
+      })
 
-  return options
+      resolve(options)
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
