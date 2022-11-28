@@ -1,18 +1,18 @@
 import * as Yup from 'yup'
 
 export const formSchemaCGR = Yup.object().shape({
-  tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
+  tipo: Yup.object().shape().nullable().required('Tipo user es obligatorio!'),
   roles: Yup.array()
     .min(1, 'Debe seleccionar al menos un rol')
     .required('Roles es obligatorio')
     .of(Yup.object().shape()),
-  department: Yup.array()
-    .min(1, 'Debe seleccionar al menos un departamento')
-    .of(Yup.object().shape())
-    .required('Departamento es Obligatorio'),
-  entidades: Yup.array()
-    .min(0, 'Debe seleccionar al menos una entidad')
-    .of(Yup.object().shape()),
+  // department: Yup.array()
+  //   .min(1, 'Debe seleccionar al menos un departamento')
+  //   .of(Yup.object().shape())
+  //   .required('Departamento es Obligatorio'),
+  // entidades: Yup.array()
+  //   .min(0, 'Debe seleccionar al menos una entidad')
+  //   .of(Yup.object().shape()),
   image: Yup.string(),
   username: Yup.string()
     .min(3, 'Longitud minima es de 3 caracteres')
@@ -54,7 +54,7 @@ export const formSchemaCGR = Yup.object().shape({
 })
 
 export const formSchemaEntidad = Yup.object().shape({
-  tipo: Yup.object().shape().required('Tipo user es obligatorio!'),
+  tipo: Yup.object().shape().nullable().required('Tipo user es obligatorio!'),
   roles: Yup.array()
     .min(1, 'Debe seleccionar al menos un rol')
     .required('Roles es obligatorio')

@@ -1556,7 +1556,9 @@ export const useInitialState = () => {
         data: {},
         withCredentials: false,
         headers: {
-          'X-Test-header': 'Test',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Credentials': 'true',
           accepts: 'application/json',
           Authorization: `Bearer ${auth.token}`
         }
@@ -1664,7 +1666,9 @@ export const useInitialState = () => {
         data: {},
         withCredentials: false,
         headers: {
-          'X-Test-header': 'Test',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          'Access-Control-Allow-Credentials': 'true',
           accepts: 'application/json',
           Authorization: `Bearer ${auth.token}`
         }

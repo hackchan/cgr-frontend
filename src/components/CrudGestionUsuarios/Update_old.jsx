@@ -8,25 +8,42 @@ import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { formSchemaCGR, formSchemaEntidad } from './Schema'
+
+import { formSchemaAdmin } from './Schema'
 // import { UploadAvatar } from '../UploadAvatar'
+
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, GetEntidad, modedark, GetTypeUsers, getDepartments }) => {
+export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin, getDepartments }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const [entidades, setEntidades] = useState([])
-  const [tipoUser, setTipoUser] = useState({})
-  const [roles, setRoles] = useState([])
   // const [imgBase64, setImgBase64] = useState('')
+  const [tipoUser, setTipoUser] = useState({})
+  const [tipo] = useState({ label: data.tipo.name, value: data.tipo.id })
+  const [roles] = useState(data.roles.map(role => {
+    return {
+      label: role.name,
+      value: role.id
+    }
+  }))
+  console.log('minicipios:', data.entidades)
+  // const arrayDeparts = data.entidades.map((entidad) => {
+  //   entidad.municipios.map((muni) => {
+  //     console.log('minicipios:', muni)
+  //     return muni
+  //   })
+  // })
+
+  const [departamentos, setDepartamentos] = useState()
+  const [entidades, setEntidades] = useState(data.entidades.map(entidad => {
+    return {
+      label: entidad.name,
+      value: entidad.id
+    }
+  }))
   const handleEntidades = (entidad) => {
     setEntidades(entidad)
   }
-  const handleRoles = (roles) => {
-    console.log(roles)
-    setRoles(roles)
-  }
   const handleDepartamentos = (departments) => {
-    console.log('departments ???:', departments)
     const listaEntidades = []
     if (departments?.length > 0) {
       for (const depart of departments) {
@@ -41,35 +58,22 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       handleEntidades([])
     }
   }
+
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
-    resolver: yupResolver(tipoUser?.label === 'CGR' ? formSchemaCGR : formSchemaEntidad)
+    resolver: yupResolver(formSchemaAdmin),
+    defaultValues: {
+      name: data.name,
+      lastName: data.lastName,
+      phone: data.phone,
+      email: data.email,
+      username: data.auth.username
+
+    }
+
   })
 
-  const validateUserEntity = (tipo, roles, entidades) => {
-    if (tipo === 'ENTIDAD') {
-      if (roles.length > 1) {
-        throw new Error('Solo se permite asignar un rol al tipo usuario entidad')
-      }
-      if (roles.length === 1) {
-        if (roles[0].name !== tipo) {
-          throw new Error('El unico rol permitido para un usuario de tipo entidad es ENTIDAD')
-        }
-      }
-      if (entidades.length > 1) {
-        throw new Error('Solo se permite asignar una ENTIDAD al tipo usuario entidad')
-      }
-    } else {
-      console.log('jiji:', roles)
-      const isAdmin = !roles.some((rol) => { return rol.name === 'JEDI' || rol.name === 'ADMIN' })
-      if (isAdmin) {
-        if (entidades.length === 0) {
-          throw new Error('Debe seleccionar las entidades que el usuario sera responsable')
-        }
-      }
-    }
-  }
   const getListaDepartamentos = async (inputValue) => {
     const options = []
     const response = await getDepartments(null)
@@ -86,6 +90,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
     })
     return options
   }
+
   const getListTypeUsers = async (inputValue) => {
     const options = []
     const response = await GetTypeUsers()
@@ -136,34 +141,55 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log('entidadesd:', entidades)
+      console.log('entro al submit')
+      // if (isAdmin) {
+      //   dataForm = {
+      //     ...dataForm,
+      //     image: imgBase64
+
+      //   }
+      //   if (dataForm.image === null) {
+      //     delete dataForm.image
+      //   }
+      // } else {
+      const tipo = { id: dataForm.tipo.value, name: dataForm.tipo.label }
       const roles = dataForm.roles.map((role) => {
         return { name: role.label, id: role.value }
       })
-      const entidadesC = entidades.map((entidad) => {
+      const entidades = dataForm.entidades.map((entidad) => {
         return { name: entidad.label, id: entidad.value }
       })
 
-      validateUserEntity(dataForm.tipo.label, roles, entidadesC)
-
       dataForm = {
         ...dataForm,
-        tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
+        // image: imgBase64,
+        tipo,
         auth: { username: dataForm.username, password: dataForm.password },
         roles,
-        entidades: entidadesC
+        entidades
       }
+      // }
+
+      // dataForm = {
+      //   ...dataForm,
+      //   // image: imgBase64,
+      //   tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
+      //   auth: { username: dataForm.username, password: dataForm.password },
+      //   roles,
+      //   entidades
+      // }
+      // if (isAdmin) {
+      //   delete dataForm.entidades
+      // }
+
+      // delete dataForm.role
+      // delete dataForm.confirmPwd
+      // delete dataForm.username
+      // delete dataForm.password
       console.log('dataForm:', dataForm)
-      if (dataForm.image === null) {
-        delete dataForm.image
-      }
-      delete dataForm.role
-      delete dataForm.confirmPwd
-      delete dataForm.username
-      delete dataForm.password
       setDisableBtn(true)
-      await AddUser(dataForm)
-      setModalShow(false)
+      await UpdateUser(dataForm, data.id)
+      setModalUpdateShow(false)
       setReload(true)
     } catch (error) {
       if (error.response) {
@@ -175,7 +201,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
       setDisableBtn(false)
     }
   }
-  return (
+  return ((
     <BoxForm modedark={modedark}>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -252,7 +278,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           <Form.Group as={Col} controlId='formGridEmail'>
             <FormLabelStyle modedark={modedark.toString()}>Email</FormLabelStyle>
             <Form.Control
-              type='text' placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
+              type='text' readOnly placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
             />
             {errors.email && (
               <Form.Text className='errors' onClick={() => clearErrors('email')}>
@@ -266,14 +292,15 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           <Form.Group as={Col} controlId='formGridListtipo'>
             <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
             <Controller
-    // id='department'
+    // id='department'\
+              defaultValue={tipo}
               name='tipo'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={tipo}
                   {...field}
-                  // value={tipoUser}
                   innerRef={ref}
                   {...register('tipo')}
                   isClearable
@@ -301,11 +328,13 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           <Form.Group as={Col} controlId='formGridListRoles'>
             <FormLabelStyle modedark={modedark.toString()}>Roles</FormLabelStyle>
             <Controller
+              defaultValue={roles}
               name='roles'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
+                  value={roles}
                   {...field}
                   innerRef={ref}
                   {...register('roles')}
@@ -314,7 +343,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
                   defaultOptions
                   placeholder='Selecciona...'
                   loadOptions={getRolesList}
-                  onChange={(e) => { onChange(e); handleRoles(e) }}
+                  onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
@@ -327,9 +356,9 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
             )}
 
           </Form.Group>
-
         </Row>
-        {tipoUser?.label === 'CGR' && !roles.some((rol) => { return rol?.label === 'JEDI' || rol?.label === 'ADMIN' }) && (
+
+        {tipoUser.label === 'CGR' && !roles.some((rol) => { return rol.label === 'JEDI' || rol.label === 'ADMIN' }) && (
           <Row className='mb-3'>
             <Form.Group as={Col} controlId='formGridDepartment'>
               <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
@@ -403,7 +432,7 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
           </Row>
         )}
 
-        <Row className='mb-3'>
+        {/* <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridNombre'>
             <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
             <Form.Control
@@ -437,14 +466,14 @@ export const Register = ({ setModalShow, setReload, preData, AddUser, GetRoles, 
               </Form.Text>
             )}
           </Form.Group>
-        </Row>
+        </Row> */}
 
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Registrar Usuario' disabled={disableBtn} loading={disableBtn} /></div>
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Update Usuario' disabled={disableBtn} loading={disableBtn} /></div>
       </Form>
     </BoxForm>
-  )
+  ))
 }

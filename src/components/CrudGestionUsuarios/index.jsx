@@ -30,7 +30,8 @@ export const GestionUsurios = () => {
     GetTypeUsers,
     GetRoles,
     GetEntidad,
-    getDepartments
+    getDepartments,
+    GetMunicipiosByDepartment
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -137,7 +138,7 @@ export const GestionUsurios = () => {
         </Modal>}
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} user={user} isAdmin={isAdmin} getDepartments={getDepartments} modedark={state.darkMode} />
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateUser={UpdateUser} GetRoles={GetRoles} GetEntidad={GetEntidad} GetTypeUsers={GetTypeUsers} user={user} isAdmin={isAdmin} GetMunicipiosByDepartment={GetMunicipiosByDepartment} getDepartments={getDepartments} modedark={state.darkMode} />
       </ModalB>
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
@@ -179,8 +180,12 @@ export const GestionUsurios = () => {
                 style={{ borderRadius: '50%' }}
               /> */}
               <Box sx={{ textAlign: 'center' }}>
+                <Typography variant='h6'>{row.original.entidades.length}</Typography>
+                {row.original.entidades.map((entidad) => {
+                  return <div className='lista-entidades' key={entidad.id}>{entidad.municipio.department.name + ' - ' + entidad.id + ':' + entidad.name + ' '}</div>
+                })}
                 {/* <Typography variant='h6'>Roles:</Typography> */}
-                <Typography>
+                {/* <Typography>
                   roles:
                   {row.original.roles.map((role) => {
                     return role.name + ' '
@@ -193,7 +198,7 @@ export const GestionUsurios = () => {
                     return entidad.name + ' '
                   })}
 
-                </Typography>
+                </Typography> */}
 
               </Box>
             </Box>

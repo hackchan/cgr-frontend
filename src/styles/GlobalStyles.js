@@ -281,6 +281,17 @@ export const GlobalStyle = createGlobalStyle`
        transform:scale(.9);
 
 }
+
+.lista-entidades{
+        font-size:10px;
+        background:white;
+        padding: 5px;
+        color:#3e0e84;
+        border-radius:5px;
+        font-weight:bold;
+        display: inline-block;
+        margin: 5px;
+}
         /* body {
                 background: #fefefe;
                 height: 100vh;

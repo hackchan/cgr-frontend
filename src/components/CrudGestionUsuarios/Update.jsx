@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
@@ -8,42 +8,104 @@ import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
 import { yupResolver } from '@hookform/resolvers/yup'
-
 import { formSchemaAdmin } from './Schema'
+import { useDepartments } from '../../hooks/useDepartments'
+// import { eliminarObjetosDuplicados } from '../../utils/duplicateObject'
 // import { UploadAvatar } from '../UploadAvatar'
-
 // const Input = (props) => <components.Input {...props} isHidden={false} />
-export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin, getDepartments }) => {
+// async function getDepartments (entidades, GetMunicipiosByDepartment) {
+//   try {
+//     const departs = []
+//     const departsMuni = []
+//     for (const entidad of entidades) {
+//       departs.push({ label: entidad.municipio.department.name, value: entidad.municipio.department.id })
+//     }
+//     const departFilter = eliminarObjetosDuplicados(departs, 'value')
+//     for (const depart of departFilter) {
+//       const municipios = await GetMunicipiosByDepartment(depart.value)
+//       console.log('municipios: jeje:', municipios.data)
+//       depart.municipios = municipios.data
+//       console.log('depart:', depart)
+//       departsMuni.push(depart)
+//     }
+//     console.log('depart:', departsMuni)
+//     return departsMuni
+//   } catch (error) {
+//     return []
+//   }
+// }
+export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUser, GetRoles, GetEntidad, modedark, GetTypeUsers, user, isAdmin, getDepartments, GetMunicipiosByDepartment }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  // const [imgBase64, setImgBase64] = useState('')
-  const [tipo] = useState({ label: data.tipo.name, value: data.tipo.id })
-  const [roles] = useState(data.roles.map(role => {
-    return {
-      label: role.name,
-      value: role.id
-    }
-  }))
+  // const [isError, setIsError] = useState(false)
+  // const departamentosALL = useDepartments(data.entidades)
+  // console.log('departamentosALL:', departamentosALL)
+  const [departamentos, setDepartamentos] = useDepartments(data.entidades)
+  // const [departamentos, setDepartamentos] = useState(async () => {
+  //   const departs = []
+  //   const departsMuni = []
+  //   for (const entidad of data.entidades) {
+  //     departs.push({ label: entidad.municipio.department.name, value: entidad.municipio.department.id })
+  //   }
+  //   const departFilter = eliminarObjetosDuplicados(departs, 'value')
+  //   for (const depart of departFilter) {
+  //     const municipios = await GetMunicipiosByDepartment(depart.value)
+  //     console.log('municipios: jeje:', municipios.data)
+  //     depart.municipios = municipios.data
+  //     console.log('depart:', depart)
+  //     departsMuni.push(depart)
+  //   }
+  //   console.log('depart:', departsMuni)
+  //   return departsMuni
+  // })
 
-  const arrayDeparts = data.entidades.map((entidad) => {
-    entidad.municipios.map((muni) => {
-      console.log('minicipios:', muni)
-      return muni
-    })
-  })
-
-  console.log('departs Homero:', arrayDeparts)
-  const [departamentos, setDepartamentos] = useState()
   const [entidades, setEntidades] = useState(data.entidades.map(entidad => {
     return {
       label: entidad.name,
       value: entidad.id
     }
   }))
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const departs = []
+  //       for (const entidad of data.entidades) {
+  //         departs.push({ label: entidad.municipio.department.name, value: entidad.municipio.department.id })
+  //       }
+  //       const departFilter = eliminarObjetosDuplicados(departs, 'value')
+  //       setDepartamentos(departFilter)
+  //       console.log('departamentos ::):', departFilter)
+  //     } catch (error) {
+  //       setIsError(true)
+  //       if (error.response) {
+  //         setError(error.response.data.error.message)
+  //       } else {
+  //         setError(error.message)
+  //       }
+  //     }
+  //   }
+
+  //   // call the function
+  //   fetchData()
+  // }, [])
+  const [tipoUser, setTipoUser] = useState({ label: data.tipo.name, value: data.tipo.id })
+  const [roles, setRoles] = useState(data.roles.map(role => {
+    return {
+      label: role.name,
+      value: role.id
+    }
+  }))
+  // const [imgBase64, setImgBase64] = useState('')
   const handleEntidades = (entidad) => {
     setEntidades(entidad)
   }
+  const handleRoles = (roles) => {
+    console.log(roles)
+    setRoles(roles)
+  }
   const handleDepartamentos = (departments) => {
+    console.log('Departs KK:', departments)
     const listaEntidades = []
     if (departments?.length > 0) {
       for (const depart of departments) {
@@ -58,7 +120,6 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       handleEntidades([])
     }
   }
-
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
     reValidateMode: 'onChange',
@@ -71,9 +132,32 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       username: data.auth.username
 
     }
-
+    // resolver: yupResolver(tipoUser?.label === 'CGR' ? formSchemaCGR : formSchemaEntidad)
   })
 
+  const validateUserEntity = (tipo, roles, entidades) => {
+    if (tipo === 'ENTIDAD') {
+      if (roles.length > 1) {
+        throw new Error('Solo se permite asignar un rol al tipo usuario entidad')
+      }
+      if (roles.length === 1) {
+        if (roles[0].name !== tipo) {
+          throw new Error('El unico rol permitido para un usuario de tipo entidad es ENTIDAD')
+        }
+      }
+      if (entidades.length > 1) {
+        throw new Error('Solo se permite asignar una ENTIDAD al tipo usuario entidad')
+      }
+    } else {
+      console.log('jiji:', roles)
+      const isAdmin = !roles.some((rol) => { return rol.name === 'JEDI' || rol.name === 'ADMIN' })
+      if (isAdmin) {
+        if (entidades.length === 0) {
+          throw new Error('Debe seleccionar las entidades que el usuario sera responsable')
+        }
+      }
+    }
+  }
   const getListaDepartamentos = async (inputValue) => {
     const options = []
     const response = await getDepartments(null)
@@ -90,7 +174,6 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
     })
     return options
   }
-
   const getListTypeUsers = async (inputValue) => {
     const options = []
     const response = await GetTypeUsers()
@@ -141,52 +224,32 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
 
   const onSubmit = async (dataForm) => {
     try {
-      console.log('entro al submit')
-      // if (isAdmin) {
-      //   dataForm = {
-      //     ...dataForm,
-      //     image: imgBase64
-
-      //   }
-      //   if (dataForm.image === null) {
-      //     delete dataForm.image
-      //   }
-      // } else {
-      const tipo = { id: dataForm.tipo.value, name: dataForm.tipo.label }
+      console.log('entidadesd:', entidades)
       const roles = dataForm.roles.map((role) => {
         return { name: role.label, id: role.value }
       })
-      const entidades = dataForm.entidades.map((entidad) => {
+      const entidadesC = entidades.map((entidad) => {
         return { name: entidad.label, id: entidad.value }
       })
 
+      validateUserEntity(dataForm.tipo.label, roles, entidadesC)
+
       dataForm = {
         ...dataForm,
-        // image: imgBase64,
-        tipo,
-        auth: { username: dataForm.username, password: dataForm.password },
+        tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
+        // auth: { username: dataForm.username, password: dataForm.password },
         roles,
-        entidades
+        entidades: entidadesC
       }
-      // }
+      delete dataForm.department
+      delete dataForm.username
 
-      // dataForm = {
-      //   ...dataForm,
-      //   // image: imgBase64,
-      //   tipo: { id: dataForm.tipo.value, name: dataForm.tipo.label },
-      //   auth: { username: dataForm.username, password: dataForm.password },
-      //   roles,
-      //   entidades
-      // }
-      // if (isAdmin) {
-      //   delete dataForm.entidades
-      // }
+      console.log('dataForm:', dataForm)
 
       // delete dataForm.role
       // delete dataForm.confirmPwd
       // delete dataForm.username
       // delete dataForm.password
-      console.log('dataForm:', dataForm)
       setDisableBtn(true)
       await UpdateUser(dataForm, data.id)
       setModalUpdateShow(false)
@@ -201,7 +264,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
       setDisableBtn(false)
     }
   }
-  return ((
+  return (
     <BoxForm modedark={modedark}>
 
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -278,7 +341,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
           <Form.Group as={Col} controlId='formGridEmail'>
             <FormLabelStyle modedark={modedark.toString()}>Email</FormLabelStyle>
             <Form.Control
-              type='text' readOnly placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
+              type='text' placeholder='Eje. fabio.rojas@contraloria.gov.co' {...register('email')}
             />
             {errors.email && (
               <Form.Text className='errors' onClick={() => clearErrors('email')}>
@@ -292,15 +355,16 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
           <Form.Group as={Col} controlId='formGridListtipo'>
             <FormLabelStyle modedark={modedark.toString()}>Tipo Usuario</FormLabelStyle>
             <Controller
-    // id='department'\
-              defaultValue={tipo}
+              defaultValue={tipoUser}
+    // id='department'
               name='tipo'
               control={control}
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
-                  value={tipo}
+                  value={tipoUser}
                   {...field}
+                  // value={tipoUser}
                   innerRef={ref}
                   {...register('tipo')}
                   isClearable
@@ -312,7 +376,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
                   getOptionValue={e => e.value}
                   loadOptions={getListTypeUsers}
         // value={currentDepartment}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setTipoUser(e) }}
                   onBlur={onBlur}
                 />
               )}
@@ -343,7 +407,7 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
                   defaultOptions
                   placeholder='Selecciona...'
                   loadOptions={getRolesList}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); handleRoles(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
@@ -356,19 +420,21 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
             )}
 
           </Form.Group>
-        </Row>
 
-        {tipo.label === 'CGR' && (
+        </Row>
+        {tipoUser?.label === 'CGR' && !roles.some((rol) => { return rol?.label === 'JEDI' || rol?.label === 'ADMIN' }) && (
           <Row className='mb-3'>
             <Form.Group as={Col} controlId='formGridDepartment'>
               <FormLabelStyle modedark={modedark.toString()}>Departamento</FormLabelStyle>
               <Controller
               // id='department'
+                defaultValue={departamentos}
                 name='department'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, ref, ...field } }) => (
                   <StyledSelect
+                    value={departamentos}
                     {...field}
                     isMulti
                     innerRef={ref}
@@ -396,83 +462,48 @@ export const Update = ({ setModalUpdateShow, setReload, preData, data, UpdateUse
             </Form.Group>
 
           </Row>)}
-
-        <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridListEntidades'>
-            <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
-            <Controller
-              defaultValue={entidades}
-              name='entidades'
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, ref, ...field } }) => (
-                <StyledSelect
-                  {...field}
-                  innerRef={ref}
-                  {...register('entidades')}
-                  isMulti
-                  isClearable={false}
-                  defaultOptions
-                  value={entidades}
-                  placeholder='Selecciona...'
-                  loadOptions={getListEntidades}
-                  onChange={(e) => { onChange(e); handleEntidades(e) }}
-                  onBlur={onBlur}
-                  classNamePrefix='Select'
-                />
+        {!roles?.some((rol) => { return rol?.label === 'JEDI' || rol?.label === 'ADMIN' }) && (
+          <Row className='mb-3'>
+            <Form.Group as={Col} controlId='formGridListEntidades'>
+              <FormLabelStyle modedark={modedark.toString()}>Entidades</FormLabelStyle>
+              <Controller
+                defaultValue={entidades}
+                name='entidades'
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, ref, ...field } }) => (
+                  <StyledSelect
+                    {...field}
+                    innerRef={ref}
+                    {...register('entidades')}
+                    isMulti
+                    isClearable={false}
+                    defaultOptions
+                    value={entidades}
+                    placeholder='Selecciona...'
+                    loadOptions={getListEntidades}
+                    onChange={(e) => { onChange(e); handleEntidades(e) }}
+                    onBlur={onBlur}
+                    classNamePrefix='Select'
+                  />
+                )}
+              />
+              {errors.entidades && (
+                <Form.Text className='errors' onClick={() => clearErrors('entidades')}>
+                  {errors.entidades.message}
+                </Form.Text>
               )}
-            />
-            {errors.entidades && (
-              <Form.Text className='errors' onClick={() => clearErrors('entidades')}>
-                {errors.entidades.message}
-              </Form.Text>
-            )}
 
-          </Form.Group>
-        </Row>
-
-        {/* <Row className='mb-3'>
-          <Form.Group as={Col} controlId='formGridNombre'>
-            <FormLabelStyle modedark={modedark.toString()}>Username</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. hackchan' {...register('username')}
-            />
-            {errors.username && (
-              <Form.Text className='errors' onClick={() => clearErrors('username')}>
-                {errors.username.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-          <Form.Group as={Col} controlId='formGridpassword'>
-            <FormLabelStyle modedark={modedark.toString()}>password</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='password' placeholder='' {...register('password')}
-            />
-            {errors.password && (
-              <Form.Text className='errors' onClick={() => clearErrors('password')}>
-                {errors.password.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-          <Form.Group as={Col} controlId='formGridrepassword'>
-            <FormLabelStyle modedark={modedark.toString()}>confirmacion password</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='password' placeholder='' {...register('confirmPwd')}
-            />
-            {errors.confirmPwd && (
-              <Form.Text className='errors' onClick={() => clearErrors('confirmPwd')}>
-                {errors.confirmPwd.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-        </Row> */}
+            </Form.Group>
+          </Row>
+        )}
 
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
         <br />
-        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Update Usuario' disabled={disableBtn} loading={disableBtn} /></div>
+        <div className='d-flex p-2 justify-content-center'> <Button modedark={modedark} value='Actualizar Usuario' disabled={disableBtn} loading={disableBtn} /></div>
       </Form>
     </BoxForm>
-  ))
+  )
 }
