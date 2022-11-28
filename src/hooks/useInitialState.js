@@ -118,7 +118,8 @@ export const useInitialState = () => {
         },
         withCredentials: false,
         headers: {
-          'X-Test-header': 'Test',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
           accepts: 'application/json'
         }
       })
