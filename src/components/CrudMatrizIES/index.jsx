@@ -20,7 +20,7 @@ import { Update } from './Update'
 import { CsvParserIES } from '../CsvParserIES'
 import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
-import { isAdmin } from '../../utils/user'
+import { isEntidad } from '../../utils/user'
 import { TitleModule } from '../../styles/TitleModule'
 export const MatrizIES = () => {
   const {
@@ -75,8 +75,8 @@ export const MatrizIES = () => {
   const [rowCount, setRowCount] = useState(0)
   const [isBasicUsr, setIsBasicUsr] = useState(false)
   useEffect(() => {
-    const usrBasic = !isAdmin(user)
-    setIsBasicUsr(usrBasic)
+    const usrCGR = isEntidad(user)
+    setIsBasicUsr(usrCGR)
   })
   useEffect(() => {
     const fetchData = async () => {

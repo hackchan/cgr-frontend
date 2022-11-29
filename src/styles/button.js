@@ -11,4 +11,7 @@ export const ButtonStyled = styled(Button)`
   &.csv {
     background: #f2791d !important;
   }
+  &.inactive {
+    background: gray !important;
+  }
 `

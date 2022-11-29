@@ -20,7 +20,7 @@ import { Update } from './Update'
 import { CsvParser } from '../CsvParse'
 import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
-import { isAdmin } from '../../utils/user'
+import { isAnalisis, isEntidad } from '../../utils/user'
 import { TitleModule } from '../../styles/TitleModule'
 export const MatrizObra = () => {
   const {
@@ -75,9 +75,13 @@ export const MatrizObra = () => {
   })
   const [rowCount, setRowCount] = useState(0)
   const [isBasicUsr, setIsBasicUsr] = useState(false)
+  const [isAnalisisUsr, setIsAnalisisUsr] = useState(false)
   useEffect(() => {
-    const usrBasic = !isAdmin(user)
-    setIsBasicUsr(usrBasic)
+    const usrCGR = isEntidad(user)
+    const usrAnalisis = isAnalisis(user)
+    console.log('IS Analisis:', usrAnalisis)
+    setIsBasicUsr(usrCGR)
+    setIsAnalisisUsr(usrAnalisis)
   })
   useEffect(() => {
     const fetchData = async () => {
@@ -225,7 +229,8 @@ export const MatrizObra = () => {
                   Exportar
                 </ButtonStyled>
                 <ButtonStyled
-                  className='new'
+                  disabled={isAnalisisUsr}
+                  className={isAnalisisUsr ? 'inactive' : 'new'}
                   onClick={() => { setModalShow(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
@@ -233,8 +238,8 @@ export const MatrizObra = () => {
                   Nuevo
                 </ButtonStyled>
                 <ButtonStyled
-                  className='csv'
-                  // style={{ background: '#94c' }}
+                  disabled={isAnalisisUsr}
+                  className={isAnalisisUsr ? 'inactive' : 'csv'}
                   onClick={() => { setModalCsv(true) }}
                   startIcon={<CloudUploadIconStyle />}
                   variant='contained'
@@ -263,26 +268,30 @@ export const MatrizObra = () => {
           }}
           renderRowActions={({ row }) => (
             <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}>
-              <Tooltip title={preData.delete} placement='top'>
-                <DeleteIconStyle
-                  variant='contained'
-                  onClick={() => {
-                    setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
-                  }}
-                />
-              </Tooltip>
-              <Tooltip title={preData.update} placement='top'>
-                <EditIconStyle
-                  variant='contained'
-                  onClick={() => {
-                    setModalUpdateShow(true)
-                    setDataUpdate(row.original)
+              {!isAnalisis && (
+                <Tooltip title={preData.delete} placement='top'>
+                  <DeleteIconStyle
+                    variant='contained'
+                    onClick={() => {
+                      setModalEliminar(true)
+                      setDataEliminar(row._valuesCache)
+                    }}
+                  />
+                </Tooltip>
+              )}
+              {!isAnalisis && (
+                <Tooltip title={preData.update} placement='top'>
+                  <EditIconStyle
+                    variant='contained'
+                    onClick={() => {
+                      setModalUpdateShow(true)
+                      setDataUpdate(row.original)
 
                     //       closeMenu()
-                  }}
-                />
-              </Tooltip>
+                    }}
+                  />
+                </Tooltip>)}
+
             </div>
           )}
         />
