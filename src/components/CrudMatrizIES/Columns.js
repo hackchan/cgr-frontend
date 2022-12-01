@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import React from 'react'
 import { Box } from '@mui/material'
+import { format, parse } from 'date-fns'
 export const ColumnsTable = [
   {
     accessorKey: 'id',
@@ -328,6 +329,11 @@ export const ColumnsTable = [
   {
     accessorKey: 'anioCorte',
     header: 'anioCorte',
+    size: 300
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'Actualizado',
     size: 300
   }
 ]
