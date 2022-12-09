@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { Logo } from '../Logo'
 import { Link } from 'react-router-dom'
-import { StyledNavLink, LogoName, LogoApp, HamburgerIcon } from './styles'
+import { StyledNavLink, LogoName, LogoApp, HamburgerIcon, Perfil, PerfilName } from './styles'
 import { AppContext } from '../../contex/AppProvidercContext'
 import { isAdmin } from '../../utils/user'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
@@ -191,9 +191,20 @@ export const NavBar = () => {
                     title={user.username}
                     menuVariant={state.darkMode ? 'dark' : 'light'}
                   >
-
-                    <Nav.Link as={StyledNavLink} eventKey={2} to='/logout' onClick={logout}>Cerrar sesión</Nav.Link>
                     <NavDropdown.Divider />
+                    <Perfil>
+                      <PerfilName>¡Hola, {user.username}!</PerfilName>
+                      {user.tipo.name === 'ENTIDAD' &&
+                        <div>
+                          <p>{user.tipo.name}</p>
+                          <p>{user.entidades[0].name}</p>
+                        </div>}
+
+                    </Perfil>
+
+                    <NavDropdown.Divider />
+
+                    <Nav.Link as={StyledNavLink} className='closeSesion' eventKey={2} to='/logout' onClick={logout}>Cerrar sesión</Nav.Link>
 
                   </NavDropdown>
                   <Avatars style={{ width: '32px', height: '32px', marginRight: '5px' }} />

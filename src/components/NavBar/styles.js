@@ -57,3 +57,17 @@ export const LogoApp = styled.span`
   font-size: 20px;
   transition: 0.3s;
 `
+export const Perfil = styled.div`
+  color: #94c53c;
+  font-weight: bold;
+  font-size: 12px;
+  transition: 0.3s;
+  text-align: center;
+`
+
+export const PerfilName = styled.p`
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+`

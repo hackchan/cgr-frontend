@@ -281,6 +281,10 @@ export const GlobalStyle = createGlobalStyle`
        transform:scale(.9);
 
 }
+.closeSesion{
+        color:red !important;
+        text-align: center;
+}
 
 .lista-entidades{
         font-size:10px;
