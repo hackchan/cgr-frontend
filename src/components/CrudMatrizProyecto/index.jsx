@@ -25,16 +25,10 @@ import { TitleModule } from '../../styles/TitleModule'
 export const MatrizIES = () => {
   const {
     state,
-    GetMatrizIes,
-    AddMatrizIes,
-    DeleteMatrizIes,
-    UpdateMatrizIes,
-    GetEntidad,
-    getDepartments,
-    GetMunicipiosByDepartment,
-    GetTipodDocs,
-    GetSemestres,
-    GetEstratos
+    GetProyectos,
+    AddProyecto,
+    DeleteProyecto,
+    UpdateProyecto
   } = useContext(AppContext)
   const [user] = useLocalStorage('user', false)
 
@@ -87,7 +81,7 @@ export const MatrizIES = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetMatrizIes(pagination, globalFilter, columnFilters, sorting, user)
+        const response = await GetProyectos(pagination, globalFilter, columnFilters, sorting, user)
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {
@@ -130,8 +124,8 @@ export const MatrizIES = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Matriz IES</TitleModule>
-      {modalEliminar &&
+      <TitleModule>Matriz Proyectos</TitleModule>
+      {/* {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} />
         </Modal>}
@@ -145,10 +139,10 @@ export const MatrizIES = () => {
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
         <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizIes={UpdateMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
-      {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
+
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
         <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddMatrizIes={AddMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB>
+      </ModalB> */}
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}

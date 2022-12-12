@@ -2270,6 +2270,108 @@ export const useInitialState = () => {
     }
   }
 
+  // Crud Proyectos
+  const GetProyectos = async (payload, globalFilter, columnFilters, sorting) => {
+    try {
+      const url = new URL(
+        '/api/v2/proyecto',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddProyecto = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/proyecto`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteProyecto = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/proyecto/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateProyecto = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/proyecto/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const chgDarkMode = (mode = false) => {
     setDarkMode(mode)
     setState({
@@ -2414,6 +2516,10 @@ export const useInitialState = () => {
     GetEmails,
     AddEmails,
     DeleteEmails,
-    UpdateEmail
+    UpdateEmail,
+    GetProyectos,
+    AddProyecto,
+    DeleteProyecto,
+    UpdateProyecto
   }
 }
