@@ -1,8 +1,49 @@
 /* eslint-disable indent */
 import React from 'react'
 import { Box } from '@mui/material'
-import { format, parse } from 'date-fns'
+import { format, parse, parseISO, formatRelative, addDays } from 'date-fns'
+import { es } from 'date-fns/locale'
 export const ColumnsTable = [
+  {
+    accessorFn: (row) => `${row.alerta ? 'SI' : 'NO'}`,
+    accessorKey: 'alerta',
+    header: 'Alerta',
+    enableGlobalFilter: false,
+    filterSelectOptions: [
+      { text: 'SI', value: 'SI' },
+      { text: 'NO', value: 'NO' }
+    ],
+    filterVariant: 'select'
+  },
+  // {
+  // // console.log('messi:', new Date(row.updatedAt).toUTCString())
+  // {
+  //   accessorKey: 'updatedAt',
+  //   header: 'Actualizado1',
+  //   size: 300
+  // },
+  //   accessorKey: 'updatedAt',
+  //   header: 'Actualizado1',
+  //   size: 300
+  // },
+  {
+    accessorFn: (row) => {
+      return formatRelative(
+        addDays(new Date(parseISO(row.updatedAt).toUTCString()), 0),
+        new Date(parseISO(row.updatedAt).toUTCString())
+      )
+    },
+    size: 350,
+    id: 'updatedAt',
+    header: 'Actualizada',
+    muiTableHeadCellFilterTextFieldProps: {
+      type: 'date'
+    },
+    filterFn: 'lessThanOrEqualTo',
+    sortingFn: 'datetime',
+    Cell: ({ cell }) => cell.getValue(),
+    Header: ({ column }) => <em>{column.columnDef.header}</em>
+  },
   {
     accessorKey: 'idBpin',
     header: 'IdBpin',
