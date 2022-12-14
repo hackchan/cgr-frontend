@@ -30,6 +30,7 @@ import { CrudEstadoObra } from '../components/CrudEstadoObra'
 import { CrudSectorObra } from '../components/CrudSectorObra'
 import { CrudOrigenRecurso } from '../components/CrudOrigenRecurso'
 import { MatrizObra } from '../components/CrudMatrizObra'
+import { MatrizProyecto } from '../components/CrudMatrizProyecto'
 import { CrudMatrizObraSoporte } from '../components/CrudMatrizObraSoportes'
 import { GestionUsurios } from '../components/CrudGestionUsuarios'
 import { TypeUser } from '../components/CrudTypeUser'
@@ -74,6 +75,7 @@ export const App = () => {
         <Route path='sector-obra' element={<ProtectedRoute><CrudSectorObra /></ProtectedRoute>} />
 
         <Route path='origen-recurso' element={<ProtectedRoute><CrudOrigenRecurso /></ProtectedRoute>} />
+        <Route path='matriz-proyecto' element={<MatrizProyecto />} />
         <Route path='matriz-obra' element={<ProtectedRoute><MatrizObra /></ProtectedRoute>} />
 
         <Route path='matriz-obra-soporte' element={<CrudMatrizObraSoporte />} />

@@ -22,7 +22,7 @@ import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { isEntidad } from '../../utils/user'
 import { TitleModule } from '../../styles/TitleModule'
-export const MatrizIES = () => {
+export const MatrizProyecto = () => {
   const {
     state,
     GetProyectos,
@@ -107,7 +107,13 @@ export const MatrizIES = () => {
     reload])
 
   const handleExportData = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => row._valuesCache))
+    csvExporter.generateCsv(rows.map((row) => {
+      const rowModify = { ...row._valuesCache, fechaCierreEjecucion: row.original.fechaCierreEjecucion, fechaInicioEjecucion: row.original.fechaInicioEjecucion, sector: row.original.sector.id }
+      console.log('row1:', row._valuesCache)
+      console.log('row2:', row.original)
+      delete rowModify.entidad
+      return rowModify
+    }))
     // csvExporter.generateCsv(data)
   }
   const columns = useMemo(() => ColumnsTable, [])
@@ -120,6 +126,7 @@ export const MatrizIES = () => {
     useBom: true,
     useKeysAsHeaders: true,
     headers: columns.map((c) => c.header)
+
   }
   const csvExporter = new ExportToCsv(csvOptions)
   return (

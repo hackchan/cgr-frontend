@@ -77,6 +77,28 @@ export const NavBar = () => {
               <NavDropdown
                 drop='end'
                 id='nav-dropdown-dark-example'
+                title='Presupuesto'
+                menuVariant={state.darkMode ? 'dark' : 'light'}
+              >
+                {/* {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/sector-obra'>Sector Obra</NavDropdown.Item>
+                )}
+
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
+                )}
+
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/estado-obra'>Estado Obra</NavDropdown.Item>
+                )} */}
+
+                <NavDropdown.Item as={StyledNavLink} to='/matriz-proyecto'>Matriz Proyectos</NavDropdown.Item>
+                {/* <NavDropdown.Item as={StyledNavLink} to='/matriz-obra-soporte'>Soportes Obras</NavDropdown.Item> */}
+
+              </NavDropdown>
+              <NavDropdown
+                drop='end'
+                id='nav-dropdown-dark-example'
                 title='Gestion Matriz Obras'
                 menuVariant={state.darkMode ? 'dark' : 'light'}
               >
