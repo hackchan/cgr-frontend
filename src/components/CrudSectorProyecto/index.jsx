@@ -10,31 +10,21 @@ import { esES } from '@mui/material/locale'
 import { ExportToCsv } from 'export-to-csv'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { ContainerBox } from '../../styles/box'
-import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle, CloudUploadIconStyle } from '../../styles/icons'
+import { DeleteIconStyle, EditIconStyle, PlaylistAddIconStyle } from '../../styles/icons'
 import { ButtonStyled } from '../../styles/button'
 import { Modal } from '../Modal'
-import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
-import { CsvParserIES } from '../CsvParserIES'
-import config from '../../config'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
-import { isEntidad } from '../../utils/user'
 import { TitleModule } from '../../styles/TitleModule'
-export const MatrizProyecto = () => {
+export const CrudSectorProyecto = () => {
   const {
     state,
-    GetProyectos,
-    AddProyecto,
-    GetEntidad,
-    getDepartments,
-    DeleteProyecto,
-    UpdateProyecto,
-    GetMunicipiosByDepartment,
-    GetSectorProyecto
+    GetSectorProyecto,
+    AddSectorProyecto,
+    DeleteSectorProyecto,
+    UpdateSectorProyecto
   } = useContext(AppContext)
-  const [user] = useLocalStorage('user', false)
 
   const modedark = state.darkMode ? 'dark' : 'light'
   const theme = createTheme({
@@ -54,11 +44,9 @@ export const MatrizProyecto = () => {
   const [isRefetching, setIsRefetching] = useState(false)
   const [isError, setIsError] = useState(false)
   const [error, setError] = useState('')
-  const [modalShow, setModalShow] = useState(false)
-  const [modalUpdateShow, setModalUpdateShow] = useState(false)
-  const [modalCsv, setModalCsv] = useState(false)
-  // const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false)
   const [modalEliminar, setModalEliminar] = useState(false)
+  const [modalUpdate, setModalUpdate] = useState(false)
   const [dataUpdate, setDataUpdate] = useState({})
   const [dataEliminar, setDataEliminar] = useState({})
   const [reload, setReload] = useState(false)
@@ -71,23 +59,20 @@ export const MatrizProyecto = () => {
     pageSize: preData.pageSize
   })
   const [rowCount, setRowCount] = useState(0)
-  const [isBasicUsr, setIsBasicUsr] = useState(false)
-  useEffect(() => {
-    const usrCGR = isEntidad(user)
-    setIsBasicUsr(usrCGR)
-  })
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setReload(false)
         if (!data.length) {
           setIsLoading(true)
         } else {
           setIsRefetching(true)
         }
 
-        const response = await GetProyectos(pagination, globalFilter, columnFilters, sorting, user)
+        const response = await GetSectorProyecto(pagination, globalFilter, columnFilters, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
+        setIsError(false)
       } catch (error) {
         setIsError(true)
         if (error.response) {
@@ -96,7 +81,6 @@ export const MatrizProyecto = () => {
           setError(error.message)
         }
       } finally {
-        setReload(false)
         setIsLoading(false)
         setIsRefetching(false)
       }
@@ -105,65 +89,56 @@ export const MatrizProyecto = () => {
   }, [
     pagination.pageIndex,
     pagination.pageSize,
-    columnFilters,
     globalFilter,
+    columnFilters,
     sorting,
     reload])
 
-  const handleExportData = (rows) => {
-    csvExporter.generateCsv(rows.map((row) => {
-      const rowModify = { ...row._valuesCache, fechaCierreEjecucion: row.original.fechaCierreEjecucion, fechaInicioEjecucion: row.original.fechaInicioEjecucion, sector: row.original.sector.id }
-      console.log('row1:', row._valuesCache)
-      console.log('row2:', row.original)
-      delete rowModify.entidad
-      delete rowModify.updatedAt
-      delete rowModify.alerta
+  const handleSaveRow = ({ row }) => {
+    // employeeData[+row.index] = row._valuesCache
+    // setEmployeeData([...employeeData])
+  }
 
-      return rowModify
-    }))
+  const handleExportData = (rows) => {
+    csvExporter.generateCsv(rows.map((row) => row._valuesCache))
     // csvExporter.generateCsv(data)
   }
   const columns = useMemo(() => ColumnsTable, [])
 
   const csvOptions = {
     quoteStrings: '"',
-    decimalSeparator: '.',
+    decimalSeparator: ',',
     fieldSeparator: '|',
     showLabels: true,
     useBom: true,
     useKeysAsHeaders: true,
     headers: columns.map((c) => c.header)
-
   }
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Matriz Proyectos</TitleModule>
-      {/* {modalEliminar &&
+      <TitleModule>Sector Proyecto</TitleModule>
+      {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteSectorProyecto={DeleteSectorProyecto} modedark={state.darkMode} />
         </Modal>}
 
-      <ModalB
-        show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
-      >
-        <CsvParserIES setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB>
+      {modalUpdate &&
+        <Modal closeModal={setModalUpdate}>
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateSectorProyecto={UpdateSectorProyecto} modedark={state.darkMode} />
+        </Modal>}
+      {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
 
-      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizIes={UpdateMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB> */}
-
-      <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddProyecto={AddProyecto} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB>
+      {modal &&
+        <Modal closeModal={setModal}>
+          <Register setModal={setModal} setReload={setReload} preData={preData} AddSectorProyecto={AddSectorProyecto} modedark={state.darkMode} />
+        </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable
           columns={columns}
           data={data}
-          localization={config.localization}
-          getRowId={(row) => row.id}
-          initialState={{ showColumnFilters: true, density: 'compact', pagination: { pageSize: 20, pageIndex: 0 } }}
+          localization={preData.localization}
+          initialState={preData.initialState}
           muiTableBodyRowProps={({ row }) => ({
             sx: {
 
@@ -174,6 +149,55 @@ export const MatrizProyecto = () => {
           muiTableHeadCellProps={{
             className: 'tableHeaderCell'
           }}
+          enableMultiSort
+          enableGlobalFilter
+          positionGlobalFilter='right'
+          muiTableContainerProps={{ className: 'tableContainer' }}
+          muiTableHeadProps={{
+            className: 'tableHeader'
+          }}
+        // enableRowSelection
+          enableClickToCopy
+          enableColumnOrdering
+          enableColumnDragging
+          enableColumnResizing
+          enablePinning
+        // enableRowOrdering
+          onRowDrop={({ draggedRow, targetRow }) => {
+            if (targetRow) {
+              data.splice(targetRow.index, 0, data.splice(draggedRow.index, 1)[0])
+              setData([...data])
+            }
+          }}
+        // enablePagination
+          muiTablePaginationProps={{
+            labelRowsPerPage: 'filas por página',
+            rowsPerPageOptions: [12, 20, 50, 100],
+            showFirstButton: true,
+            showLastButton: true,
+            SelectProps: { native: true }
+          }}
+          enableRowActions
+          positionActionsColumn='last'
+          positionPagination='bottom'
+          manualPagination
+          manualSorting
+          onColumnFiltersChange={setColumnFilters}
+          onGlobalFilterChange={setGlobalFilter}
+          onPaginationChange={setPagination}
+          onSortingChange={setSorting}
+          editingMode='cell'
+        // enableEditing
+        // paginateExpandedRows
+        // onPaginationChange
+          muiSearchTextFieldProps={{
+
+            variant: 'outlined',
+            placeholder: 'Busqueda global',
+            label: 'Buscar',
+            InputLabelProps: { shrink: true }
+
+          }}
           muiToolbarAlertBannerProps={
         isError
           ? {
@@ -182,48 +206,50 @@ export const MatrizProyecto = () => {
             }
           : undefined
       }
-          onColumnFiltersChange={setColumnFilters}
-          onGlobalFilterChange={setGlobalFilter}
-          onPaginationChange={setPagination}
-          onSortingChange={setSorting}
-          rowCount={rowCount}
           state={{
-            globalFilter,
             columnFilters,
+            globalFilter,
             isLoading,
             pagination,
             showAlertBanner: isError,
             showProgressBars: isRefetching,
             sorting
           }}
-          muiTablePaginationProps={{
-            labelRowsPerPage: 'filas por página',
-            showFirstButton: true,
-            showLastButton: true,
-            rowsPerPageOptions: [20],
-            SelectProps: { native: true }
-          }}
-          muiTableContainerProps={{ className: 'tableContainer' }}
-          muiTableHeadProps={{
-            className: 'tableHeader'
-          }}
-          manualFiltering
-          manualPagination
-          manualSorting
-          enableRowActions
-          positionActionsColumn='first'
-          positionPagination='bottom'
-          enableColumnResizing
-          // enableStickyHeader
-          enableRowVirtualization
-          // virtualizerProps={{ overscan: 25 }}
+        // state={{ isLoading, showProgressBars: isRefetching, showAlertBanner: isError, density: 'compact', pagination }}
+        // enableRowSelection // enable some features
+        // enableClickToCopy
+        // enableColumnResizing
+        // enableColumnOrdering
+        // enableGlobalFilter
+        // enablePinning
+        // enableRowActions
+        // autoResetPagination
+        // enableEditing
+        // enableRowNumbers
+        //  enableRowVirtualization
+        //  virtualizerProps={{ overscan: 50 }}
+          enableBottomToolbar
+          rowCount={rowCount}
+          positionToolbarAlertBanner='bottom'
+        // onEditRowSubmit={handleSaveRow}
+          onCellEditBlur={handleSaveRow}
           renderTopToolbarCustomActions={({ table }) => {
+            // const handleDeactivate = () => {
+            //   table.getSelectedRowModel().flatRows.map((row) => {
+            //     console.log(row._valuesCache)
+            //     window.alert('deactivating ', row._valuesCache)
+            //   })
+            // }
+            // const handleActivate = () => {
+            //   table.getSelectedRowModel().flatRows.map((row) => {
+            //     window.alert('activating ' + row.getValue('name'))
+            //   })
+            // }
             return (
               <Box
                 sx={{ display: 'flex', gap: '1rem', p: '0.5rem', flexWrap: 'wrap' }}
               >
                 <ButtonStyled
-                  disabled={table.getRowModel().rows.length === 0}
                   className='export'
                   onClick={() => { handleExportData(table.getPrePaginationRowModel().rows) }}
                   startIcon={<FileDownloadIcon />}
@@ -233,20 +259,11 @@ export const MatrizProyecto = () => {
                 </ButtonStyled>
                 <ButtonStyled
                   className='new'
-                  onClick={() => { setModalShow(true) }}
+                  onClick={() => { setModal(true) }}
                   startIcon={<PlaylistAddIconStyle />}
                   variant='contained'
                 >
                   Nuevo
-                </ButtonStyled>
-                <ButtonStyled
-                  className='csv'
-                  // style={{ background: '#94c' }}
-                  onClick={() => { setModalCsv(true) }}
-                  startIcon={<CloudUploadIconStyle />}
-                  variant='contained'
-                >
-                  Cargar csv
                 </ButtonStyled>
                 {/* <Button
                 color='error'
@@ -283,7 +300,7 @@ export const MatrizProyecto = () => {
                 <EditIconStyle
                   variant='contained'
                   onClick={() => {
-                    setModalUpdateShow(true)
+                    setModalUpdate(true)
                     setDataUpdate(row.original)
 
                     //       closeMenu()
@@ -294,6 +311,7 @@ export const MatrizProyecto = () => {
           )}
         />
       </ThemeProvider>
+
     </ContainerBox>
 
   )

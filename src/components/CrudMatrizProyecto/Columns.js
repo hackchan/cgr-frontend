@@ -42,7 +42,7 @@ export const ColumnsTable = [
       type: 'date'
     },
     filterVariant: 'range',
-    filterFn: 'lessThanOrEqualTo',
+
     sortingFn: 'datetime',
     Cell: ({ cell }) => cell.getValue(),
     Header: ({ column }) => <em>{column.columnDef.header}</em>
@@ -232,6 +232,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     filterFn: 'lessThanOrEqualTo',
     sortingFn: 'datetime',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),
@@ -246,6 +247,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     filterFn: 'lessThanOrEqualTo',
     sortingFn: 'datetime',
     Cell: ({ cell }) => format(cell.getValue(), 'yyyy-MM-dd'),

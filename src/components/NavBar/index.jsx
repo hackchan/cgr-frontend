@@ -80,11 +80,11 @@ export const NavBar = () => {
                 title='Presupuesto'
                 menuVariant={state.darkMode ? 'dark' : 'light'}
               >
-                {/* {menuAdmin && (
-                  <NavDropdown.Item as={StyledNavLink} to='/sector-obra'>Sector Obra</NavDropdown.Item>
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/sector-proyecto'>Sector Proyecto</NavDropdown.Item>
                 )}
 
-                {menuAdmin && (
+                {/* {menuAdmin && (
                   <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
                 )}
 

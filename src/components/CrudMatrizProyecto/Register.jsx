@@ -11,8 +11,7 @@ import { AsyncPaginateStyled } from '../../styles/paginate'
 
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({
-  setModalShow, setReload, preData, AddMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSemestres,
-  GetEstratos, user, isBasicUsr, modedark
+  setModalShow, setReload, preData, AddMatrizIes, GetEntidad, getDepartments, GetMunicipiosByDepartment, GetTipodDocs, GetSectorProyecto, user, isBasicUsr, modedark
 }) => {
   const ref = useRef()
   const [disableBtn, setDisableBtn] = useState(false)
@@ -106,17 +105,17 @@ export const Register = ({
     return options
   }
 
-  const getListEstratos = async (inputValue) => {
+  const getListSectorProyecto = async (inputValue) => {
     const options = []
-    const response = await GetEstratos()
+    const response = await GetSectorProyecto()
     const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 
-    filter.forEach((estratos) => {
+    filter.forEach((sectorProyecto) => {
       options.push({
-        label: estratos.name,
-        value: estratos.id
+        label: sectorProyecto.name,
+        value: sectorProyecto.id
       })
     })
     return options
@@ -269,49 +268,28 @@ export const Register = ({
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGrCodigo'>
-            <FormLabelStyle modedark={modedark.toString()}>Codigo Estudiante</FormLabelStyle>
+            <FormLabelStyle modedark={modedark.toString()}>IdBpin</FormLabelStyle>
             <Form.Control
-              style={{ height: 46 }} type='text' placeholder='Eje. EST117' {...register('codigo', {
-                required: 'código estudiante es obligatorio',
+              style={{ height: 46 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('IdBpin', {
+                required: 'código BPIN es obligatorio',
                 pattern: {
-                  value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-_]*[0-9a-zA-Z]$)/,
-                  message: 'No es un código estudiante válido'
+                  value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-]*[0-9a-zA-Z]$)/,
+                  message: 'No es un código BPIN válido'
                 }
               })}
             />
 
-            {errors.codigo && (
-              <Form.Text className='errors' onClick={() => clearErrors('codigo')}>
-                {errors.codigo.message}
-              </Form.Text>
-            )}
-          </Form.Group>
-
-          <Form.Group as={Col} controlId='formGridSemestre'>
-            <FormLabelStyle modedark={modedark.toString()}>Semestre Reportado</FormLabelStyle>
-            <Form.Control
-              style={{ height: 46 }} type='text' placeholder='Eje. 202201' {...register('semestreReportado', {
-                required: 'código semestre es obligatorio',
-                minLength: { value: 6, message: 'La longitud mínima es de 6 digitos' },
-                maxLength: { value: 6, message: 'La longitud máxima es de 6 digitos' },
-                pattern: {
-                  value: /(^(20)[1-9]{1}[0-9]{1}(01|02)$)/,
-                  message: 'No es un código semestre válido'
-                }
-              })}
-            />
-
-            {errors.semestreReportado && (
-              <Form.Text className='errors' onClick={() => clearErrors('semestreReportado')}>
-                {errors.semestreReportado.message}
+            {errors.IdBpin && (
+              <Form.Text className='errors' onClick={() => clearErrors('IdBpin')}>
+                {errors.IdBpin.message}
               </Form.Text>
             )}
           </Form.Group>
 
           <Form.Group as={Col} controlId='formGridPrograma'>
-            <FormLabelStyle modedark={modedark.toString()}>Programa</FormLabelStyle>
+            <FormLabelStyle modedark={modedark.toString()}>Nombre Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 46 }} type='text' placeholder='Eje. DESARROLLO SOFTWARE' {...register('programa', {
+              style={{ height: 46 }} type='text' placeholder='Eje. Proyecto de adecuaciones locativas' {...register('nombreProyecto', {
                 required: 'programa es obligatorio',
                 minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
                 maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
@@ -321,32 +299,123 @@ export const Register = ({
                 }
               })}
             />
-            {errors.programa && (
-              <Form.Text className='errors' onClick={() => clearErrors('programa')}>
-                {errors.programa.message}
+            {errors.nombreProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('nombreProyecto')}>
+                {errors.nombreProyecto.message}
               </Form.Text>
             )}
           </Form.Group>
+        </Row>
 
-          <Form.Group as={Col} controlId='formGriCantidadCreditos'>
-            <FormLabelStyle modedark={modedark.toString()}>Créditos</FormLabelStyle>
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridvalorProyecto'>
+            <FormLabelStyle modedark={modedark.toString()}>Valor Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 46 }} type='text' placeholder='eje. 2' {...register('creditos', {
-                required: 'Cantidad créditos es obligatorio',
+              style={{ height: 46 }} type='text' placeholder='eje. 1000364540.00' {...register('valorProyecto', {
+                required: 'valor proyecto es obligatorio',
+                minLength: { value: 1, message: 'el valor minimo es de 0' },
+                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
                 pattern: {
-                  value: /^(([0-9])([0-9])?(\d)?|(1000))$/,
-                  message: 'Numeros de créditos no valido.'
+                  value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
+                  message: 'No es un valor de proyecto válido'
                 }
               })}
             />
-            {errors.creditos && (
-              <Form.Text className='errors' onClick={() => clearErrors('creditos')}>
-                {errors.creditos.message}
+            {errors.valorProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('valorProyecto')}>
+                {errors.valorProyecto.message}
               </Form.Text>
             )}
           </Form.Group>
-
+          <Form.Group as={Col} controlId='formGridduracionProyecto'>
+            <FormLabelStyle modedark={modedark.toString()}>Duracion Proyecto (Días)</FormLabelStyle>
+            <Form.Control
+              style={{ height: 46 }} type='text' placeholder='eje. 100' {...register('duracionProyecto', {
+                required: 'Duracion Proyecto es obligatorio',
+                pattern: {
+                  value: /^([0-9]{1,6})$/,
+                  message: 'No es un valor válido, expresar en días'
+                }
+              })}
+            />
+            {errors.duracionProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('duracionProyecto')}>
+                {errors.duracionProyecto.message}
+              </Form.Text>
+            )}
+          </Form.Group>
         </Row>
+
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='formGridPrograma'>
+            <FormLabelStyle modedark={modedark.toString()}>Dependencia Proyecto</FormLabelStyle>
+            <Form.Control
+              style={{ height: 46 }} type='text' placeholder='Eje. Secretaria de Educacion' {...register('dependeciaProyecto', {
+                required: 'programa es obligatorio',
+                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
+                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
+                pattern: {
+                  value: /(^[a-zA-ZÑñ. ]*[a-zA-Z-_Ññ. ]*[a-zA-ZÑñ. ]$)/,
+                  message: 'programa no válido'
+                }
+              })}
+            />
+            {errors.dependeciaProyecto && (
+              <Form.Text className='errors' onClick={() => clearErrors('dependeciaProyecto')}>
+                {errors.dependeciaProyecto.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+
+        <Row className='mb-3'>
+
+          <Form.Group as={Col} controlId='formGridDescripcionProyecto'>
+            <FormLabelStyle modedark={modedark.toString()}>Descripción</FormLabelStyle>
+            <Form.Control
+              as='textarea' rows={6} placeholder='Eje. Adecuaciones locativas piso 1 y 2' {...register('descripcion', {
+                required: 'Descripción es obligatorio',
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
+                  message: 'No es una Descripción válida'
+                }
+              })}
+            />
+
+            {errors.descripcion && (
+              <Form.Text className='errors' onClick={() => clearErrors('descripcion')}>
+                {errors.descripcion.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+
+        <Row className='mb-3'>
+
+          <Form.Group as={Col} controlId='formGridObjetivoProyecto'>
+            <FormLabelStyle modedark={modedark.toString()}>Objetivo General</FormLabelStyle>
+            <Form.Control
+              as='textarea' rows={6} placeholder='Eje. Solventar inconvenientes en las platas del edificio' {...register('objetivoGeneral', {
+                required: 'Objetivo General es obligatorio',
+                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
+                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
+                pattern: {
+                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
+                  message: 'No es una Objetivo General válido'
+                }
+              })}
+            />
+
+            {errors.objetivoGeneral && (
+              <Form.Text className='errors' onClick={() => clearErrors('objetivoGeneral')}>
+                {errors.objetivoGeneral.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+        </Row>
+
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGridTipodoc'>
             <FormLabelStyle modedark={modedark.toString()}>Tipo Documento</FormLabelStyle>
@@ -398,7 +467,7 @@ export const Register = ({
           </Form.Group>
 
           <Form.Group as={Col} controlId='formGridestrato'>
-            <FormLabelStyle modedark={modedark.toString()}>Estrato</FormLabelStyle>
+            <FormLabelStyle modedark={modedark.toString()}>Sector Proyecto</FormLabelStyle>
             <Controller
               name='estrato'
               control={control}
@@ -413,7 +482,7 @@ export const Register = ({
                   placeholder='Selecciona...'
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
-                  loadOptions={getListEstratos}
+                  loadOptions={getListSectorProyecto}
                   onChange={(e) => { onChange(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'

@@ -606,7 +606,7 @@ export const Register = ({ setModalShow, setReload, preData, AddMatrizObra, GetS
             <FormLabelStyle modedark={modedark.toString()}>Avance Fisico Ejecutado</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='eje. 0.80' {...register('avanceFisicoEjecutado', {
-                required: 'Avance físico 3jecutado es obligatorio',
+                required: 'Avance físico ejecutado es obligatorio',
                 minLength: { value: 1, message: 'el valor minimo es de 0' },
                 maxLength: { value: 16, message: 'el valor maximo es de 1' },
                 pattern: {

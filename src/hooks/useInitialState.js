@@ -2271,7 +2271,12 @@ export const useInitialState = () => {
   }
 
   // Crud Proyectos
-  const GetProyectos = async (payload, globalFilter, columnFilters, sorting) => {
+  const GetProyectos = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
     try {
       const url = new URL(
         '/api/v2/proyecto',
@@ -2355,6 +2360,114 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/proyecto/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Sector Obra
+
+  const GetSectorProyecto = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/sector-proyecto',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddSectorProyecto = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-proyecto`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteSectorProyecto = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-proyecto/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateSectorProyecto = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/sector-proyecto/${id}`,
         data: payload,
         withCredentials: false,
         headers: {
@@ -2520,6 +2633,10 @@ export const useInitialState = () => {
     GetProyectos,
     AddProyecto,
     DeleteProyecto,
-    UpdateProyecto
+    UpdateProyecto,
+    GetSectorProyecto,
+    AddSectorProyecto,
+    DeleteSectorProyecto,
+    UpdateSectorProyecto
   }
 }
