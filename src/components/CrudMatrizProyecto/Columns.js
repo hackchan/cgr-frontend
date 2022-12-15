@@ -2,6 +2,7 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { format, parse, parseISO, formatRelative, addDays } from 'date-fns'
+import { dateRelative } from '../../utils/time'
 import { es } from 'date-fns/locale'
 export const ColumnsTable = [
   {
@@ -28,9 +29,10 @@ export const ColumnsTable = [
   // },
   {
     accessorFn: (row) => {
-      return formatRelative(
-        addDays(new Date(parseISO(row.updatedAt).toUTCString()), 0),
-        new Date(parseISO(row.updatedAt).toUTCString())
+      return (
+        format(Date.parse(row.updatedAt), 'yyyy-MM-dd') +
+        ' ' +
+        dateRelative(row.updatedAt)
       )
     },
     size: 350,
@@ -39,6 +41,7 @@ export const ColumnsTable = [
     muiTableHeadCellFilterTextFieldProps: {
       type: 'date'
     },
+    filterVariant: 'range',
     filterFn: 'lessThanOrEqualTo',
     sortingFn: 'datetime',
     Cell: ({ cell }) => cell.getValue(),
