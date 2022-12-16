@@ -1,4 +1,4 @@
-const table = 'Matricula IES'
+const table = 'Proyecto'
 export const Config = {
   pageIndex: 0,
   pageSize: 20,
@@ -8,8 +8,8 @@ export const Config = {
   update: `Actualizar ${table}`,
   delete: `Eliminar ${table}`,
   labelRowsPerPage: 'filas por página',
-  buttonRegister: 'Adicionar Matricula',
-  buttonUpdate: 'Actualizar Matricula',
+  buttonRegister: 'Adicionar Proyecto',
+  buttonUpdate: 'Actualizar Proyecto',
   rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,

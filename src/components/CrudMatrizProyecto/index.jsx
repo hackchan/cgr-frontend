@@ -148,14 +148,14 @@ export const MatrizProyecto = () => {
         show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
       >
         <CsvParserIES setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB>
-
-      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateMatrizIes={UpdateMatrizIes} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetTipodDocs={GetTipodDocs} GetSemestres={GetSemestres} GetEstratos={GetEstratos} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB> */}
 
+      <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateProyecto={UpdateProyecto} GetEntidad={GetEntidad} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+      </ModalB>
+
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddProyecto={AddProyecto} GetEntidad={GetEntidad} getDepartments={getDepartments} GetMunicipiosByDepartment={GetMunicipiosByDepartment} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddProyecto={AddProyecto} GetEntidad={GetEntidad} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable
