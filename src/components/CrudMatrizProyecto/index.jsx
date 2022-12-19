@@ -139,12 +139,12 @@ export const MatrizProyecto = () => {
   return (
     <ContainerBox>
       <TitleModule>Matriz Proyectos</TitleModule>
-      {/* {modalEliminar &&
+      {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteMatrizObra={DeleteMatrizIes} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteProyecto={DeleteProyecto} modedark={state.darkMode} />
         </Modal>}
 
-      <ModalB
+      {/* <ModalB
         show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
       >
         <CsvParserIES setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
@@ -275,7 +275,7 @@ export const MatrizProyecto = () => {
                   variant='contained'
                   onClick={() => {
                     setModalEliminar(true)
-                    setDataEliminar(row._valuesCache)
+                    setDataEliminar(row.original)
                   }}
                 />
               </Tooltip>

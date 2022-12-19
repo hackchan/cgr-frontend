@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Logo } from '../Logo'
 import { BoxForm, Title, Message } from '../../styles/box'
 import { ButtonLoading } from '../ButtonLoading'
-export const Delete = ({ data, closeModal, preData, setReload, DeleteMatrizObra, modedark }) => {
+export const Delete = ({ data, closeModal, preData, setReload, DeleteProyecto, isBasicUsr, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-
+  console.log('data:', data)
   const handleDelete = async () => {
     try {
       setDisableBtn(true)
-      await DeleteMatrizObra(data)
+      await DeleteProyecto(data, data.idBpin, data.entidad.id)
       closeModal(false)
       setReload(true)
     } catch (error) {
@@ -28,7 +28,7 @@ export const Delete = ({ data, closeModal, preData, setReload, DeleteMatrizObra,
         <Logo big />
       </div>
       <Title>{preData.delete}</Title>
-      <Message>Esta seguro que desea Eliminar la {preData.table} del estudiante {data.codigo} del semestre {data.semestreReportado}?</Message>
+      <Message>Esta seguro que desea Eliminar el {preData.table} con Bpin {data.idBpin}?</Message>
 
       <ButtonLoading onClick={() => closeModal(false)} value='cancelar' />
       <ButtonLoading onClick={() => handleDelete()} className='danger' disabled={disableBtn} loading={disableBtn} value='Eliminar' />

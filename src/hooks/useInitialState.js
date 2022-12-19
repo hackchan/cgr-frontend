@@ -2333,11 +2333,17 @@ export const useInitialState = () => {
     }
   }
 
-  const DeleteProyecto = async (payload) => {
+  const DeleteProyecto = async (payload, id, entidadId) => {
     try {
+      const url = new URL(
+        '/api/v2/proyecto/delete',
+        `http://${config.dominio}:${config.port}`
+      )
+      url.searchParams.set('id', `${id}`)
+      url.searchParams.set('entidadId', `${entidadId}`)
       const response = await axios({
         method: 'delete',
-        url: `http://${config.dominio}:${config.port}/api/v2/proyecto/${payload.id}`,
+        url: url.href,
         data: {},
         withCredentials: false,
         headers: {
@@ -2355,11 +2361,17 @@ export const useInitialState = () => {
     }
   }
 
-  const UpdateProyecto = async (payload, id) => {
+  const UpdateProyecto = async (payload, id, entidadId) => {
     try {
+      const url = new URL(
+        '/api/v2/proyecto/update',
+        `http://${config.dominio}:${config.port}`
+      )
+      url.searchParams.set('id', `${id}`)
+      url.searchParams.set('entidadId', `${entidadId}`)
       const response = await axios({
         method: 'patch',
-        url: `http://${config.dominio}:${config.port}/api/v2/proyecto/${id}`,
+        url: url.href,
         data: payload,
         withCredentials: false,
         headers: {

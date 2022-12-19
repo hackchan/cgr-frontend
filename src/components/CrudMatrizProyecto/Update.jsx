@@ -15,6 +15,8 @@ export const Update = ({
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   const [isUserEntidad] = useState(isBasicUsr)
+  const [entidadSel, setEntidadSel] = useState({ label: data.entidad.name, value: data.entidad.id })
+  const [sectorSel, setSectorSel] = useState({ label: data.sector.name, value: data.sector.id })
 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
@@ -69,34 +71,21 @@ export const Update = ({
 
   const onSubmit = async (dataForm) => {
     try {
+      console.log('dataForm:', dataForm)
+      const entidadId = isUserEntidad ? user.entidades[0].id : dataForm.entidad.value
       dataForm = {
         ...dataForm,
         userOper: user.id,
-        tipoDoc: dataForm.tipoDoc.value,
-        semestreIngreso: Number(dataForm.semestreIngreso),
-        estrato: dataForm.estrato.value,
-        semestreReportado: Number(dataForm.semestreReportado),
-        codigo: dataForm.codigo,
-        documento: dataForm.documento,
-        diaCorte: Number(dataForm.diaCorte),
-        mesCorte: Number(dataForm.mesCorte),
-        anioCorte: Number(dataForm.anioCorte),
-        creditos: Number(dataForm.creditos),
-        entidad: isUserEntidad ? user.entidades[0].id : dataForm.entidad.value,
-        residencia: municipioResideSel.value,
-        sede: municipioSedeSel.value,
-        name: dataForm.name,
-        programa: dataForm.programa,
-        valorSemestre: Number(dataForm.valorSemestre),
-        recargo: Number(dataForm.recargo),
-        descuentos: Number(dataForm.descuentos),
-        tipoDescuento: dataForm.tipoDescuento
-
+        entidad: entidadId,
+        entidad_id: entidadId,
+        sector: dataForm.sector.value
       }
-      delete dataForm.departamentoReside
-      delete dataForm.departamentoSede
+      console.log('dataForm2:', dataForm)
       setDisableBtn(true)
-      await UpdateMatrizIes(dataForm, data.id)
+      delete dataForm.entidad
+      delete dataForm.entidad_id
+      delete dataForm.idBpin
+      await UpdateProyecto(dataForm, data.idBpin, entidadId)
       setModalUpdateShow(false)
       setReload(true)
     } catch (error) {
@@ -119,13 +108,14 @@ export const Update = ({
               <FormLabelStyle modedark={modedark.toString()}>Entidad</FormLabelStyle>
               <Controller
     // id='department'
-                isReadOnly
                 name='entidad'
+                defaultValue={entidadSel}
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, ref, ...field } }) => (
                   <StyledSelect
-                    isReadOnly
+                    isDisabled
+                    value={entidadSel}
                     {...field}
                     innerRef={ref}
                     {...register('entidad', { required: 'Entidad es obligatorio' })}
@@ -138,7 +128,7 @@ export const Update = ({
                     getOptionValue={e => e.value}
                     loadOptions={getListEntidades}
         // value={currentDepartment}
-                    onChange={(e) => { onChange(e) }}
+                    onChange={(e) => { onChange(e); setEntidadSel(e) }}
                     onBlur={onBlur}
                   />
                 )}
@@ -157,7 +147,7 @@ export const Update = ({
           <Form.Group as={Col} controlId='formGrCodigo'>
             <FormLabelStyle modedark={modedark.toString()}>IdBpin</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('idBpin', {
+              style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' disabled {...register('idBpin', {
                 required: 'código BPIN es obligatorio',
                 pattern: {
                   value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-]*[0-9a-zA-Z]$)/,
@@ -259,9 +249,11 @@ export const Update = ({
               name='sector'
               control={control}
               rules={{ required: true }}
+              defaultValue={sectorSel}
               render={({ field: { onChange, onBlur, ref, ...field } }) => (
                 <StyledSelect
                   {...field}
+                  value={sectorSel}
                   innerRef={ref}
                   {...register('sector', { required: 'sector es obligatorio' })}
                   isClearable
@@ -270,7 +262,7 @@ export const Update = ({
                   getOptionLabel={e => e.value + ' ' + e.label}
                   getOptionValue={e => e.value}
                   loadOptions={getListSectorProyecto}
-                  onChange={(e) => { onChange(e) }}
+                  onChange={(e) => { onChange(e); setSectorSel(e) }}
                   onBlur={onBlur}
                   classNamePrefix='Select'
                 />
