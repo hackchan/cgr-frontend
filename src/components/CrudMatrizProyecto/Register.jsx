@@ -7,7 +7,8 @@ import { clearMessage } from '../../utils/time'
 import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
-
+import { formSchemaProyecto } from './Schema'
+import { yupResolver } from '@hookform/resolvers/yup'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({
   setModalShow, setReload, preData, AddProyecto, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
@@ -18,7 +19,8 @@ export const Register = ({
 
   const { register, handleSubmit, control, formState: { errors }, clearErrors } = useForm({
     mode: 'onTouched',
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    resolver: yupResolver(formSchemaProyecto)
   })
 
   const getListSectorProyecto = async (inputValue) => {
@@ -127,18 +129,12 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGrCodigo'>
             <FormLabelStyle modedark={modedark.toString()}>IdBpin</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('idBpin', {
-                required: 'código BPIN es obligatorio',
-                pattern: {
-                  value: /(^[0-9a-zA-Z]*[0-9a-zA-Z-]*[0-9a-zA-Z]$)/,
-                  message: 'No es un código BPIN válido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('idBpin')}
             />
 
-            {errors.IdBpin && (
-              <Form.Text className='errors' onClick={() => clearErrors('IdBpin')}>
-                {errors.IdBpin.message}
+            {errors.idBpin && (
+              <Form.Text className='errors' onClick={() => clearErrors('idBpin')}>
+                {errors.idBpin.message}
               </Form.Text>
             )}
           </Form.Group>
@@ -146,15 +142,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridPrograma'>
             <FormLabelStyle modedark={modedark.toString()}>Nombre Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Proyecto de adecuaciones locativas' {...register('nombreProyecto', {
-                required: 'Nombre Proyecto es obligatorio',
-                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
-                pattern: {
-                  value: /(^[a-zA-ZÑñ. ]*[a-zA-Z-_Ññ. ]*[a-zA-ZÑñ. ]$)/,
-                  message: 'Nombre Proyecto no válido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='Eje. Proyecto de adecuaciones locativas' {...register('nombreProyecto')}
             />
             {errors.nombreProyecto && (
               <Form.Text className='errors' onClick={() => clearErrors('nombreProyecto')}>
@@ -168,15 +156,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridvalorProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Valor Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('valorProyecto', {
-                required: 'valor proyecto es obligatorio',
-                minLength: { value: 1, message: 'el valor minimo es de 0' },
-                maxLength: { value: 16, message: 'el valor maximo es de 9999999999999.99' },
-                pattern: {
-                  value: /^[0-9]{1,13}(\.[0-9]{1,2})?$/,
-                  message: 'No es un valor de proyecto válido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='eje. 1000364540.00' {...register('valorProyecto')}
             />
             {errors.valorProyecto && (
               <Form.Text className='errors' onClick={() => clearErrors('valorProyecto')}>
@@ -187,13 +167,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridduracionProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Duracion Proyecto (Días)</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='eje. 100' {...register('duracionProyecto', {
-                required: 'Duracion Proyecto es obligatorio',
-                pattern: {
-                  value: /^([0-9]{1,6})$/,
-                  message: 'No es un valor válido, expresar en días'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='eje. 100' {...register('duracionProyecto')}
             />
             {errors.duracionProyecto && (
               <Form.Text className='errors' onClick={() => clearErrors('duracionProyecto')}>
@@ -207,15 +181,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridPrograma'>
             <FormLabelStyle modedark={modedark.toString()}>Dependencia Proyecto</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Secretaria de Educacion' {...register('dependenciaProyecto', {
-                required: 'dependencia Proyecto es obligatorio',
-                minLength: { value: 3, message: 'La longitud mínima es de 3 caracteres' },
-                maxLength: { value: 64, message: 'La longitud máxima es de 64 caracteres' },
-                pattern: {
-                  value: /(^[a-zA-ZÑñ. ]*[a-zA-Z-_Ññ. ]*[a-zA-ZÑñ. ]$)/,
-                  message: 'dependencia Proyecto no válido'
-                }
-              })}
+              style={{ height: 38 }} type='text' placeholder='Eje. Secretaria de Educacion' {...register('dependenciaProyecto')}
             />
             {errors.dependenciaProyecto && (
               <Form.Text className='errors' onClick={() => clearErrors('dependenciaProyecto')}>
@@ -260,15 +226,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridDescripcionProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Descripción</FormLabelStyle>
             <Form.Control
-              as='textarea' rows={6} placeholder='Eje. Adecuaciones locativas piso 1 y 2' {...register('descripcion', {
-                required: 'Descripción es obligatorio',
-                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
-                pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
-                  message: 'No es una Descripción válida'
-                }
-              })}
+              as='textarea' rows={6} placeholder='Eje. Adecuaciones locativas piso 1 y 2' {...register('descripcion')}
             />
 
             {errors.descripcion && (
@@ -284,15 +242,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridObjetivoProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Objetivo General</FormLabelStyle>
             <Form.Control
-              as='textarea' rows={6} placeholder='Eje. Solventar inconvenientes en las platas del edificio' {...register('objetivoGeneral', {
-                required: 'Objetivo General es obligatorio',
-                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
-                pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
-                  message: 'No es una Objetivo General válido'
-                }
-              })}
+              as='textarea' rows={6} placeholder='Eje. Solventar inconvenientes en las platas del edificio' {...register('objetivoGeneral')}
             />
 
             {errors.objetivoGeneral && (
@@ -308,15 +258,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridObjetivoProyecto'>
             <FormLabelStyle modedark={modedark.toString()}>Programa Plan Desarrollo</FormLabelStyle>
             <Form.Control
-              as='textarea' rows={6} placeholder='Eje. Plan de desarrollo económico para el municipio' {...register('programaPlanDesarrollo', {
-                required: 'programa Plan Desarrollo es obligatorio',
-                minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
-                maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
-                pattern: {
-                  value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
-                  message: 'No es un programa Plan Desarrollo válido'
-                }
-              })}
+              as='textarea' rows={6} placeholder='Eje. Plan de desarrollo económico para el municipio' {...register('programaPlanDesarrollo')}
             />
 
             {errors.programaPlanDesarrollo && (
@@ -331,9 +273,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridFecha'>
             <FormLabelStyle modedark={modedark.toString()}>Fecha Inicio Ejecucion</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaInicioEjecucion', {
-                required: 'Fecha Inicio Ejecucion es obligatorio'
-              })}
+              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaInicioEjecucion')}
             />
 
             {errors.fechaInicioEjecucion && (
@@ -346,9 +286,7 @@ export const Register = ({
           <Form.Group as={Col} controlId='formGridFecha'>
             <FormLabelStyle modedark={modedark.toString()}>Fecha Cierre Ejecucion</FormLabelStyle>
             <Form.Control
-              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaCierreEjecucion', {
-                required: 'Fecha Cierre Ejecucion es obligatorio'
-              })}
+              style={{ height: 38 }} type='date' placeholder='eje. 2020-01-01' {...register('fechaCierreEjecucion')}
             />
 
             {errors.fechaCierreEjecucion && (
@@ -366,15 +304,7 @@ export const Register = ({
             <Form.Group as={Col} controlId='formGridObjetivoProyecto'>
               <FormLabelStyle modedark={modedark.toString()}>Observaciones</FormLabelStyle>
               <Form.Control
-                as='textarea' rows={6} placeholder='Eje. El proyecto ha presentado inconvenientes por actividades' {...register('observaciones', {
-                  required: 'observaciones es obligatorio',
-                  minLength: { value: 2, message: 'La longitud mínima es de 2 caracteres' },
-                  maxLength: { value: 300, message: 'La longitud máxima es de 300 caracteres' },
-                  pattern: {
-                    value: /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
-                    message: 'No es una observacion válida'
-                  }
-                })}
+                as='textarea' rows={6} placeholder='Eje. El proyecto ha presentado inconvenientes por actividades' {...register('observaciones')}
               />
 
               {errors.observaciones && (

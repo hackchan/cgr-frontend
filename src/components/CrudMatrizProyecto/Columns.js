@@ -1,9 +1,8 @@
 /* eslint-disable indent */
 import React from 'react'
 import { Box } from '@mui/material'
-import { format, parse, parseISO, formatRelative, addDays } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { dateRelative } from '../../utils/time'
-import { es } from 'date-fns/locale'
 export const ColumnsTable = [
   {
     accessorFn: (row) => `${row.alerta ? 'SI' : 'NO'}`,

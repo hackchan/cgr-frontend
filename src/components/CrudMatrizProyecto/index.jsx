@@ -17,7 +17,7 @@ import { ModalB } from '../ModalB'
 import { Register } from './Register'
 import { Delete } from './Delete'
 import { Update } from './Update'
-import { CsvParserIES } from '../CsvParserIES'
+import { CsvParserPresProyecto } from '../CsvPresProyecto '
 import config from '../../config'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { isEntidad } from '../../utils/user'
@@ -144,11 +144,11 @@ export const MatrizProyecto = () => {
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteProyecto={DeleteProyecto} modedark={state.darkMode} />
         </Modal>}
 
-      {/* <ModalB
+      <ModalB
         show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
       >
-        <CsvParserIES setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddMatrizIes} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
-      </ModalB> */}
+        <CsvParserPresProyecto setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddProyecto} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+      </ModalB>
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
         <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateProyecto={UpdateProyecto} GetEntidad={GetEntidad} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
