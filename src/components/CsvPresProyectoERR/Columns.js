@@ -35,17 +35,17 @@ export const ColumnsTable = [
   {
     accessorKey: 'descripcion',
     header: 'Descripcion',
-    size: 400
+    size: 600
   },
   {
     accessorKey: 'objetivoGeneral',
     header: 'ObjetivoGeneral',
-    size: 200
+    size: 600
   },
   {
     accessorKey: 'programaPlanDesarrollo',
     header: 'Programa Plan Desarrollo',
-    size: 200
+    size: 600
   },
   {
     accessorKey: 'fechaInicioEjecucion',
@@ -60,6 +60,6 @@ export const ColumnsTable = [
   {
     accessorKey: 'observaciones',
     header: 'Observaciones',
-    size: 400
+    size: 600
   }
 ]

@@ -1,22 +1,6 @@
 import * as Yup from 'yup'
 const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
 
-const relationsObj = Yup.object().shape({
-  entidad: Yup.object().shape().nullable().required('Entidad es obligatorio'),
-  sector: Yup.object().shape().nullable().required('Sector es obligatorio')
-})
-
-const relations = Yup.object().shape({
-  entidad: Yup.number()
-    .positive()
-    .required('Entidad es obligatorio')
-    .typeError('debe ser un número entero'),
-  sector: Yup.number()
-    .positive()
-    .required('Sector es obligatorio')
-    .typeError('debe ser un número entero')
-})
-
 export const formSchemaProyecto = Yup.object().shape({
   idBpin: Yup.string()
     .required('idBpin es obligatorio')
@@ -24,8 +8,14 @@ export const formSchemaProyecto = Yup.object().shape({
       /(^[0-9a-zA-Z]*[0-9a-zA-Z-]*[0-9a-zA-Z]$)/,
       'No es un código BPIN válido'
     ),
-  entidad: Yup.object().shape().nullable().required('Entidad es obligatorio'),
-  sector: Yup.object().shape().nullable().required('Sector es obligatorio'),
+  entidad: Yup.number()
+    .positive()
+    .required('Entidad es obligatorio')
+    .typeError('debe ser un número entero'),
+  sector: Yup.number()
+    .positive()
+    .required('Sector es obligatorio')
+    .typeError('debe ser un número entero'),
   nombreProyecto: Yup.string()
     .required('Nombre proyecto es obligatorio')
     .min(3, 'La longitud mínima es de 3 caracteres')
@@ -64,7 +54,7 @@ export const formSchemaProyecto = Yup.object().shape({
   descripcion: Yup.string()
     .required('Descripción es obligatorio')
     .min(2, 'longitud mínima es de 2 caracteres')
-    .max(300, 'longitud máxima es de 2 caracteres')
+    .max(300, 'longitud máxima es de 300 caracteres')
     .matches(
       /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
       'No es una Descripción válida'
@@ -73,7 +63,7 @@ export const formSchemaProyecto = Yup.object().shape({
   objetivoGeneral: Yup.string()
     .required('Descripción es obligatorio')
     .min(2, 'longitud mínima es de 2 caracteres')
-    .max(300, 'longitud máxima es de 2 caracteres')
+    .max(300, 'longitud máxima es de 300 caracteres')
     .matches(
       /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
       'No es una Descripción válida'
@@ -82,23 +72,23 @@ export const formSchemaProyecto = Yup.object().shape({
   programaPlanDesarrollo: Yup.string()
     .required('Programa plan desarrollo es obligatorio')
     .min(2, 'longitud mínima es de 2 caracteres')
-    .max(300, 'longitud máxima es de 2 caracteres')
+    .max(300, 'longitud máxima es de 300 caracteres')
     .matches(
       /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
       'No es un programa Plan Desarrollo válido'
     ),
-  fechaInicioEjecucion: Yup.string()
+  fechaInicioEjecucion: Yup.date()
     .nullable()
     .required('Fecha Inicio Ejecucion es obligatorio')
     .typeError('no es una fecha válida'),
-  fechaCierreEjecucion: Yup.string()
+  fechaCierreEjecucion: Yup.date()
     .nullable()
     .required('Fecha Cierre Ejecucion es obligatorio')
     .typeError('no es una fecha válida'),
   observaciones: Yup.string()
     .required('Descripción es obligatorio')
     .min(2, 'longitud mínima es de 2 caracteres')
-    .max(300, 'longitud máxima es de 2 caracteres')
+    .max(300, 'longitud máxima es de 300 caracteres')
     .matches(
       /(^[0-9a-zA-ZÀ-ÿÑñ.%,\r\n ]*[0-9a-zA-ZÀ-ÿ-_Ññ.%$,\r\n ]*[0-9a-zA-ZÀ-ÿÑñ.%$,\r\n ]$)/,
       'No es una Descripción válida'
