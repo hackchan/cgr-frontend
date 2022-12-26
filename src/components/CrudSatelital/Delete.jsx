@@ -1,13 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Logo } from '../Logo'
-import { AppContext } from '../../contex/AppProvidercContext'
-import { BoxForm, Title, Message } from './styles'
-import { clearMessage } from '../../utils/time'
+import { BoxForm, Title, Message } from '../../styles/box'
 import { ButtonLoading } from '../ButtonLoading'
-export const Delete = ({ data, closeModal, preData, setReload }) => {
+export const Delete = ({ data, closeModal, preData, setReload, DeleteSatelital, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const { DeleteSatelital } = useContext(AppContext)
 
   const handleDelete = async () => {
     try {
@@ -16,7 +13,7 @@ export const Delete = ({ data, closeModal, preData, setReload }) => {
       closeModal(false)
       setReload(true)
     } catch (error) {
-      if (error.response) {
+      if (error.response.data) {
         setError(error.response.data.error.message)
       } else {
         setError(error.message)
@@ -26,18 +23,18 @@ export const Delete = ({ data, closeModal, preData, setReload }) => {
     }
   }
   return (
-    <BoxForm>
+    <BoxForm modedark={modedark}>
       <div className='avatar'>
         <Logo big />
       </div>
-      <Title>Eliminar {preData.title}</Title>
-      <Message>Esta seguro que desea Eliminar la {preData.title} {data.name}?</Message>
+      <Title>{preData.delete}</Title>
+      <Message>Esta seguro que desea Eliminar {preData.table} {data.name}?</Message>
 
-      <ButtonLoading onClick={() => closeModal(false)} className='danger' value='cancelar' />
-      <ButtonLoading onClick={() => handleDelete()} disabled={disableBtn} loading={disableBtn} value='Aceptar' />
+      <ButtonLoading onClick={() => closeModal(false)} value='cancelar' />
+      <ButtonLoading onClick={() => handleDelete()} className='danger' disabled={disableBtn} loading={disableBtn} value='Eliminar' />
 
       <div>
-        {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
+        {error && <p><span className='errors'>{error}</span></p>}
       </div>
     </BoxForm>
   )

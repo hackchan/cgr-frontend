@@ -11,7 +11,7 @@ import { formSchemaProyecto } from './Schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 // const Input = (props) => <components.Input {...props} isHidden={false} />
 export const Register = ({
-  setModalShow, setReload, preData, AddProyecto, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
+  setModalShow, setReload, preData, AddContrato, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
 }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
@@ -69,7 +69,7 @@ export const Register = ({
       console.log('dataForm2:', dataForm)
 
       setDisableBtn(true)
-      await AddProyecto([dataForm])
+      await AddContrato([dataForm])
       setModalShow(false)
       setReload(true)
     } catch (error) {

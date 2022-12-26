@@ -10,7 +10,7 @@ import { StyledSelect } from '../../styles/select'
 import { formSchemaProyecto } from './Schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 export const Update = ({
-  setModalUpdateShow, setReload, preData, data, UpdateProyecto, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
+  setModalUpdateShow, setReload, preData, data, UpdateContratacion, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
 }) => {
   console.log('la data:', data)
   const [disableBtn, setDisableBtn] = useState(false)
@@ -87,7 +87,7 @@ export const Update = ({
       delete dataForm.entidad
       delete dataForm.entidad_id
       delete dataForm.idBpin
-      await UpdateProyecto(dataForm, data.idBpin, entidadId)
+      await UpdateContratacion(dataForm, data.idBpin, entidadId)
       setModalUpdateShow(false)
       setReload(true)
     } catch (error) {

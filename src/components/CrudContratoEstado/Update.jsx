@@ -9,7 +9,7 @@ import { BoxForm, FormLabelStyle } from '../../styles/box'
 
 import { Logo } from '../Logo'
 
-export const Update = ({ setModal, setReload, preData, data, UpdateSectorProyecto, modedark }) => {
+export const Update = ({ setModal, setReload, preData, data, UpdateEstadoContrato, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
 
@@ -26,7 +26,7 @@ export const Update = ({ setModal, setReload, preData, data, UpdateSectorProyect
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
-      await UpdateSectorProyecto(dataForm, data.id)
+      await UpdateEstadoContrato(dataForm, data.id)
       setModal(false)
       setReload(true)
     } catch (error) {

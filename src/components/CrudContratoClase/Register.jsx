@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData, AddSectorObra, modedark }) => {
+export const Register = ({ setModal, setReload, preData, AddClaseContrato, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
 
@@ -20,7 +20,7 @@ export const Register = ({ setModal, setReload, preData, AddSectorObra, modedark
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
-      await AddSectorObra(dataForm)
+      await AddClaseContrato(dataForm)
       setModal(false)
       setReload(true)
     } catch (error) {
@@ -42,8 +42,8 @@ export const Register = ({ setModal, setReload, preData, AddSectorObra, modedark
         <div className='divider' />
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='name'>
-            <FormLabelStyle modedark={modedark.toString()}>Nombre del {preData.table}</FormLabelStyle>
-            <Form.Control style={{ height: 38 }} type='text' placeholder='Eje: VIVIENDA' {...register('name', { required: `nombre del ${preData.table} obligatorio` })} />
+            <FormLabelStyle modedark={modedark.toString()}>Nombre {preData.table}</FormLabelStyle>
+            <Form.Control style={{ height: 38 }} type='text' placeholder='Eje: INTERVENTORIA' {...register('name', { required: `nombre del ${preData.table} obligatorio` })} />
 
             {errors.name && (
               <Form.Text className='errors' onClick={() => clearErrors('name')}>

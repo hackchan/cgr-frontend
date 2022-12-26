@@ -84,6 +84,16 @@ export const NavBar = () => {
                   <NavDropdown.Item as={StyledNavLink} to='/sector-proyecto'>Sector Proyecto</NavDropdown.Item>
                 )}
 
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/clase-contrato'>Clase Contrato</NavDropdown.Item>
+                )}
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/estado-contrato'>Estado Contrato</NavDropdown.Item>
+                )}
+                {menuAdmin && (
+                  <NavDropdown.Item as={StyledNavLink} to='/forma-contrato'>Forma Contrato</NavDropdown.Item>
+                )}
+
                 {/* {menuAdmin && (
                   <NavDropdown.Item as={StyledNavLink} to='/origen-recurso'>Origen Recursos</NavDropdown.Item>
                 )}

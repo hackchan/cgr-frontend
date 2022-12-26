@@ -147,11 +147,29 @@ export const useInitialState = () => {
   }
   // Crud satelitales
 
-  const getSatelitales = async (payload) => {
+  const getSatelitales = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
     try {
+      const url = new URL(
+        '/api/v2/satelital',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
       const response = await axios({
         method: 'get',
-        url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
+        url: url.href,
         data: {},
         withCredentials: false,
         headers: {
@@ -168,13 +186,34 @@ export const useInitialState = () => {
       throw error
     }
   }
+  // const getSatelitales = async (payload) => {
+  //   try {
+  //     const response = await axios({
+  //       method: 'get',
+  //       url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
+  //       data: {},
+  //       withCredentials: false,
+  //       headers: {
+  //         'X-Test-header': 'Test',
+  //         accepts: 'application/json',
+  //         Authorization: `Bearer ${auth.token}`
+  //       }
+  //     })
+
+  //     const { body } = response.data
+  //     return body
+  //   } catch (error) {
+  //     console.log(error)
+  //     throw error
+  //   }
+  // }
 
   const AddSatelitales = async (payload) => {
     try {
       const response = await axios({
         method: 'post',
         url: `http://${config.dominio}:${config.port}/api/v2/satelital`,
-        data: { name: payload.satelital },
+        data: payload,
         withCredentials: false,
         headers: {
           'X-Test-header': 'Test',
@@ -213,12 +252,12 @@ export const useInitialState = () => {
     }
   }
 
-  const UpdateSatelitales = async (payload) => {
+  const UpdateSatelitales = async (payload, id) => {
     try {
       const response = await axios({
         method: 'patch',
-        url: `http://${config.dominio}:${config.port}/api/v2/satelital/${payload.id}`,
-        data: { name: payload.name },
+        url: `http://${config.dominio}:${config.port}/api/v2/satelital/${id}`,
+        data: payload,
         withCredentials: false,
         headers: {
           'X-Test-header': 'Test',
@@ -2389,7 +2428,7 @@ export const useInitialState = () => {
     }
   }
 
-  // Crud Sector Obra
+  // Crud Sector Proyecto
 
   const GetSectorProyecto = async (
     payload,
@@ -2480,6 +2519,438 @@ export const useInitialState = () => {
       const response = await axios({
         method: 'patch',
         url: `http://${config.dominio}:${config.port}/api/v2/sector-proyecto/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Clase Contrato
+
+  const GetClaseContrato = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/clase-contrato',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddClaseContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/clase-contrato`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteClaseContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/clase-contrato/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateClaseContrato = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/clase-contrato/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Estado Contrato
+
+  const GetEstadoContrato = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/estado-contrato',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddEstadoContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-contrato`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteEstadoContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-contrato/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateEstadoContrato = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/estado-contrato/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Forma Contrato
+
+  const GetFormaContrato = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/forma-contrato',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddFormaContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/forma-contrato`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteFormaContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/forma-contrato/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateFormaContrato = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/forma-contrato/${id}`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  // Crud Contratacion
+
+  const GetContratacion = async (
+    payload,
+    globalFilter,
+    columnFilters,
+    sorting
+  ) => {
+    try {
+      const url = new URL(
+        '/api/v2/contratacion',
+        `http://${config.dominio}:${config.port}`
+      )
+      if (payload) {
+        url.searchParams.set('take', `${payload.pageSize}`)
+        url.searchParams.set('skip', `${payload.pageIndex * payload.pageSize}`)
+      }
+
+      url.searchParams.set('globalFilter', globalFilter ?? '')
+      url.searchParams.set('filters', JSON.stringify(columnFilters ?? []))
+      url.searchParams.set('sorting', JSON.stringify(sorting ?? []))
+
+      const response = await axios({
+        method: 'get',
+        url: url.href,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const AddContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'post',
+        url: `http://${config.dominio}:${config.port}/api/v2/contratacion`,
+        data: payload,
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const DeleteContrato = async (payload) => {
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://${config.dominio}:${config.port}/api/v2/contratacion/${payload.id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
+  const UpdateContratacion = async (payload, id) => {
+    try {
+      const response = await axios({
+        method: 'patch',
+        url: `http://${config.dominio}:${config.port}/api/v2/contratacion/${id}`,
         data: payload,
         withCredentials: false,
         headers: {
@@ -2649,6 +3120,22 @@ export const useInitialState = () => {
     GetSectorProyecto,
     AddSectorProyecto,
     DeleteSectorProyecto,
-    UpdateSectorProyecto
+    UpdateSectorProyecto,
+    GetClaseContrato,
+    AddClaseContrato,
+    DeleteClaseContrato,
+    UpdateClaseContrato,
+    GetEstadoContrato,
+    AddEstadoContrato,
+    DeleteEstadoContrato,
+    UpdateEstadoContrato,
+    GetFormaContrato,
+    AddFormaContrato,
+    DeleteFormaContrato,
+    UpdateFormaContrato,
+    GetContratacion,
+    AddContrato,
+    DeleteContrato,
+    UpdateContratacion
   }
 }

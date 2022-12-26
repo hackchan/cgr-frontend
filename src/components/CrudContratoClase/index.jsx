@@ -21,10 +21,7 @@ export const CrudContratoClase =
  () => {
    const {
      state,
-     GetSectorProyecto,
-     AddSectorProyecto,
-     DeleteSectorProyecto,
-     UpdateSectorProyecto
+     GetClaseContrato, AddClaseContrato, DeleteClaseContrato, UpdateClaseContrato
    } = useContext(AppContext)
 
    const modedark = state.darkMode ? 'dark' : 'light'
@@ -70,7 +67,7 @@ export const CrudContratoClase =
            setIsRefetching(true)
          }
 
-         const response = await GetSectorProyecto(pagination, globalFilter, columnFilters, sorting)
+         const response = await GetClaseContrato(pagination, globalFilter, columnFilters, sorting)
          setData(response.data)
          setRowCount(response.cantidad)
          setIsError(false)
@@ -118,21 +115,21 @@ export const CrudContratoClase =
    const csvExporter = new ExportToCsv(csvOptions)
    return (
      <ContainerBox>
-       <TitleModule>Sector Proyecto</TitleModule>
+       <TitleModule>Clase Contrato</TitleModule>
        {modalEliminar &&
          <Modal closeModal={setModalEliminar}>
-           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteSectorProyecto={DeleteSectorProyecto} modedark={state.darkMode} />
+           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteClaseContrato={DeleteClaseContrato} modedark={state.darkMode} />
          </Modal>}
 
        {modalUpdate &&
          <Modal closeModal={setModalUpdate}>
-           <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateSectorProyecto={UpdateSectorProyecto} modedark={state.darkMode} />
+           <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateClaseContrato={UpdateClaseContrato} modedark={state.darkMode} />
          </Modal>}
        {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
 
        {modal &&
          <Modal closeModal={setModal}>
-           <Register setModal={setModal} setReload={setReload} preData={preData} AddSectorProyecto={AddSectorProyecto} modedark={state.darkMode} />
+           <Register setModal={setModal} setReload={setReload} preData={preData} AddClaseContrato={AddClaseContrato} modedark={state.darkMode} />
          </Modal>}
        <ThemeProvider theme={theme}>
          <MaterialReactTable

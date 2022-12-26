@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Logo } from '../Logo'
 import { BoxForm, Title, Message } from '../../styles/box'
 import { ButtonLoading } from '../ButtonLoading'
-export const Delete = ({ data, closeModal, preData, setReload, DeleteProyecto, isBasicUsr, modedark }) => {
+export const Delete = ({ data, closeModal, preData, setReload, DeleteContrato, isBasicUsr, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
   console.log('data:', data)
   const handleDelete = async () => {
     try {
       setDisableBtn(true)
-      await DeleteProyecto(data, data.idBpin, data.entidad.id)
+      await DeleteContrato(data, data.idBpin, data.entidad.id)
       closeModal(false)
       setReload(true)
     } catch (error) {

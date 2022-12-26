@@ -25,14 +25,12 @@ import { TitleModule } from '../../styles/TitleModule'
 export const MatrizContratacion = () => {
   const {
     state,
-    GetProyectos,
-    AddProyecto,
-    GetEntidad,
-    getDepartments,
-    DeleteProyecto,
-    UpdateProyecto,
-    GetMunicipiosByDepartment,
-    GetSectorProyecto
+    GetContratacion,
+    AddContrato,
+    DeleteContrato,
+    UpdateContratacion,
+    GetEntidad
+
   } = useContext(AppContext)
   const [user] = useLocalStorage('user', false)
 
@@ -85,7 +83,7 @@ export const MatrizContratacion = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetProyectos(pagination, globalFilter, columnFilters, sorting, user)
+        const response = await GetContratacion(pagination, globalFilter, columnFilters, sorting, user)
         setData(response.data)
         setRowCount(response.cantidad)
       } catch (error) {
@@ -141,21 +139,21 @@ export const MatrizContratacion = () => {
       <TitleModule>Matriz Proyectos</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteProyecto={DeleteProyecto} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteContrato={DeleteContrato} modedark={state.darkMode} />
         </Modal>}
 
       <ModalB
         show={modalCsv} fullscreen={modalCsv} animation={false} onHide={() => setModalCsv(false)} title={preData.update} backdrop='static' keyboard={false}
       >
-        <CsvParserPresProyecto setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddProyecto} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+        <CsvParserPresProyecto setModalCsv={setModalCsv} setReload={setReload} preData={preData} MatrizCargada={AddContrato} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
 
       <ModalB show={modalUpdateShow} fullscreen={modalUpdateShow} animation={false} onHide={() => setModalUpdateShow(false)} title={preData.update}>
-        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateProyecto={UpdateProyecto} GetEntidad={GetEntidad} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+        <Update setModalUpdateShow={setModalUpdateShow} setReload={setReload} preData={preData} data={dataUpdate} UpdateContratacion={UpdateContratacion} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
 
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddProyecto={AddProyecto} GetEntidad={GetEntidad} GetSectorProyecto={GetSectorProyecto} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddContrato={AddContrato} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable

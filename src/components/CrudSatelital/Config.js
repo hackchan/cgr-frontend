@@ -1,4 +1,4 @@
-const table = 'Forma Contrato'
+const table = 'Satelital'
 export const Config = {
   pageIndex: 0,
   pageSize: 50,
@@ -8,8 +8,8 @@ export const Config = {
   update: `Actualizar ${table}`,
   delete: `Eliminar ${table}`,
   labelRowsPerPage: 'filas por página',
-  buttonRegister: 'Crear Forma Contrato',
-  buttonUpdate: 'ActualizarForma Contrato',
+  buttonRegister: 'Crear Satelital',
+  buttonUpdate: 'Actualizar Satelital',
   rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,

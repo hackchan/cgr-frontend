@@ -20,10 +20,10 @@ import { TitleModule } from '../../styles/TitleModule'
 export const CrudContratoForma = () => {
   const {
     state,
-    GetSectorProyecto,
-    AddSectorProyecto,
-    DeleteSectorProyecto,
-    UpdateSectorProyecto
+    GetFormaContrato,
+    AddFormaContrato,
+    DeleteFormaContrato,
+    UpdateFormaContrato
   } = useContext(AppContext)
 
   const modedark = state.darkMode ? 'dark' : 'light'
@@ -69,7 +69,7 @@ export const CrudContratoForma = () => {
           setIsRefetching(true)
         }
 
-        const response = await GetSectorProyecto(pagination, globalFilter, columnFilters, sorting)
+        const response = await GetFormaContrato(pagination, globalFilter, columnFilters, sorting)
         setData(response.data)
         setRowCount(response.cantidad)
         setIsError(false)
@@ -117,21 +117,21 @@ export const CrudContratoForma = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Sector Proyecto</TitleModule>
+      <TitleModule>Forma Contrato</TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
-          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteSectorProyecto={DeleteSectorProyecto} modedark={state.darkMode} />
+          <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteFormaContrato={DeleteFormaContrato} modedark={state.darkMode} />
         </Modal>}
 
       {modalUpdate &&
         <Modal closeModal={setModalUpdate}>
-          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateSectorProyecto={UpdateSectorProyecto} modedark={state.darkMode} />
+          <Update setModal={setModalUpdate} setReload={setReload} preData={preData} data={dataUpdate} UpdateFormaContrato={UpdateFormaContrato} modedark={state.darkMode} />
         </Modal>}
       {/* <ButtonAdd onClick={() => { setModal(true) }}>Nuevo {preData.title}</ButtonAdd> */}
 
       {modal &&
         <Modal closeModal={setModal}>
-          <Register setModal={setModal} setReload={setReload} preData={preData} AddSectorProyecto={AddSectorProyecto} modedark={state.darkMode} />
+          <Register setModal={setModal} setReload={setReload} preData={preData} AddFormaContrato={AddFormaContrato} modedark={state.darkMode} />
         </Modal>}
       <ThemeProvider theme={theme}>
         <MaterialReactTable

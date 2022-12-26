@@ -1,22 +1,25 @@
-import React, { useContext, useState } from 'react'
-import { AppContext } from '../../contex/AppProvidercContext'
-import { useForm } from 'react-hook-form'
-import { LabelBox, InputEmail, BoxForm } from './styles'
+import React, { useState } from 'react'
 import { ButtonLoading as Button } from '../ButtonLoading'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
 import { clearMessage } from '../../utils/time'
-// import { clearMessage } from '../../utils/time'
+import { useForm } from 'react-hook-form'
+import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { Logo } from '../Logo'
 
-export const Register = ({ setModal, setReload, preData, modedark }) => {
-  const { AddSatelitales } = useContext(AppContext)
+export const Register = ({ setModal, setReload, preData, AddSatelitales, modedark }) => {
   const [disableBtn, setDisableBtn] = useState(false)
   const [error, setError] = useState('')
-  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm({
+    mode: 'onTouched',
+    reValidateMode: 'onChange'
+  })
 
   const onSubmit = async (dataForm) => {
     try {
       setDisableBtn(true)
-      console.log('dataForm:', dataForm)
       await AddSatelitales(dataForm)
       setModal(false)
       setReload(true)
@@ -26,7 +29,6 @@ export const Register = ({ setModal, setReload, preData, modedark }) => {
       } else {
         setError(error.message)
       }
-      // setError(error.message)
     } finally {
       setDisableBtn(false)
     }
@@ -34,50 +36,31 @@ export const Register = ({ setModal, setReload, preData, modedark }) => {
   return (
     <BoxForm modedark={modedark}>
       <div className='avatar'><Logo big /></div>
-      <h2>{preData.windowsTitle}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <LabelBox htmlFor='satelital'>
-          Ingrese el nombre de la satelital
-          <InputEmail
-            type='text' placeholder='Nombre de la satelital' id='satelital' name='satelital' {...register('satelital', {
-              required: {
-                value: true,
-                message: 'El nombre de la satelital es requerido '
-              }
-              // pattern: {
-              //   value: /^[A-Z0-9]$/i,
-              //   message: 'No es un nombre válido'
-              // }
-            })}
-          />
-        </LabelBox>
-        {/* {loading && <Spinner />}
-        {message && clearMessage(30000, setMessage) && <p><span className='errors'>{message}</span></p>} */}
-        {/* {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>} */}
+      <h2>{preData.register}</h2>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+
+        <div className='divider' />
+        <Row className='mb-3'>
+          <Form.Group as={Col} controlId='name'>
+            <FormLabelStyle modedark={modedark.toString()}>Nombre {preData.table}</FormLabelStyle>
+            <Form.Control style={{ height: 38 }} type='text' placeholder='Eje: SATELITAL ORIENTE' {...register('name', { required: `nombre del ${preData.table} obligatorio` })} />
+
+            {errors.name && (
+              <Form.Text className='errors' onClick={() => clearErrors('name')}>
+                {errors.name.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+
+        </Row>
+
         <div>
           {error && clearMessage(5000, setError) && <p><span className='errors'>{error}</span></p>}
         </div>
-        {errors.satelital
-          ? (
-            <>
-              {errors.satelital.type === 'required' && (
-                <p className='errors'>
-                  {errors.satelital.message}
-                </p>
-              )}
-              {errors.satelital.type === 'pattern' && (
-                <p className='errors alert'>
-                  {errors.satelital.message}
-                </p>
-              )}
-            </>
-            )
-          : null}
+        <br />
+        <Button modedark={modedark} value={preData.buttonRegister} disabled={disableBtn} loading={disableBtn} />
 
-        <Button value='Crear Satelital' disabled={disableBtn} loading={disableBtn} />
-
-      </form>
-
+      </Form>
     </BoxForm>
   )
 }

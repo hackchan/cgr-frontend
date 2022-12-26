@@ -1,4 +1,4 @@
-const table = 'Sector Proyecto'
+const table = 'Clase Contrato'
 export const Config = {
   pageIndex: 0,
   pageSize: 50,
@@ -8,8 +8,8 @@ export const Config = {
   update: `Actualizar ${table}`,
   delete: `Eliminar ${table}`,
   labelRowsPerPage: 'filas por página',
-  buttonRegister: 'Crear Sector Proyecto',
-  buttonUpdate: 'Actualizar Sector Proyecto',
+  buttonRegister: 'Crear Clase Contrato',
+  buttonUpdate: 'Actualizar Clase Contrato',
   rowsPerPageOptions: [10, 20, 50, 100],
   initialState: {
     showGlobalFilter: false,
