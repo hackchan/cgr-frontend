@@ -46,6 +46,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage'
 import { CrudContratoClase } from '../components/CrudContratoClase'
 import { CrudContratoEstado } from '../components/CrudContratoEstado'
 import { CrudContratoForma } from '../components/CrudContratoForma'
+import { MatrizContratacion } from '../components/CrudMatrizContratacion'
 export const App = () => {
   const [user] = useLocalStorage('user', false)
 
@@ -106,7 +107,7 @@ export const App = () => {
         <Route path='clase-contrato' element={<ProtectedRoute><CrudContratoClase /></ProtectedRoute>} />
         <Route path='estado-contrato' element={<ProtectedRoute><CrudContratoEstado /></ProtectedRoute>} />
         <Route path='forma-contrato' element={<ProtectedRoute><CrudContratoForma /></ProtectedRoute>} />
-
+        <Route path='matriz-contratacion' element={<MatrizContratacion />} />
       </Route>
       {/* <Route path='/search-page' element={<SearchPage />} />
         <Route path='/tacos/:name' element={<Tacos />}>

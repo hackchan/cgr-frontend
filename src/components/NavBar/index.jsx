@@ -103,6 +103,7 @@ export const NavBar = () => {
                 )} */}
 
                 <NavDropdown.Item as={StyledNavLink} to='/matriz-proyecto'>Matriz Proyectos</NavDropdown.Item>
+                <NavDropdown.Item as={StyledNavLink} to='/matriz-contratacion'>Matriz Contratacion</NavDropdown.Item>
                 {/* <NavDropdown.Item as={StyledNavLink} to='/matriz-obra-soporte'>Soportes Obras</NavDropdown.Item> */}
 
               </NavDropdown>
