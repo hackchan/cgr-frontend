@@ -136,7 +136,8 @@ export const MatrizContratacion = () => {
   const csvExporter = new ExportToCsv(csvOptions)
   return (
     <ContainerBox>
-      <TitleModule>Matriz Proyectos</TitleModule>
+      <TitleModule>Matriz Contratación
+      </TitleModule>
       {modalEliminar &&
         <Modal closeModal={setModalEliminar}>
           <Delete data={dataEliminar} closeModal={setModalEliminar} preData={preData} setReload={setReload} DeleteContrato={DeleteContrato} modedark={state.darkMode} />

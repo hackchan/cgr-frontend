@@ -127,6 +127,18 @@ export const Register = ({
 
         <Row className='mb-3'>
           <Form.Group as={Col} controlId='formGrCodigo'>
+            <FormLabelStyle modedark={modedark.toString()}>IdContrato</FormLabelStyle>
+            <Form.Control
+              style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('idContrato')}
+            />
+
+            {errors.idContrato && (
+              <Form.Text className='errors' onClick={() => clearErrors('idContrato')}>
+                {errors.idContrato.message}
+              </Form.Text>
+            )}
+          </Form.Group>
+          <Form.Group as={Col} controlId='formGrCodigo'>
             <FormLabelStyle modedark={modedark.toString()}>IdBpin</FormLabelStyle>
             <Form.Control
               style={{ height: 38 }} type='text' placeholder='Eje. 0025-00154-0000' {...register('idBpin')}
@@ -139,17 +151,6 @@ export const Register = ({
             )}
           </Form.Group>
 
-          <Form.Group as={Col} controlId='formGridPrograma'>
-            <FormLabelStyle modedark={modedark.toString()}>Nombre Proyecto</FormLabelStyle>
-            <Form.Control
-              style={{ height: 38 }} type='text' placeholder='Eje. Proyecto de adecuaciones locativas' {...register('nombreProyecto')}
-            />
-            {errors.nombreProyecto && (
-              <Form.Text className='errors' onClick={() => clearErrors('nombreProyecto')}>
-                {errors.nombreProyecto.message}
-              </Form.Text>
-            )}
-          </Form.Group>
         </Row>
 
         <Row className='mb-3'>
