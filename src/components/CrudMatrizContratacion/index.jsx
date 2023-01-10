@@ -29,7 +29,12 @@ export const MatrizContratacion = () => {
     AddContrato,
     DeleteContrato,
     UpdateContratacion,
-    GetEntidad
+    GetEntidad,
+    GetClaseContrato,
+    GetOrigenRecursoObra,
+    GetEstadoContrato,
+    GetFormaContrato,
+    GetProyectosByEntidad
 
   } = useContext(AppContext)
   const [user] = useLocalStorage('user', false)
@@ -154,7 +159,7 @@ export const MatrizContratacion = () => {
       </ModalB>
 
       <ModalB show={modalShow} fullscreen={modalShow} animation={false} onHide={() => setModalShow(false)} title={preData.register}>
-        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddContrato={AddContrato} GetEntidad={GetEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
+        <Register setModalShow={setModalShow} setReload={setReload} preData={preData} AddContrato={AddContrato} GetEntidad={GetEntidad} GetClaseContrato={GetClaseContrato} GetOrigenRecursoObra={GetOrigenRecursoObra} GetEstadoContrato={GetEstadoContrato} GetFormaContrato={GetFormaContrato} GetProyectosByEntidad={GetProyectosByEntidad} user={user} isBasicUsr={isBasicUsr} modedark={state.darkMode} />
       </ModalB>
       <ThemeProvider theme={theme}>
         <MaterialReactTable

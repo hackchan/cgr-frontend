@@ -17,7 +17,7 @@ export const Register = ({ setModal, setReload, preData, getSatelitales, AddDepa
   const loadOptions = async (inputValue) => {
     const options = []
     const response = await getSatelitales()
-    const filter = response.filter((option) => {
+    const filter = response.data.filter((option) => {
       return option.name.toLowerCase().includes(inputValue.toLowerCase())
     })
 

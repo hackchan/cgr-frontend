@@ -8,6 +8,7 @@ export const AsyncPaginateStyled = styled(AsyncPaginate)`
   font-size: 12px;
   color: #3e0e84;
   font-weight: bold;
+  min-width: 100%;
   .Select__control {
     min-height: 10px;
     width: 100%;

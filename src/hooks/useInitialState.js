@@ -2350,6 +2350,32 @@ export const useInitialState = () => {
     }
   }
 
+  const GetProyectosByEntidad = async (id) => {
+    try {
+      console.log(
+        'url to looking for:',
+        `http://${config.dominio}:${config.port}/api/v2/proyecto/entidad/${id}`
+      )
+      const response = await axios({
+        method: 'get',
+        url: `http://${config.dominio}:${config.port}/api/v2/proyecto/entidad/${id}`,
+        data: {},
+        withCredentials: false,
+        headers: {
+          'X-Test-header': 'Test',
+          accepts: 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+
+      const { body } = response.data
+      return body
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  }
+
   const AddProyecto = async (payload) => {
     try {
       const response = await axios({
@@ -3114,6 +3140,7 @@ export const useInitialState = () => {
     DeleteEmails,
     UpdateEmail,
     GetProyectos,
+    GetProyectosByEntidad,
     AddProyecto,
     DeleteProyecto,
     UpdateProyecto,

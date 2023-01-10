@@ -7,7 +7,7 @@ import { clearMessage } from '../../utils/time'
 import { useForm, Controller } from 'react-hook-form'
 import { BoxForm, FormLabelStyle } from '../../styles/box'
 import { StyledSelect } from '../../styles/select'
-import { formSchemaProyecto } from './Schema'
+import { formSchemaContrato } from './Schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 export const Update = ({
   setModalUpdateShow, setReload, preData, data, UpdateContratacion, GetEntidad, GetSectorProyecto, user, isBasicUsr, modedark
@@ -36,7 +36,7 @@ export const Update = ({
       observaciones: data.observaciones
 
     },
-    resolver: yupResolver(formSchemaProyecto)
+    resolver: yupResolver(formSchemaContrato)
   })
 
   const getListSectorProyecto = async (inputValue) => {
